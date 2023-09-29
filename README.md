@@ -1,2 +1,2 @@
 # Bytek
-Repositorio del sistema de llenado se salidas de docentes de la FIAD
+Repositorio del Sistema Automático de Solicitud de Salidas de docentes de la FIAD
