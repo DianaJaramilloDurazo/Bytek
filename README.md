@@ -1,2 +1,2 @@
 # SGS
-Repositorio del Sistema de Gestión de Salidas de docentes de la FIAD
+Repositorio del Sistema de Gestión de Salidas de docentes de la FIAD, desarrollado por Bytek.
