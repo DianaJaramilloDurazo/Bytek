@@ -1,10 +1,10 @@
-package com.uabc.bytek;
+package com.uabc.fiad.sgs;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BytekApplicationTests {
+class SgsApplicationTests {
 
     @Test
     void contextLoads() {

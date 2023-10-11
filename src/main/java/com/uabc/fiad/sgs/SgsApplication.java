@@ -1,13 +1,13 @@
-package com.uabc.bytek;
+package com.uabc.fiad.sgs;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BytekApplication {
+public class SgsApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BytekApplication.class, args);
+        SpringApplication.run(SgsApplication.class, args);
     }
 
 }
