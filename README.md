@@ -1,2 +1,2 @@
-# Bytek
-Repositorio del Sistema Automático de Solicitud de Salidas de docentes de la FIAD
+# SGS
+Repositorio del Sistema de Gestión de Salidas de docentes de la FIAD
