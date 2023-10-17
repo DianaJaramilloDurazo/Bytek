@@ -1,0 +1,101 @@
+/* :root se utiliza para declarar variables */
+:root{
+
+	/*colores*/
+	--body-color: #E4E9F7;
+	--menu-color: #3B3A3A;
+	--text-color-amarillo: #DD971A;
+	--text-color-verde: #50B845;
+}
+body{
+	background-color: var(--body-color);
+	font-family: sans-serif;
+}
+
+.container-fluid{
+	opacity: 90%;
+	position: relative;
+	height: 75px;
+	background-color: var(--menu-color);
+	box-shadow: 5px 5px 15px gray;
+}
+.navbar a{
+	color: var(--text-color-verde);
+}
+.logo{
+	height: 70px;
+	margin-top: 6px;
+	margin-left: 20px;
+}
+#titulo{
+	font-weight: bold;
+	color: white;
+	width: 300px;
+	padding-left: 0px;
+	padding-top: 0px;
+}
+.buscar{
+	background-color: var(--text-color-amarillo);
+	border-color: var(--text-color-amarillo);
+	font-weight: bold;
+}
+.nav-item {
+	height: 80%;
+	margin-left: 60px;
+	padding-top: 10px;
+}
+
+.container{
+	position: relative;
+	background-color: white;
+}
+
+#btn-perfil{
+	color: var(--text-color-verde);
+	font-weight: bold;
+}
+.nombre{
+	font-family: sans-serif;
+}
+.contIframe{
+	z-index: 1;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+}
+.navbar{
+	z-index: 4;
+}
+.navbar .nav-item a{
+	text-align: center;
+	padding-top: 6px;
+	color: var(--text-color-verde);
+	font-weight: bold;
+}
+
+.navbar .nav-item a:hover{
+	color: var(--text-color-amarillo);
+}
+
+.navbar-nav> li{
+    background: none;
+    border: none;
+}
+
+.cont{
+	padding-top: 10px;
+	padding-left: 0px;
+	display: grid;
+	grid-column-gap: 10px;
+	grid-column-row: 10px;
+	grid-template-columns: 50% 50%;
+}
+
+.cont2{
+	padding-top: 10px;
+	padding-left: 0px;
+	display: grid;
+	grid-column-gap: 10px;
+	grid-column-row: 10px;
+	grid-template-columns: 33% 33% 33%;
+}

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>SASS-Principal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--Boostrap-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <!--fin boostrap-->
+
+  <!--Archivo css-->
+  <link rel="stylesheet" href="css\index.css">
+  <!--fin css-->
+
+  <!--archivo js-->
+  <script  type="text/javascript" src="js\index.js"></script>
+  <!--Fin archivo js-->
+</head>
+
+<body>
+  <!--Inicio barra de navegacion------------------------------------------------------------------>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-light">
+    <div class="container-fluid">
+
+      <img class="navbar-brand logo" src="img\Logo-UABC.png" alt="Logo-UABC">
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item titulo">
+                  <a class="nav-link" id="titulo" aria-current="page" href="index.html">SISTEMA DE AUTOMATIZACIÓN PARA SOLICITUDES DE SALIDA</a>
+                </li>
+
+                <li class="nav-item active" id="inicio">
+                    <a class="nav-link" id="admin_cuenta" href="#" onclick="cambiarIframe('Inicio.html');return false;">Inicio</a>
+                </li>
+
+                <li class="nav-item active" id="administrar">
+                    <a class="nav-link" id="admin_cuenta" href="#" onclick="cambiarIframe('ListarUsuarios.html');return false;">Administrar Cuentas</a>
+                </li>
+
+                </li> 
+
+                <li class="nav-item opc">
+                  <button class="btn" id="btn-perfil" data-bs-toggle="modal" data-bs-target="#ModalPerfil">Ver Perfil</button>
+                </li>
+
+            </ul>
+
+            <form class="d-flex">
+              <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
+              <button class="btn btn-outline-success buscar" type="submit">Buscar</button>
+            </form>
+
+        </div>
+    </div>
+</nav>
+    <!--Fin Barra de navegacion----------------------------------------------------------------------->
+
+<!--Perfil de usuario-->
+        <!-- Modal -->
+        <div class="modal fade m1" id="ModalPerfil" tabindex="-1" role="dialog" aria-labelledby="ModalPerfilTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+
+        <div class="modal-content" id="modal">
+
+            <div class="modal-header">
+              <h5 class="modal-title" id="ModalPerfilTitle">Editar Usuario</h5>
+            </div>
+
+          <div class="modal-body">
+              <form class="form-control" id="EditarPerfil" method="post" action="index.html">
+                <label>Nombre(s)</label>
+                <input class="form-control " type="text" id="nombre" value="Edgar" disabled required>
+
+                <div class="container cont">
+                    <div class="cont-a">
+                        <label>Apellido paterno</label>
+                        <input class="form-control " type="text" id="apPat" value="Nava" disabled required>
+                    </div>
+                    <div class="cont-b">
+                        <label>Apellido materno</label>
+                        <input class="form-control " type="text" id="apMat" value="Hernández" disabled required>
+                    </div>
+                </div>
+
+                <label>Correo</label>
+                <input class="form-control " type="email" id="correo" value="edgar.nava.hernandez@uabc.edu.mx" disabled required>
+                <div class="container cont">
+
+                    <div class="cont-a">
+                      <label>Contreseña</label>
+                      <input class="form-control " type="password" id="pwd" value="admin" disabled required>
+                    </div>
+
+                    <div class="cont-b">
+                      <label>Numero de empleado</label>
+                      <input class="form-control" type="number" id="numEmpleado" value="36148" required min="10000" max="999999" disabled>
+                    </div>
+                </div>
+
+                <div class="container cont">
+                  <div class="cont-a">
+                      <label>Categoria</label>
+                      <select class="form-control  " id="categoria" disabled required value="2">
+                            <option value="1">Selecciona una categoria</option>
+                            <option value="2" selected="true">Administrador</option>
+                      </select>
+                  </div>
+
+                  <div class="cont-b">
+                      <label>Carrera</label>
+                      <select class="form-control " id="carrera" disabled required value="2">
+                          <option value="1">Selecciona una carrera</option>
+                          <option value="2" selected="true">ingenieria en computacion</option>
+                      </select>
+                  </div>
+                </div>
+              
+                            <br>
+          </div>
+
+          <div class="modal-footer">
+
+            <button type="button" class="btn btn-secondary" onclick="quitarModal()">Cerrar</button>
+            <button  type="button" class="btn btn-primary" id="editPerfil" onclick="habilitar_edicion()">Editar perfil</button>
+            <button type="submit" class="btn btn-primary" >Guardar Cambios</button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+<!--Fin perfil de usuario-->
+
+    <!--iframe para cambiar contenido-->
+    <div class="contIframe">
+        <iframe id="contenedor" src="Inicio.html" width="100%" height="100%"></iframe>
+    </div>
+    <!--fin iframe-->
+</body>
+</html>

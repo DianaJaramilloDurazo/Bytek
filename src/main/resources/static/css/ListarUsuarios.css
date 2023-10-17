@@ -1,0 +1,55 @@
+body{
+	font-family: sans-serif;
+}
+
+.container h1{
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+.container{
+	position: relative;
+	background-color: white;
+}
+.cont{
+	display: grid;
+	grid-template: "uno dos";
+}
+
+.cont-a{
+	grid-area: uno;
+}
+
+.cont-b{
+	text-align: right;
+	grid-area: dos;
+}
+
+.div-encabezado{
+	display: grid;
+	grid-template: "primero segundo";
+}
+
+.titulo{
+	grid-area: primero;
+}
+
+.add{
+	grid-area: segundo;
+	text-align: right;
+	margin-top: 40px;
+}
+.editar{
+	margin-right: 20px;
+}
+
+.contM{
+	padding-top: 10px;
+	text-align: left;
+	display: grid;
+	grid-column-gap: 10px;
+	grid-column-row: 10px;
+	grid-template-columns: 50% 50%;
+}
+#correo1{
+	border:none;
+}
