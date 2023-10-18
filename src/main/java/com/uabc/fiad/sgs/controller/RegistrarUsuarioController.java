@@ -1,5 +1,7 @@
 package com.uabc.fiad.sgs.controller;
 
+import com.uabc.fiad.sgs.Entity.Usuario;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,9 +14,14 @@ public class RegistrarUsuarioController {
         return "ListarUsuarios.html";
     }
 
-    @PostMapping("/registrar")
-    public String registrarUsuario() {
-        return "";
+    @PostMapping(value = "/registrar",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.TEXT_HTML_VALUE)
+    @ResponseBody
+    public String registrarUsuario(Usuario usuario) {
+        System.out.println(usuario);
+        
+        return "<span class='text-success'>Usuario registrado correctamente</span>";
     }
 
     @GetMapping("/get-registrar-form")

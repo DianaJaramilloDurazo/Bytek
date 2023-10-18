@@ -11,6 +11,8 @@ public class Usuario {
 
     private String apPaterno;
 
+    private String apMaterno;
+
     private String correo;
 
     private byte[] password;

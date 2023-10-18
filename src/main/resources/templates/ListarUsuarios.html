@@ -2,9 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:hx="http://www.w3.org/1999/xhtml">
 <head>
-    <div th:replace="fragments/layout :: head">
+    <meta charset="utf-8">
+    <title>HTML</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    </div>
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/ListarUsuarios.css">
+    <!--fin CSS-->
+
+    <!-- HTMX -->
+    <script src="/js/htmx.min.js"></script>
+
 </head>
 
 <body>
@@ -62,9 +71,11 @@
      aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
 
-        <form class="form-control" id="registrar-usuario-form"
-              method="post" action="/registrar-usuario/registrar">
-            <div class="modal-content" id="modal">
+              <!--method="post" action="/registrar-usuario/registrar"-->
+        <div class="modal-content" id="modal">
+            <form class="form-control" id="registrar-usuario-form"
+                  hx-post="/registrar-usuario/registrar"
+                  hx-target="#result-msg">
 
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalPerfilTitle">Editar Usuario</h5>
@@ -74,12 +85,11 @@
                 </div>
 
                 <div class="modal-footer">
-
-                    <button type="button" class="btn btn-secondary" onclick="quitarModal()">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" onclick="/*quitarModal()*/">Cerrar</button>
                     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 
