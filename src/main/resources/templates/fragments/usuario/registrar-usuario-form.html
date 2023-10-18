@@ -17,9 +17,9 @@
          hx-target="this"
          hx-swap="outerHTML">
         <label for="correo">Correo</label>
-        <input class="form-control"
+        <input class="form-control" name="correo" id="correo"
                hx-post="/registrar-usuario/validar/correo"
-               th:classappend="${valid == null} ? '' : (${valid} ? 'is-valid' : 'is-invalid')" type="email" id="correo"
+               th:classappend="${valid == null} ? '' : (${valid} ? 'is-valid' : 'is-invalid')" type="email"
                th:value="${value} ?: ''"
                required>
         <div class="invalid-feedback">
