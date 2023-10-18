@@ -1,15 +1,15 @@
-<form th:fragment="registrar-usuario-form" class="form-control" id="EditarPerfil" method="post" action="ListarUsuarios.html">
+<div th:fragment="registrar-usuario-form" class="container-fluid">
     <label for="nombre">Nombre(s)</label>
     <input class="form-control " type="text" id="nombre" required>
 
     <div class="container contM">
         <div class="cont-1">
             <label for="apPat">Apellido paterno</label>
-            <input class="form-control " type="text" id="apPat" required>
+            <input class="form-control " type="text" id="apPat" name="apPat" required>
         </div>
         <div class="cont-2">
             <label for="apMat">Apellido materno</label>
-            <input class="form-control " type="text" id="apMat" required>
+            <input class="form-control" type="text" id="apMat" name="apMat">
         </div>
     </div>
 
@@ -31,12 +31,12 @@
 
         <div class="cont-1">
             <label for="pwd">Contraseña</label>
-            <input class="form-control" type="password" id="pwd" required>
+            <input class="form-control" type="password" id="pwd" name="pwd" required>
         </div>
 
         <div class="cont-2">
             <label for="numEmpleado">Numero de empleado</label>
-            <input class="form-control" type="number" id="numEmpleado" required
+            <input class="form-control" type="number" id="numEmpleado" name="numEmpleado" required
                    min="10000" max="999999">
         </div>
     </div>
@@ -44,18 +44,18 @@
     <div class="container contM">
         <div class="cont-1">
             <label for="categoria">Categoria</label>
-            <select class="form-control" id="categoria" required value="2">
-                <option value="1">Selecciona una categoria</option>
-                <option value="2" selected="true">Administrador</option>
+            <select class="form-control" id="categoria" name="categoria" required>
+                <option value="1" selected>Selecciona una categoria</option>
+                <option value="2">Administrador</option>
             </select>
         </div>
 
         <div class="cont-2">
             <label for="carrera">Carrera</label>
-            <select class="form-control " id="carrera" required value="2">
-                <option value="1">Selecciona una carrera</option>
-                <option value="2" selected="true">ingenieria en computacion</option>
+            <select class="form-control " id="carrera" name="carrera" required>
+                <option value="1" selected>Selecciona una carrera</option>
+                <option value="2">ingenieria en computacion</option>
             </select>
         </div>
     </div>
-</form>
+</div>

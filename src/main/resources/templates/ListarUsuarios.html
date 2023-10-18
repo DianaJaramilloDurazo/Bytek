@@ -62,22 +62,24 @@
      aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
 
-        <div class="modal-content" id="modal">
+        <form class="form-control" id="registrar-usuario-form"
+              method="post" action="/registrar-usuario/registrar">
+            <div class="modal-content" id="modal">
 
-            <div class="modal-header">
-                <h5 class="modal-title" id="ModalPerfilTitle">Editar Usuario</h5>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalPerfilTitle">Editar Usuario</h5>
+                </div>
+
+                <div class="modal-body" id="modal-perfil-body" hx-swap="innerHTML">
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" onclick="quitarModal()">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
             </div>
-
-            <div class="modal-body" id="modal-perfil-body">
-
-            </div>
-
-            <div class="modal-footer">
-
-                <button type="button" class="btn btn-secondary" onclick="quitarModal()">Cerrar</button>
-                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
 

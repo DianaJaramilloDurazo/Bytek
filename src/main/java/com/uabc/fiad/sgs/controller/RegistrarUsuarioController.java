@@ -8,8 +8,13 @@ import org.springframework.web.bind.annotation.*;
 public class RegistrarUsuarioController {
 
     @GetMapping("/registrar")
-    public String registrarUsuario() {
+    public String getRegistrarUsuario() {
         return "ListarUsuarios.html";
+    }
+
+    @PostMapping("/registrar")
+    public String registrarUsuario() {
+        return "";
     }
 
     @GetMapping("/get-registrar-form")
