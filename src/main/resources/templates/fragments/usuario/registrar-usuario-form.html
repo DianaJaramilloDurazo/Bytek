@@ -1,0 +1,61 @@
+<form th:fragment="registrar-usuario-form" class="form-control" id="EditarPerfil" method="post" action="ListarUsuarios.html">
+    <label for="nombre">Nombre(s)</label>
+    <input class="form-control " type="text" id="nombre" required>
+
+    <div class="container contM">
+        <div class="cont-1">
+            <label for="apPat">Apellido paterno</label>
+            <input class="form-control " type="text" id="apPat" required>
+        </div>
+        <div class="cont-2">
+            <label for="apMat">Apellido materno</label>
+            <input class="form-control " type="text" id="apMat" required>
+        </div>
+    </div>
+
+    <div th:fragment="correo" class="mb-3"
+         hx-target="this"
+         hx-swap="outerHTML">
+        <label for="correo">Correo</label>
+        <input class="form-control"
+               hx-post="/registrar-usuario/validar/correo"
+               th:classappend="${valid == null} ? '' : (${valid} ? 'is-valid' : 'is-invalid')" type="email" id="correo"
+               th:value="${value} ?: ''"
+               required>
+        <div class="invalid-feedback">
+            El correo debe ser institucional.
+        </div>
+    </div>
+
+    <div class="container contM">
+
+        <div class="cont-1">
+            <label for="pwd">Contraseña</label>
+            <input class="form-control" type="password" id="pwd" required>
+        </div>
+
+        <div class="cont-2">
+            <label for="numEmpleado">Numero de empleado</label>
+            <input class="form-control" type="number" id="numEmpleado" required
+                   min="10000" max="999999">
+        </div>
+    </div>
+
+    <div class="container contM">
+        <div class="cont-1">
+            <label for="categoria">Categoria</label>
+            <select class="form-control" id="categoria" required value="2">
+                <option value="1">Selecciona una categoria</option>
+                <option value="2" selected="true">Administrador</option>
+            </select>
+        </div>
+
+        <div class="cont-2">
+            <label for="carrera">Carrera</label>
+            <select class="form-control " id="carrera" required value="2">
+                <option value="1">Selecciona una carrera</option>
+                <option value="2" selected="true">ingenieria en computacion</option>
+            </select>
+        </div>
+    </div>
+</form>
