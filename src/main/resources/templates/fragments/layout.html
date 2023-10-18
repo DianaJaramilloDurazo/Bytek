@@ -12,12 +12,17 @@
     <!--fin boostrap-->
 
     <!--Archivo css-->
-    <link rel="stylesheet" href="css\index.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/ListarUsuarios.css">
     <!--fin css-->
 
     <!--archivo js-->
-    <script  type="text/javascript" src="js\index.js"></script>
+    <script  type="text/javascript" src="js/index.js"></script>
     <!--Fin archivo js-->
+
+    <!-- HTMX -->
+    <script src="/js/htmx.min.js"></script>
 </head>
 <body>
     <div th:fragment="nav">
@@ -39,7 +44,7 @@
                         </li>
 
                         <li class="nav-item active" id="administrar">
-                            <a class="nav-link" id="admin_cuenta" href="#" onclick="cambiarIframe('ListarUsuarios.html');return false;">Administrar Cuentas</a>
+                            <a class="nav-link" id="admin_cuenta" href="usuario/lista">Administrar Cuentas</a>
                         </li>
 
                         </li>
