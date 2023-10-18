@@ -8,6 +8,8 @@ public class UsuarioDTO {
 
     private String apPaterno;
 
+    private String apMaterno;
+
     private String correo;
 
     private String numEmpleado;
