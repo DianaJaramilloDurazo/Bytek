@@ -9,8 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-
 @Controller
 @RequestMapping("/registrar-usuario")
 public class RegistrarUsuarioController {
@@ -20,17 +18,6 @@ public class RegistrarUsuarioController {
 
     @Autowired
     private IUsuarioService usuarioService;
-
-    /**
-     * Controlador para la vista de registrar usuario, es temporal en lo que se termina la historia de usuario
-     * relativa a la lista de usuarios.
-     *
-     * @return  vista con la lista de usuarios
-     */
-//    @GetMapping("/registrar")
-//    public String getRegistrarUsuario() {
-//        return "ListarUsuarios.html";
-//    }
 
     /**
      * Método de POST para registrar un usuario. Mapea el cuerpo de la petición a un objeto de
