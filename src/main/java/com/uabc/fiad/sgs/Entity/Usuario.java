@@ -1,8 +1,10 @@
 package com.uabc.fiad.sgs.Entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class Usuario {
 
     private Integer idUsuario;
@@ -15,16 +17,14 @@ public class Usuario {
 
     private String correo;
 
-    private byte[] password;
-
-    private byte[] salt;
+    private String password;
 
     private Integer numEmpleado;
 
-    private String carrera;
+    private Integer idCarrera;
 
-    private String categoria;
+    private Integer idCategoria;
 
-    private String estado;
+    private Integer idEstado;
 
 }
