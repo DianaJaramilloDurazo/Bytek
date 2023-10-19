@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class UsuarioService implements IUsuarioService{
+public class UsuarioService implements IUsuarioService {
 
     @Autowired
     private JdbcTemplate template;
@@ -43,11 +43,14 @@ public class UsuarioService implements IUsuarioService{
      */
     @Override
     public Optional<Usuario> findByCorreo(String correo) {
-        return template.queryForObject(
-                "SELECT Usr_Nombre, Ap_Paterno, Correo,Num_Empleado FROM usuario WHERE Correo=?;",
+
+        // Hacer una query para obtener todos los usuarios con ese correo, que debería ser máximo 1, y los guardamos en
+        // una lista
+        List<Usuario> usuarios = template.query(
+                "SELECT * FROM usuario WHERE Correo=?;",
                 new Object[]{correo},
                 (rs, rowNum) ->
-                        Optional.of(new Usuario(
+                        new Usuario(
                                 null,
                                 rs.getString("Usr_Nombre"),
                                 rs.getString("Ap_Paterno"),
@@ -56,10 +59,54 @@ public class UsuarioService implements IUsuarioService{
                                 rs.getString("Usr_Pwd"),
                                 rs.getInt("Num_Empleado"),
                                 rs.getInt("Carrera_idCarrera"),
-                                rs.getInt("Categoria_idCategoria"),
+                                rs.getInt("Categoria_idCategoria1"),
                                 rs.getInt("Estado_idEstado")
-                        ))
+                        )
         );
+
+        // Si la lista está vacía regresar un optional vacío, si no regresamos el primer elemento
+        if (usuarios.size() == 0) {
+            return Optional.empty();
+        } else {
+            return Optional.of(usuarios.get(0));
+        }
+    }
+
+    /**
+     * Encuentra un usuario en base a su número de empleado.
+     *
+     * @param numEmpleado   el número de empleado a buscar
+     * @return              el usuario encontrado
+     */
+    @Override
+    public Optional<Usuario> findByNumEmpleado(Integer numEmpleado) {
+
+        // Hacer una query para obtener todos los usuarios con ese número de empleado, que debería ser máximo 1,
+        // y los guardamos en una lista
+        List<Usuario> usuarios = template.query(
+                "SELECT * FROM usuario u WHERE u.Num_Empleado = ?;",
+                new Object[]{numEmpleado},
+                (rs, rowNum) ->
+                        new Usuario(
+                                null,
+                                rs.getString("Usr_Nombre"),
+                                rs.getString("Ap_Paterno"),
+                                rs.getString("Ap_Materno"),
+                                rs.getString("Correo"),
+                                rs.getString("Usr_Pwd"),
+                                rs.getInt("Num_Empleado"),
+                                rs.getInt("Carrera_idCarrera"),
+                                rs.getInt("Categoria_idCategoria1"),
+                                rs.getInt("Estado_idEstado")
+                        )
+        );
+
+        // Si la lista está vacía regresar un optional vacío, si no regresamos el primer elemento
+        if (usuarios.size() == 0) {
+            return Optional.empty();
+        } else {
+            return Optional.of(usuarios.get(0));
+        }
     }
 
     @Override

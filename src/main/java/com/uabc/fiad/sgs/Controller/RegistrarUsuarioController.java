@@ -27,10 +27,10 @@ public class RegistrarUsuarioController {
      *
      * @return  vista con la lista de usuarios
      */
-    @GetMapping("/registrar")
-    public String getRegistrarUsuario() {
-        return "ListarUsuarios.html";
-    }
+//    @GetMapping("/registrar")
+//    public String getRegistrarUsuario() {
+//        return "ListarUsuarios.html";
+//    }
 
     /**
      * Método de POST para registrar un usuario. Mapea el cuerpo de la petición a un objeto de
@@ -45,6 +45,21 @@ public class RegistrarUsuarioController {
     @ResponseBody
     @ResponseStatus(code = HttpStatus.CREATED)
     public String registrarUsuario(Usuario usuario) {
+
+        // Primero que nada revisamos si está registrado el usuario o el número de empleado
+        boolean correoExistente = usuarioService.findByCorreo(usuario.getCorreo()).isPresent();
+        boolean numEmpleadoExistente = usuarioService.findByNumEmpleado(usuario.getNumEmpleado()).isPresent();
+        if (correoExistente && numEmpleadoExistente) {
+            return "<span class='text-danger'>El correo y el número de empleado ya están registrados.</span>";
+        }
+        if (correoExistente) {
+            return "<span class='text-danger'>El correo ya está registrado.</span>";
+        }
+        if (numEmpleadoExistente) {
+            return "<span class='text-danger'>El número de empleado ya está registrado.</span>";
+        }
+
+        // Si no están registrados esos datos en otros usuarios se puede proceder a registrar el usuario
 
         // Obtener la contraseña plana
         String rawPwd = usuario.getPassword();
@@ -84,12 +99,20 @@ public class RegistrarUsuarioController {
      */
     @PostMapping("/validar/correo")
     public String validarCorreo(@RequestParam(value="correo") String correo) {
-        // Obtener el valor del correo sin el nombre del parámetro
-//        String correo_val = correo.split("=")[1];
 
-        // Validar el correo
-        boolean valid = correo.endsWith("@uabc.edu.mx");
+        // Si no es institucional mandar un mensaje acorde
+        if (!correo.endsWith("@uabc.edu.mx")) {
+            return "fragments/usuario/registrar-usuario-form :: correo(valid=false, value='" + correo
+                    + "', correoMsg='El correo debe ser institucional.')";
+        }
 
-        return "fragments/usuario/registrar-usuario-form :: correo(valid=" + valid + ", value='" + correo + "')";
+        // Si es institucional revisamos si ya existe
+        if (usuarioService.findByCorreo(correo).isPresent()) {
+            return "fragments/usuario/registrar-usuario-form :: correo(valid=false, value='" + correo
+                    + "', correoMsg='El correo ya está registrado.')";
+        }
+
+        // Si es institucional y no está registrado se valida correctamente
+        return "fragments/usuario/registrar-usuario-form :: correo(valid=true, value='" + correo + "')  ";
     }
 }

@@ -12,6 +12,8 @@ public interface IUsuarioService {
 
     Optional<Usuario> findByCorreo(String correo);
 
+    Optional<Usuario> findByNumEmpleado(Integer numEmpleado);
+
     List<UsuarioDTO> findAll();
 
     Boolean save(Usuario usuario);

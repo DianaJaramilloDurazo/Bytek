@@ -22,9 +22,7 @@
                th:classappend="${valid == null} ? '' : (${valid} ? 'is-valid' : 'is-invalid')" type="email"
                th:value="${value} ?: ''"
                required>
-        <div class="invalid-feedback">
-            El correo debe ser institucional.
-        </div>
+        <div class="invalid-feedback" th:text="${correoMsg} ?: ''"></div>
     </div>
 
     <div class="container contM">
@@ -37,7 +35,7 @@
         <div class="cont-2">
             <label for="numEmpleado">Numero de empleado</label>
             <input class="form-control" type="number" id="numEmpleado" name="numEmpleado" required
-                   min="10000" max="999999">
+                   min="10000" max="999999" step="1" pattern="^[0-9]*$" onkeydown="if([69,187,188,189,190].includes(event.keyCode))event.preventDefault()">
         </div>
     </div>
 
