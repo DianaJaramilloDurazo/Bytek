@@ -1,6 +1,6 @@
-package com.uabc.fiad.sgs.Security;
+package com.uabc.fiad.sgs.security;
 
-import com.uabc.fiad.sgs.Entity.Usuario;
+import com.uabc.fiad.sgs.entity.Usuario;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;

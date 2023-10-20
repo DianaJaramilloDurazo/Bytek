@@ -1,6 +1,6 @@
-package com.uabc.fiad.sgs.Security;
+package com.uabc.fiad.sgs.security;
 
-import com.uabc.fiad.sgs.Service.SgsUserDetailsService;
+import com.uabc.fiad.sgs.service.SgsUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;

@@ -14,9 +14,10 @@ public class UsuarioDTO {
 
     private String numEmpleado;
 
-    public UsuarioDTO(String username, String apPaterno, String correo,String numEmpleado) {
+    public UsuarioDTO(String username, String apPaterno, String apMaterno,String correo,String numEmpleado) {
         this.username = username;
         this.apPaterno = apPaterno;
+        this.apMaterno = apMaterno;
         this.correo = correo;
         this.numEmpleado = numEmpleado;
     }

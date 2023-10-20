@@ -1,4 +1,4 @@
-package com.uabc.fiad.sgs.Entity;
+package com.uabc.fiad.sgs.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

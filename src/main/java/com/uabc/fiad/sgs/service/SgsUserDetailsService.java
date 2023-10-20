@@ -1,7 +1,7 @@
-package com.uabc.fiad.sgs.Service;
+package com.uabc.fiad.sgs.service;
 
-import com.uabc.fiad.sgs.Entity.Usuario;
-import com.uabc.fiad.sgs.Security.UserDetailsMapper;
+import com.uabc.fiad.sgs.entity.Usuario;
+import com.uabc.fiad.sgs.security.UserDetailsMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

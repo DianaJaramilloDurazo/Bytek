@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- CSS -->
+    <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="/css/ListarUsuarios.css">
     <!--fin CSS-->
@@ -20,6 +21,7 @@
 <div th:replace="fragments/layout :: nav">
 
 </div>
+<div th:fragment="listaUsuarios" class="listaUsuarios">
 <div class="container">
     <div class="div-encabezado">
 
@@ -41,7 +43,6 @@
         <thead>
         <tr>
             <th scope="col">Nombre</th>
-            <th scope="col">Apellidos</th>
             <th scope="col">Correo</th>
             <th scope="col">Número de Empleado</th>
             <th scope="col">Editar</th>
@@ -50,8 +51,7 @@
         </thead>
         <tbody>
         <tr th:each="user : ${users}">
-            <td th:text="${user.username}"></td>
-            <td th:text="${user.apPaterno}"></td>
+            <td th:text="${user.username} +' '+${user.apPaterno}+' '+${user.apMaterno}"></td>
             <td th:text="${user.correo}"></td>
             <td th:text="${user.numEmpleado}">@</td>
             <td>
@@ -63,15 +63,36 @@
         </tr>
         </tbody>
     </table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <nav aria-label="Pagination">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${prev == 0 ? 'disabled': ''}">
+                        <a class="page-link"
+                           th:attr="hx-get=@{'/usuario/pagination?page=' + ${prev}}, hx-target='.listaUsuarios'">Anterior</a>
+                    </li>
+                    <li class="page-item" th:each="page : ${pages}" th:classappend="${current == page ? 'active': ''}">
+                        <a class="page-link"
+                           th:attr="hx-get=@{'/usuario/pagination?page=' + ${page}}, hx-target='.listaUsuarios'"
+                           th:text="${page}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${current == last ? 'disabled': ''}">
+                        <a class="page-link"
+                           th:attr="hx-get=@{'/usuario/pagination?page=' + ${next}}, hx-target='.listaUsuarios'">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+        </ul>
+    </nav>
 </div>
-
+</div>
 <!--Perfil de usuario-->
 <!-- Modal -->
 <div class="modal fade m1" id="ModalPerfil" tabindex="-1" role="dialog" aria-labelledby="ModalPerfilTitle"
      aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
 
-              <!--method="post" action="/registrar-usuario/registrar"-->
+        <!--method="post" action="/registrar-usuario/registrar"-->
         <div class="modal-content" id="modal">
             <form class="form-control" id="registrar-usuario-form"
                   hx-post="/registrar-usuario/registrar"

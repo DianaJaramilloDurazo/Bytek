@@ -1,7 +1,7 @@
-package com.uabc.fiad.sgs.Service;
+package com.uabc.fiad.sgs.service;
 
 import com.uabc.fiad.sgs.DTO.UsuarioDTO;
-import com.uabc.fiad.sgs.Entity.Usuario;
+import com.uabc.fiad.sgs.entity.Usuario;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,4 +17,8 @@ public interface IUsuarioService {
     List<UsuarioDTO> findAll();
 
     Boolean save(Usuario usuario);
+
+    Integer TotalRecords();
+
+    List<UsuarioDTO> pagination(Integer limit, Integer offset);
 }

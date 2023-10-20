@@ -1,18 +1,18 @@
 /* :root se utiliza para declarar variables */
 :root{
 
-	/*colores*/
-	--body-color: #E4E9F7;
-	--menu-color: #3B3A3A;
-	--text-color-amarillo: #DD971A;
-	--text-color-verde: #50B845;
-}
+	 /*colores*/
+	 --body-color: #E4E9F7;
+	 --menu-color: #3B3A3A;
+	 --text-color-amarillo: #DD971A;
+	 --text-color-verde: #50B845;
+ }
 body{
 	background-color: var(--body-color);
 	font-family: sans-serif;
 }
 
-.container-fluid{
+.navbar .container-fluid{
 	opacity: 90%;
 	position: relative;
 	height: 75px;

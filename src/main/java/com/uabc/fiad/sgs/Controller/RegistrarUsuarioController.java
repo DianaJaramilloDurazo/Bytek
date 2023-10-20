@@ -1,7 +1,7 @@
 package com.uabc.fiad.sgs.Controller;
 
-import com.uabc.fiad.sgs.Entity.Usuario;
-import com.uabc.fiad.sgs.Service.IUsuarioService;
+import com.uabc.fiad.sgs.entity.Usuario;
+import com.uabc.fiad.sgs.service.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
