@@ -1,4 +1,4 @@
-package com.uabc.fiad.sgs.Controller;
+package com.uabc.fiad.sgs.controller;
 
 import com.uabc.fiad.sgs.entity.Usuario;
 import com.uabc.fiad.sgs.service.IUsuarioService;

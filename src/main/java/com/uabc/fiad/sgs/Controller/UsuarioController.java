@@ -2,13 +2,17 @@ package com.uabc.fiad.sgs.controller;
 
 
 import com.uabc.fiad.sgs.DTO.UsuarioDTO;
+import com.uabc.fiad.sgs.entity.Usuario;
 import com.uabc.fiad.sgs.service.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Controller
@@ -19,7 +23,7 @@ public class UsuarioController {
     private IUsuarioService usuarioService;
 
     /**
-     *  Regresa la vista para admistrar cuentas y genera una paginacion con una lista de usuarios
+     * Regresa la vista para administrar cuentas y genera una paginación con una lista de usuarios
      * @param model     el modelo utilizado para pasar datos a la vista
      * @return          La vista para administrar cuentas
      */
@@ -43,19 +47,18 @@ public class UsuarioController {
         model.addAttribute("last", totalPages);
         List<UsuarioDTO> users = usuarioService.pagination(pageSize,offset);
         model.addAttribute("users",users);
-        System.out.println(pages);
-        System.out.println(page);
-        System.out.println(totalPages);
+
 
         return "ListarUsuarios";
     }
 
     /**
-     *
+     * Obtiene una página de usuarios paginada.
      * @param page      el número de página actual
      * @param model     el modelo utilizado para pasar datos a la vista
      * @return          fragmento para mostrar la lista de usuarios
      */
+
     @GetMapping("/pagination")
     public String paginacion(@RequestParam(value="page") Integer page, Model model) {
 
@@ -82,5 +85,37 @@ public class UsuarioController {
         List<UsuarioDTO> users = usuarioService.pagination(pageSize,offset);
         model.addAttribute("users",users);
         return "ListarUsuarios :: listaUsuarios";
+    }
+
+    /**
+     *
+     * @param id        el id del usuario a editar
+     * @param model     el modelo utilizado para pasar datos a la vista
+     * @return          fragmento para mostrar la información a editar
+     */
+    @GetMapping("/get-editar-form")
+    public String getRegistrarUsuarioForm(@RequestParam(value="id") Integer id, Model model) {
+        Optional<Usuario> usuario =  usuarioService.findById(id);
+        model.addAttribute("usuario", usuario.get());
+        model.addAttribute("carreras", usuarioService.listarCarreras());
+        model.addAttribute("categorias", usuarioService.listarCategorias());
+        model.addAttribute("estados", usuarioService.listarEstado());
+        return "fragments/usuario/editar-usuario-form :: editar-usuario-form";
+    }
+
+    /**
+     * Método de POST para editar un usuario.
+     * @param usuario   usuario a editar
+     * @return          html plano con un mensaje de estado
+     */
+    @PostMapping(value = "/editar",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.TEXT_HTML_VALUE)
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public String editarUsuario(Usuario usuario) {
+
+        System.out.println(usuario);
+        return "<p>HOLII</p>";
     }
 }

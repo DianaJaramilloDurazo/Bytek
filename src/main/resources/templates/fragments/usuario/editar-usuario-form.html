@@ -1,0 +1,71 @@
+<div th:fragment="editar-usuario-form" class="container-fluid">
+    <input th:value="${usuario.idUsuario}" class="form-control " type="text" id="idUsuario" name="idUsuario" hidden="">
+    <label for="username">Nombre(s)</label>
+    <input th:value="${usuario.username}" class="form-control " type="text" id="username" name="username" required>
+
+    <div class="container contM">
+        <div class="cont-1">
+            <label for="apPaterno">Apellido paterno</label>
+            <input th:value="${usuario.apPaterno}" class="form-control " type="text" id="apPaterno" name="apPaterno" required>
+        </div>
+        <div class="cont-2">
+            <label for="apMaterno">Apellido materno</label>
+            <input th:value="${usuario.apMaterno}" class="form-control" type="text" id="apMaterno" name="apMaterno">
+        </div>
+    </div>
+
+    <div th:fragment="correo" class="mb-3"
+         hx-target="this"
+         hx-swap="outerHTML">
+        <label>Correo</label>
+        <input th:value="${usuario.correo}" class="form-control" disabled>
+<!--               hx-post="/registrar-usuario/validar/correo"-->
+<!--               th:classappend="${valid == null} ? '' : (${valid} ? 'is-valid' : 'is-invalid')" type="email"-->
+<!--               th:value="${value} ?: ''"-->
+    </div>
+
+    <div class="container contM">
+
+
+        <div class="cont-2">
+            <label for="numEmpleado">Numero de empleado</label>
+            <input th:value="${usuario.numEmpleado}" class="form-control" type="number" id="numEmpleado" name="numEmpleado" required
+                   min="10000" max="999999" step="1" pattern="^[0-9]*$" onkeydown="if([69,187,188,189,190].includes(event.keyCode))event.preventDefault()">
+        </div>
+        <div class="cont-2">
+            <label for="idCarrera">Carrera</label>
+            <select class="form-control " id="idCarrera" name="idCarrera" required>
+                <option value="0" selected>Selecciona una carrera</option>
+                <option th:each="carrera : ${carreras}"
+                        th:value="${carrera.idCarrera}"
+                        th:text="${carrera.Carrera_Nombre}"
+                        th:selected="${carrera.idCarrera == usuario.idCarrera}"></option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="container contM">
+        <div class="cont-2">
+            <label for="idCategoria">Categoria</label>
+            <select class="form-control" id="idCategoria" name="idCategoria" required>
+                <option th:each="categoria : ${categorias}"
+                        th:value="${categoria.idCategoria}"
+                        th:text="${categoria.Cat_Descripcion}"
+                        th:selected="${categoria.idCategoria == usuario.idCategoria}"></option>
+            </select>
+        </div>
+        <div class="cont-2">
+            <label for="idCategoria">Estado</label>
+            <select class="form-control" id="idEstado" name="idEstado" required>
+                <option>Holi</option>
+                <option th:each="estado : ${estados}"
+                        th:value="${estado.idEstado}"
+                        th:text="${estado.status}"
+                        th:selected="${estado.idEstado == usuario.idEstado}"></option>
+            </select>
+        </div>
+
+
+    </div>
+</div>

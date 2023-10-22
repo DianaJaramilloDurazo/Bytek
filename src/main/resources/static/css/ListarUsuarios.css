@@ -53,3 +53,6 @@ body{
 #correo1{
 	border:none;
 }
+a:hover{
+	cursor: pointer;
+}

@@ -27,4 +27,18 @@ public class Usuario {
 
     private Integer idEstado;
 
+    public Usuario() {
+    }
+
+    public Usuario(Integer idUsuario, String username, String apPaterno, String apMaterno, String correo, Integer numEmpleado, Integer idCarrera, Integer idCategoria, Integer idEstado) {
+        this.idUsuario = idUsuario;
+        this.username = username;
+        this.apPaterno = apPaterno;
+        this.apMaterno = apMaterno;
+        this.correo = correo;
+        this.numEmpleado = numEmpleado;
+        this.idCarrera = idCarrera;
+        this.idCategoria = idCategoria;
+        this.idEstado = idEstado;
+    }
 }

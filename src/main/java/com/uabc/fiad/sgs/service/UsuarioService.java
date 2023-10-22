@@ -27,17 +27,27 @@ public class UsuarioService implements IUsuarioService {
      * @return      el usuario que se encontró
      */
     @Override
-    public Optional<UsuarioDTO> findById(Integer id) {
+    public Optional<Usuario> findById(Integer id) {
         return template.queryForObject(
-                "SELECT Usr_Nombre, Ap_Paterno,Ap_Materno, Correo,Num_Empleado FROM usuario WHERE idUsuario=?;",
+                "SELECT u.idUsuario, u.Usr_Nombre ,u.Ap_Paterno, u.Ap_Materno,u.Num_Empleado, u.Correo, " +
+                        "c.idCarrera AS 'carrera', ca.idCategoria as 'categoria',u.Estado_idEstado AS estado " +
+                        "FROM usuario u " +
+                        "LEFT JOIN rol ON u.idUsuario = rol.Usuario_idUsuario " +
+                        "LEFT JOIN carrera c ON u.Carrera_idCarrera = c.idCarrera " +
+                        "LEFT JOIN categoria ca ON u.Categoria_idCategoria1 = ca.idCategoria " +
+                        "WHERE idUsuario = ?;",
                 new Object[]{id},
                 (rs, rowNum) ->
-                        Optional.of(new UsuarioDTO(
+                        Optional.of(new Usuario(
+                                rs.getInt("idUsuario"),
                                 rs.getString("Usr_Nombre"),
                                 rs.getString("Ap_Paterno"),
                                 rs.getString("Ap_Materno"),
                                 rs.getString("Correo"),
-                                rs.getString("Num_Empleado")
+                                rs.getInt("Num_Empleado"),
+                                rs.getInt("carrera"),
+                                rs.getInt("categoria"),
+                                rs.getInt("estado")
                         ))
         );
     }
@@ -126,11 +136,12 @@ public class UsuarioService implements IUsuarioService {
                 "SELECT Usr_Nombre, Ap_Paterno,Ap_Materno, Correo,Num_Empleado FROM usuario;",
                 (rs, rowNum) ->
                         new UsuarioDTO(
+                                rs.getInt("idUsuario"),
                                 rs.getString("Usr_Nombre"),
                                 rs.getString("Ap_Paterno"),
                                 rs.getString("Ap_Materno"),
                                 rs.getString("Correo"),
-                                rs.getString("Num_Empleado")
+                                rs.getInt("Num_Empleado")
 
                         )
         );
@@ -182,14 +193,15 @@ public class UsuarioService implements IUsuarioService {
     @Override
     public List<UsuarioDTO> pagination(Integer limit, Integer offset) {
         return template.query(
-                "SELECT Usr_Nombre, Ap_Paterno,Ap_Materno, Correo,Num_Empleado FROM usuario LIMIT ? OFFSET ?;",
+                "SELECT idUsuario, Usr_Nombre, Ap_Paterno,Ap_Materno, Correo,Num_Empleado FROM usuario LIMIT ? OFFSET ?;",
                 (rs, rowNum) ->
                         new UsuarioDTO(
+                                rs.getInt("idUsuario"),
                                 rs.getString("Usr_Nombre"),
                                 rs.getString("Ap_Paterno"),
                                 rs.getString("Ap_Materno"),
                                 rs.getString("Correo"),
-                                rs.getString("Num_Empleado")
+                                rs.getInt("Num_Empleado")
 
                         ),
                 limit, offset
@@ -203,6 +215,34 @@ public class UsuarioService implements IUsuarioService {
     @Override
     public Integer TotalRecords() {
         return template.queryForObject("SELECT COUNT(*) FROM usuario", Integer.class);
+    }
+
+    /**
+     * Obtiene una lista de carreras con su id y nombre
+     * @return  lista de carreras
+     */
+    @Override
+    public List<Map<String, Object>> listarCarreras() {
+        return template.queryForList("SELECT *FROM Carrera");
+    }
+
+    /**
+     * Obtiene una lista de categorías con su id y nombre
+     * @return  lista de categorías
+     */
+
+    @Override
+    public List<Map<String, Object>> listarCategorias() {
+        return template.queryForList("SELECT *FROM Categoria");
+    }
+
+    /**
+     * Obtiene una lista de los estados que puede tener el usuario (activo, inactivo) con su id y nombre
+     * @return lista de estados
+     */
+    @Override
+    public List<Map<String, Object>> listarEstado() {
+        return template.queryForList("SELECT *FROM Estado");
     }
 
 }

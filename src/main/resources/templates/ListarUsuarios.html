@@ -18,7 +18,7 @@
 </head>
 
 <body>
-<div th:replace="fragments/layout :: nav">
+<div th:replace="~{fragments/layout :: nav}">
 
 </div>
 <div th:fragment="listaUsuarios" class="listaUsuarios">
@@ -55,7 +55,12 @@
             <td th:text="${user.correo}"></td>
             <td th:text="${user.numEmpleado}">@</td>
             <td>
-                <button type="button" class="btn btn-primary editar" data-bs-target="#ModalPerfil" data-bs-toggle="modal">Editar</button>
+                <button type="button" class="btn btn-primary editar" data-bs-target="#ModalEditar" data-bs-toggle="modal"
+                        hx-target="#modal-perfil-editar"
+                        th:attr="hx-get=@{'/usuario/get-editar-form?id='+ ${user.idUsuario}}">
+                        Editar
+                </button>
+
             </td>
             <td>
                 <button type="button" class="btn btn-close"></button>
@@ -115,6 +120,27 @@
     </div>
 </div>
 
+<!-- modal editar Usuario -->
+<div class="modal fade m1" id="ModalEditar" tabindex="-1" role="dialog" aria-labelledby="ModalPerfilTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form class="form-control" id="editar-usuario-form"
+                  hx-post="/usuario/editar">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Usuario</h5>
+                </div>
+                <div class="modal-body" id="modal-perfil-editar" hx-swap="innerHTML">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!--archivos js-->
 <script src="/js/bootstrap/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="/js/ListarUsuarios.js"></script>

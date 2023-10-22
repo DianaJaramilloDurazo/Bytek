@@ -4,11 +4,12 @@ import com.uabc.fiad.sgs.DTO.UsuarioDTO;
 import com.uabc.fiad.sgs.entity.Usuario;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface IUsuarioService {
 
-    Optional<UsuarioDTO> findById(Integer id);
+    Optional<Usuario> findById(Integer id);
 
     Optional<Usuario> findByCorreo(String correo);
 
@@ -21,4 +22,10 @@ public interface IUsuarioService {
     Integer TotalRecords();
 
     List<UsuarioDTO> pagination(Integer limit, Integer offset);
+
+    List<Map<String, Object>> listarCarreras();
+
+    List<Map<String, Object>> listarCategorias();
+
+    List<Map<String, Object>> listarEstado();
 }

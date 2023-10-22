@@ -4,6 +4,9 @@ import lombok.Data;
 
 @Data
 public class UsuarioDTO {
+
+    private Integer idUsuario;
+
     private String username;
 
     private String apPaterno;
@@ -12,9 +15,10 @@ public class UsuarioDTO {
 
     private String correo;
 
-    private String numEmpleado;
+    private Integer numEmpleado;
 
-    public UsuarioDTO(String username, String apPaterno, String apMaterno,String correo,String numEmpleado) {
+    public UsuarioDTO(Integer idUsuario, String username, String apPaterno, String apMaterno, String correo, Integer numEmpleado) {
+        this.idUsuario = idUsuario;
         this.username = username;
         this.apPaterno = apPaterno;
         this.apMaterno = apMaterno;
