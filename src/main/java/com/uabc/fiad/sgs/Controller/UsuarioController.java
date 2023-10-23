@@ -4,6 +4,7 @@ package com.uabc.fiad.sgs.controller;
 import com.uabc.fiad.sgs.DTO.UsuarioDTO;
 import com.uabc.fiad.sgs.entity.Usuario;
 import com.uabc.fiad.sgs.service.IUsuarioService;
+import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,26 +30,8 @@ public class UsuarioController {
      */
     @GetMapping("/administrarCuenta")
     public String listarUsuario(Model model) {
-
         int page = 1;
-        int pageSize = 5;
-        int offset = (page - 1) * pageSize;
-
-        Integer totalRecords = usuarioService.TotalRecords();
-
-        int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
-
-        List<Integer> pages = IntStream.rangeClosed(1, totalPages).boxed().toList();
-
-        model.addAttribute("pages", pages);
         model.addAttribute("current", page);
-        model.addAttribute("next", page + 1);
-        model.addAttribute("prev", page - 1);
-        model.addAttribute("last", totalPages);
-        List<UsuarioDTO> users = usuarioService.pagination(pageSize,offset);
-        model.addAttribute("users",users);
-
-
         return "ListarUsuarios";
     }
 
@@ -111,11 +94,16 @@ public class UsuarioController {
     @PostMapping(value = "/editar",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.TEXT_HTML_VALUE)
+    @HxTrigger("refresh")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.CREATED)
     public String editarUsuario(Usuario usuario) {
-
+        boolean editado = usuarioService.update(usuario);
         System.out.println(usuario);
-        return "<p>HOLII</p>";
+        if (editado) {
+            return "<div class='alert alert-success' role='alert'> La información fue actulizada con exito </div>";
+        }else{
+            return "<div class='alert alert-danger' role='alert'>Ha ocurrido un error al actualzar la información </div>";
+        }
     }
 }

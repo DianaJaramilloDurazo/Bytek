@@ -29,7 +29,7 @@
 
         <div class="cont-2">
             <label for="numEmpleado">Numero de empleado</label>
-            <input th:value="${usuario.numEmpleado}" class="form-control" type="number" id="numEmpleado" name="numEmpleado" required
+            <input th:value="${usuario.numEmpleado}" class="form-control" type="number" id="numEmpleado" name="numEmpleado" required disabled
                    min="10000" max="999999" step="1" pattern="^[0-9]*$" onkeydown="if([69,187,188,189,190].includes(event.keyCode))event.preventDefault()">
         </div>
         <div class="cont-2">
@@ -58,7 +58,6 @@
         <div class="cont-2">
             <label for="idCategoria">Estado</label>
             <select class="form-control" id="idEstado" name="idEstado" required>
-                <option>Holi</option>
                 <option th:each="estado : ${estados}"
                         th:value="${estado.idEstado}"
                         th:text="${estado.status}"

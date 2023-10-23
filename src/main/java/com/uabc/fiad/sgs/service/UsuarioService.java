@@ -184,6 +184,33 @@ public class UsuarioService implements IUsuarioService {
         return (Integer)resObj == 1;
     }
 
+    @Override
+    public Boolean update(Usuario usuario) {
+        SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(template)
+                .withProcedureName("update_usuario");
+        Map<String, Object> inParamMap = new HashMap<>();
+        inParamMap.put("id_usuario", usuario.getIdUsuario());
+        inParamMap.put("nombre", usuario.getUsername());
+        inParamMap.put("ap_paterno", usuario.getApPaterno());
+        inParamMap.put("ap_materno", usuario.getApMaterno());
+        inParamMap.put("p_carrera", usuario.getIdCarrera());
+        inParamMap.put("p_categoria", usuario.getIdCategoria());
+        inParamMap.put("p_estado", usuario.getIdEstado());
+
+        SqlParameterSource in = new MapSqlParameterSource(inParamMap);
+
+        Map<String, Object> resMap = simpleJdbcCall.execute(in);
+
+        Object resObj = resMap.get("resultado");
+        if (resObj == null) {
+            return false;
+        } else if (!(resObj instanceof Integer)) {
+            return false;
+        }
+
+        return (Integer)resObj == 1;
+    }
+
     /**
      * Regresa una lista de usuarios con una cantidad especifica para realizar una paginación
      * @param limit     cantidad de registros a regresar

@@ -24,3 +24,13 @@ function quitarModal(){
 	const modal = bootstrap.Modal.getInstance(ModalPerfil);
 	modal.hide();
 }
+
+var guardarCambiosBtn = document.getElementById("guardarCambiosBtn");
+
+guardarCambiosBtn.addEventListener("click", function() {
+	var elemento = document.getElementById("result");
+	setTimeout(function() {
+		// Elimina el elemento
+		elemento.innerHTML = "";
+	}, 5000); // 5000 milisegundos = 5 segundos5
+});

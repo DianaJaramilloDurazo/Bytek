@@ -19,6 +19,8 @@ public interface IUsuarioService {
 
     Boolean save(Usuario usuario);
 
+    Boolean update(Usuario usuario);
+
     Integer TotalRecords();
 
     List<UsuarioDTO> pagination(Integer limit, Integer offset);
