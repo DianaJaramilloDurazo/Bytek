@@ -27,10 +27,12 @@ public class Usuario {
 
     private Integer idEstado;
 
+    private Integer idRol;
+
     public Usuario() {
     }
 
-    public Usuario(Integer idUsuario, String username, String apPaterno, String apMaterno, String correo, Integer numEmpleado, Integer idCarrera, Integer idCategoria, Integer idEstado) {
+    public Usuario(Integer idUsuario, String username, String apPaterno, String apMaterno, String correo, Integer numEmpleado, Integer idCarrera, Integer idCategoria, Integer idEstado,Integer idRol) {
         this.idUsuario = idUsuario;
         this.username = username;
         this.apPaterno = apPaterno;
@@ -40,5 +42,8 @@ public class Usuario {
         this.idCarrera = idCarrera;
         this.idCategoria = idCategoria;
         this.idEstado = idEstado;
+        this.idRol = idRol;
     }
+
+
 }

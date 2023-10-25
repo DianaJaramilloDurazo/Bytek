@@ -21,12 +21,12 @@
 <div th:replace="~{fragments/layout :: nav}">
 
 </div>
-<div hx-target="#listaUsuarios" hx-swap="outerHTML" hx-trigger="load,refresh from:body" th:attr="hx-get=@{'/usuario/pagination?page=' + ${current}}"></div>
+<div hx-target="#listaUsuarios" hx-swap="outerHTML" hx-trigger="load" th:attr="hx-get=@{'/usuario/pagination?page=' + ${current}}"></div>
 <div id="result"></div>
 <div th:fragment="listaUsuarios" class="listaUsuarios" id="listaUsuarios">
 <div class="container">
     <div class="div-encabezado">
-
+        <div hx-target="#listaUsuarios" hx-swap="outerHTML" hx-trigger="refresh from:body" th:attr="hx-get=@{'/usuario/pagination?page=' + ${current}}"></div>
         <div class="titulo">
             <h1 class="display-6">Listado de Usuarios</h1>
         </div>
@@ -46,7 +46,7 @@
         <tr>
             <th scope="col">Nombre</th>
             <th scope="col">Correo</th>
-            <th scope="col">Número de Empleado</th>
+            <th scope="col">Rol</th>
             <th scope="col">Editar</th>
             <th scope="col">Borrar</th>
         </tr>
@@ -55,12 +55,12 @@
         <tr th:each="user : ${users}">
             <td th:text="${user.username} +' '+${user.apPaterno}+' '+${user.apMaterno}"></td>
             <td th:text="${user.correo}"></td>
-            <td th:text="${user.numEmpleado}">@</td>
+            <td th:text="${user.rol}">@</td>
             <td>
                 <button type="button" class="btn btn-primary editar" data-bs-target="#ModalEditar" data-bs-toggle="modal"
                         hx-target="#modal-perfil-editar"
-                        th:attr="hx-get=@{'/usuario/get-editar-form?id='+ ${user.idUsuario}}">
-                        Editar
+                        th:attr="hx-get=@{'/usuario/get-editar-form?id=' + ${user.idUsuario} + '&idRol=' + ${user.idRol}}">
+                Editar
                 </button>
 
             </td>
@@ -135,7 +135,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title">Editar Usuario</h5>
                 </div>
-                <div class="modal-body" id="modal-perfil-editar" hx-swap="innerHTML">
+                <div class="modal-body" id="modal-perfil-editar">
 
                 </div>
                 <div class="modal-footer">

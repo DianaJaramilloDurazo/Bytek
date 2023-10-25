@@ -25,7 +25,7 @@ function quitarModal(){
 	modal.hide();
 }
 
-var guardarCambiosBtn = document.getElementById("guardarCambiosBtn");
+/*var guardarCambiosBtn = document.getElementById("guardarCambiosBtn");
 
 guardarCambiosBtn.addEventListener("click", function() {
 	var elemento = document.getElementById("result");
@@ -33,4 +33,20 @@ guardarCambiosBtn.addEventListener("click", function() {
 		// Elimina el elemento
 		elemento.innerHTML = "";
 	}, 5000); // 5000 milisegundos = 5 segundos5
+});*/
+
+const myDiv = document.getElementById('result');
+// Crea una instancia de MutationObserver
+const observer = new MutationObserver((mutationsList, observer) => {
+	// Se ejecutará cada vez que haya un cambio en el div
+	console.log("Hubo cambios");
+	setTimeout(function() {
+		// Elimina el elemento
+		myDiv.innerHTML = "";
+	}, 3000); // 3000 milisegundos = 3 segundos
 });
+// Configura las opciones para observar cambios en el contenido del div
+const config = { childList: true };
+
+// Inicia la observación del div con las opciones configuradas
+observer.observe(myDiv, config);

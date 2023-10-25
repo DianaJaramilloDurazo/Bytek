@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -28,6 +29,7 @@ public class UsuarioController {
      * @param model     el modelo utilizado para pasar datos a la vista
      * @return          La vista para administrar cuentas
      */
+    @HxTrigger("refresh")
     @GetMapping("/administrarCuenta")
     public String listarUsuario(Model model) {
         int page = 1;
@@ -77,17 +79,28 @@ public class UsuarioController {
      * @return          fragmento para mostrar la información a editar
      */
     @GetMapping("/get-editar-form")
-    public String getRegistrarUsuarioForm(@RequestParam(value="id") Integer id, Model model) {
-        Optional<Usuario> usuario =  usuarioService.findById(id);
+    public String getRegistrarUsuarioForm(@RequestParam(value="id") Integer id,
+                                          @RequestParam(value="idRol") Integer idRol,Model model) {
+        Optional<Usuario> usuario;
+        // Verficar si usuario tiene un rol
+        if(idRol != 0){
+            usuario =  usuarioService.findRolById(idRol);
+
+        }else{
+            usuario =  usuarioService.findById(id);
+            System.out.println(usuario);
+        }
         model.addAttribute("usuario", usuario.get());
         model.addAttribute("carreras", usuarioService.listarCarreras());
         model.addAttribute("categorias", usuarioService.listarCategorias());
         model.addAttribute("estados", usuarioService.listarEstado());
+        System.out.println(usuarioService.listarRoles());
+        model.addAttribute("roles", usuarioService.listarRoles());
         return "fragments/usuario/editar-usuario-form :: editar-usuario-form";
     }
 
     /**
-     * Método de POST para editar un usuario.
+     * Método POST para editar un usuario.
      * @param usuario   usuario a editar
      * @return          html plano con un mensaje de estado
      */
@@ -99,7 +112,20 @@ public class UsuarioController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public String editarUsuario(Usuario usuario) {
         boolean editado = usuarioService.update(usuario);
+        System.out.println(usuarioService.findIdRolById(usuario.getIdUsuario()));
         System.out.println(usuario);
+        // Verificar si hubo un cambio de rol en el usuario
+        if(usuario.getIdRol()==0){
+            System.out.println("No hay cambios");
+        }else{
+            // En caso de que haya un cambio se verifica si no es el mismo rol que tiene el usuario
+            if(!Objects.equals(usuario.getIdRol(), usuarioService.findIdRolById(usuario.getIdUsuario()))){
+                //En caso de que no sea el mismo rol, se actuliza el Rol del usuario
+                usuarioService.updateRol(usuario.getIdUsuario(), usuario.getIdRol());
+            }else{
+                System.out.println("No hay cambios");
+            }
+        }
         if (editado) {
             return "<div class='alert alert-success' role='alert'> La información fue actulizada con exito </div>";
         }else{

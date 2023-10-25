@@ -11,6 +11,8 @@ public interface IUsuarioService {
 
     Optional<Usuario> findById(Integer id);
 
+    Optional<Usuario> findRolById(Integer id);
+
     Optional<Usuario> findByCorreo(String correo);
 
     Optional<Usuario> findByNumEmpleado(Integer numEmpleado);
@@ -21,6 +23,8 @@ public interface IUsuarioService {
 
     Boolean update(Usuario usuario);
 
+    Boolean updateRol(Integer idUser, Integer idRol);
+
     Integer TotalRecords();
 
     List<UsuarioDTO> pagination(Integer limit, Integer offset);
@@ -30,4 +34,9 @@ public interface IUsuarioService {
     List<Map<String, Object>> listarCategorias();
 
     List<Map<String, Object>> listarEstado();
+
+    List<Map<String, Object>> listarRoles();
+
+    Integer findIdRolById(Integer id);
+
 }

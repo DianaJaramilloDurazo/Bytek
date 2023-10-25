@@ -47,7 +47,28 @@ public class UsuarioService implements IUsuarioService {
                                 rs.getInt("Num_Empleado"),
                                 rs.getInt("carrera"),
                                 rs.getInt("categoria"),
-                                rs.getInt("estado")
+                                rs.getInt("estado"),0
+                        ))
+        );
+    }
+
+    @Override
+    public Optional<Usuario> findRolById(Integer id) {
+        return template.queryForObject(
+                "SELECT u.idUsuario,u.Usr_Nombre, u.Ap_Paterno, u.Ap_Materno, r.Correo_rol AS Correo, u.Num_Empleado, u.Carrera_idCarrera AS carrera, u.Categoria_idCategoria1 AS categoria, u.Estado_idEstado AS estado, r.idRol FROM rol r INNER JOIN usuario u ON r.Usuario_idUsuario = u.idUsuario WHERE r.idRol=?",
+                new Object[]{id},
+                (rs, rowNum) ->
+                        Optional.of(new Usuario(
+                                rs.getInt("idUsuario"),
+                                rs.getString("Usr_Nombre"),
+                                rs.getString("Ap_Paterno"),
+                                rs.getString("Ap_Materno"),
+                                rs.getString("Correo"),
+                                rs.getInt("Num_Empleado"),
+                                rs.getInt("carrera"),
+                                rs.getInt("categoria"),
+                                rs.getInt("estado"),
+                                rs.getInt("idRol")
                         ))
         );
     }
@@ -77,7 +98,7 @@ public class UsuarioService implements IUsuarioService {
                                 rs.getInt("Num_Empleado"),
                                 rs.getInt("Carrera_idCarrera"),
                                 rs.getInt("Categoria_idCategoria1"),
-                                rs.getInt("Estado_idEstado")
+                                rs.getInt("Estado_idEstado"),0
                         )
         );
 
@@ -114,7 +135,7 @@ public class UsuarioService implements IUsuarioService {
                                 rs.getInt("Num_Empleado"),
                                 rs.getInt("Carrera_idCarrera"),
                                 rs.getInt("Categoria_idCategoria1"),
-                                rs.getInt("Estado_idEstado")
+                                rs.getInt("Estado_idEstado"),0
                         )
         );
 
@@ -184,6 +205,11 @@ public class UsuarioService implements IUsuarioService {
         return (Integer)resObj == 1;
     }
 
+    /**
+     * Actuliza la informacion del usuario
+     * @param usuario   usuario al que se le actualizará su información
+     * @return          si se logró actualizar la información
+     */
     @Override
     public Boolean update(Usuario usuario) {
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(template)
@@ -212,6 +238,27 @@ public class UsuarioService implements IUsuarioService {
     }
 
     /**
+     *  Actualiza el rol de un usuario
+     * @param idUser    id del usuario a editar su rol
+     * @param idRol     nuevo rol a asignar al usuario
+     * @return          si se logró actualizar el rol
+     */
+    @Override
+    public Boolean updateRol(Integer idUser, Integer idRol) {
+        String sql = "UPDATE rol SET Usuario_idUsuario = ? WHERE idRol = ?";
+
+        int filasAfectadas = template.update(sql, idUser, idRol);
+
+        if (filasAfectadas > 0) {
+            System.out.println("La actualización se realizó con éxito.");
+            return true;
+        } else {
+            System.out.println("No se encontraron filas que cumplan con la condición.");
+            return false;
+        }
+    }
+
+    /**
      * Regresa una lista de usuarios con una cantidad especifica para realizar una paginación
      * @param limit     cantidad de registros a regresar
      * @param offset    Indica el punto de inicio de los registros que se recuperarán
@@ -220,7 +267,7 @@ public class UsuarioService implements IUsuarioService {
     @Override
     public List<UsuarioDTO> pagination(Integer limit, Integer offset) {
         return template.query(
-                "SELECT idUsuario, Usr_Nombre, Ap_Paterno,Ap_Materno, Correo,Num_Empleado FROM usuario LIMIT ? OFFSET ?;",
+                "((SELECT u.idUsuario,u.Usr_Nombre ,u.Ap_Paterno ,u.Ap_Materno ,r.Correo_rol as Correo,r.Rol_Descripcion as rol, r.idRol FROM rol AS r INNER JOIN usuario u ON r.Usuario_idUsuario = u.idUsuario) UNION ALL (SELECT idUsuario, Usr_Nombre, Ap_Paterno,Ap_Materno, Correo,'Docente' as rol, 0 as idRol FROM usuario)) LIMIT ? OFFSET ?",
                 (rs, rowNum) ->
                         new UsuarioDTO(
                                 rs.getInt("idUsuario"),
@@ -228,7 +275,8 @@ public class UsuarioService implements IUsuarioService {
                                 rs.getString("Ap_Paterno"),
                                 rs.getString("Ap_Materno"),
                                 rs.getString("Correo"),
-                                rs.getInt("Num_Empleado")
+                                rs.getString("rol"),
+                                rs.getInt("idRol")
 
                         ),
                 limit, offset
@@ -241,7 +289,10 @@ public class UsuarioService implements IUsuarioService {
      */
     @Override
     public Integer TotalRecords() {
-        return template.queryForObject("SELECT COUNT(*) FROM usuario", Integer.class);
+
+        return template.queryForObject("SELECT COUNT(*) FROM usuario", Integer.class)
+                + template.queryForObject("SELECT COUNT(*) FROM rol", Integer.class)
+                ;
     }
 
     /**
@@ -270,6 +321,31 @@ public class UsuarioService implements IUsuarioService {
     @Override
     public List<Map<String, Object>> listarEstado() {
         return template.queryForList("SELECT *FROM Estado");
+    }
+
+    /**
+     * Obtiene una lista de roles que peuden tener los usuarios
+     * @return  lista de roles
+     */
+    @Override
+    public List<Map<String, Object>> listarRoles() {
+        return template.queryForList("SELECT r.idRol ,r.Rol_Descripcion as rol from rol r");
+    }
+
+    /**
+     * Obtiene el rol del un usuario
+     * @param id    id del usuario a buscar su rol
+     * @return      id del rol del usuario
+     */
+    @Override
+    public Integer findIdRolById(Integer id) {
+        List<Integer> results = template.query("SELECT r.idRol FROM rol r WHERE r.Usuario_idUsuario = ?", new Object[]{id}, (rs, rowNum) -> rs.getInt("idRol"));
+
+        if (results.isEmpty()) {
+            return 0; // O si no se encuentra un resultado.
+        }
+
+        return results.get(0); // Devuelve el primer resultado
     }
 
 }

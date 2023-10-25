@@ -14,9 +14,7 @@
         </div>
     </div>
 
-    <div th:fragment="correo" class="mb-3"
-         hx-target="this"
-         hx-swap="outerHTML">
+    <div th:fragment="correo" class="mb-3">
         <label>Correo</label>
         <input th:value="${usuario.correo}" class="form-control" disabled>
 <!--               hx-post="/registrar-usuario/validar/correo"-->
@@ -66,5 +64,20 @@
         </div>
 
 
+    </div>
+    <div class="container contM">
+        <div class="cont-2">
+            <label for="idRol">Rol</label>
+            <select class="form-control" id="idRol" name="idRol"  required>
+                <!-- Agrega la opción predeterminada si user.idRol es 0 -->
+                <option th:if="${usuario.idRol == 0}" th:value="0" th:text="Docente"></option>
+                <option th:each="rol : ${roles}"
+                        th:value="${rol.idRol}"
+                        th:text="${rol.rol}"
+                        th:if="${usuario.idRol == 0 or usuario.idRol == rol.idRol}">
+                </option>
+
+            </select>
+        </div>
     </div>
 </div>
