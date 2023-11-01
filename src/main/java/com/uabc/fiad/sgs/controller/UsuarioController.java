@@ -8,6 +8,10 @@ import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -162,7 +166,27 @@ public class UsuarioController {
 
     @GetMapping(value = "/perfil")
     public String getPerfil(Model model) {
-        Usuario u = usuarioService.findById(2).get();
+
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        UserDetails ud = null;
+        if (authentication != null) {
+            Object principal = authentication.getPrincipal();
+            ud = principal instanceof UserDetails ? (UserDetails) principal : null;
+        }
+
+        if (ud == null) {
+            return "redirect:/login";
+        }
+
+        System.out.println(ud.getUsername());
+        Optional<Usuario> uo = usuarioService.findByCorreo(ud.getUsername());
+        if (uo.isEmpty()) {
+            System.out.println("uo null");
+            return "redirect:/login";
+        }
+
+        Usuario u = uo.get();
 
         model.addAttribute("usuario", u);
         model.addAttribute("carrera", usuarioService.listarCarreras().get(u.getIdCarrera() - 1));

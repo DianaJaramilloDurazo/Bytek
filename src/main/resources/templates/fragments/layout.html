@@ -70,6 +70,37 @@
             </div>
         </nav>
         <!--Fin Barra de navegacion----------------------------------------------------------------------->
+        <!--Perfil de usuario-->
+        <div class="modal fade m1" id="ModalPerfil" tabindex="-1" role="dialog" aria-labelledby="ModalPerfilTitle"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+
+                <!--method="post" action="/registrar-usuario/registrar"-->
+                <div class="modal-content" id="modal">
+                    <form class="form-control"
+                          hx-post="/usuario/editar"
+                          hx-target="#result"
+                          hx-confirm="¿Seguro que desea guardar los cambios?"
+                          hx-disinherit="hx-confirm"
+                          hx-swap="innerHTML">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ModalPerfilTitle">Editar Usuario</h5>
+                        </div>
+
+                        <div class="modal-body" id="modal-perfil-body" hx-swap="innerHTML">
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button class="btn btn-primary" id="editar-guardar-btn">
+                                Editar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
     </div>
 </body>

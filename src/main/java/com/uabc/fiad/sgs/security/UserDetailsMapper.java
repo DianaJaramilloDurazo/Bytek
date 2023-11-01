@@ -10,7 +10,7 @@ public class UserDetailsMapper {
     public UserDetails toUserDetails(Usuario usuario) {
 
         // TODO: Manejar roles, ahora mismo mapea todos los usuarios con el rol de docentes hardcodeado
-        return User.withUsername(usuario.getUsername())
+        return User.withUsername(usuario.getCorreo())
                 .password(usuario.getPassword())
                 .roles("Docente")
 //                .roles(usuario.getRoles().toArray(String[]::new))
