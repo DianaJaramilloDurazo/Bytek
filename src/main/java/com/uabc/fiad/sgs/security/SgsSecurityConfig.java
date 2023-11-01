@@ -76,7 +76,7 @@ public class SgsSecurityConfig   {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers(mvc.pattern("")).permitAll()
+                        .requestMatchers(mvc.pattern("css/**"),mvc.pattern("js/**"),mvc.pattern("img/**")).permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable);

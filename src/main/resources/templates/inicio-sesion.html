@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="es">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:hx="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>SASS-InicioSesión</title>
@@ -15,11 +16,11 @@
     <!--fin boostrap-->
 
     <!--Archivo css-->
-    <link rel="stylesheet" href="css\Registro.css">
+    <link th:href="@{css/Registro.css}" rel="stylesheet" type="text/css">
     <!--fin css-->
 
     <!--archivo js-->
-    <script type="text/javascript" src="js\Registro.js"></script>
+    <script type="text/javascript" src="/js/Registro.js"></script>
     <!--Fin archivo js-->
 </head>
 
