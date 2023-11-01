@@ -1,6 +1,7 @@
 package com.uabc.fiad.sgs.service;
 
 import com.uabc.fiad.sgs.DTO.UsuarioDTO;
+import com.uabc.fiad.sgs.entity.Rol;
 import com.uabc.fiad.sgs.entity.Usuario;
 
 import java.util.List;
@@ -38,5 +39,11 @@ public interface IUsuarioService {
     List<Map<String, Object>> listarRoles();
 
     Integer findIdRolById(Integer id);
+
+    Boolean saveRol(Rol rol);
+
+    Optional<Rol> findRolByCorreo(String correo);
+
+
 
 }

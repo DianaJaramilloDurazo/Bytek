@@ -1,5 +1,6 @@
 package com.uabc.fiad.sgs.service;
 
+import com.uabc.fiad.sgs.entity.Rol;
 import com.uabc.fiad.sgs.entity.Usuario;
 import com.uabc.fiad.sgs.security.UserDetailsMapper;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,12 +26,25 @@ public class SgsUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
         Optional<Usuario> usuario = usuarioService.findByCorreo(correo);
+        Optional<Rol> rol = usuarioService.findRolByCorreo(correo);
+        String rolAsignado = "Docente";
 
         if (usuario.isEmpty()) {
-            throw new UsernameNotFoundException("No se encontró el usuario " + correo);
+            System.out.println(usuarioService.findRolByCorreo(correo));
+            if(rol.isEmpty()){
+                throw new UsernameNotFoundException("No se encontró el usuario " + correo);
+            }else{
+                usuario = usuarioService.findRolById(rol.get().getIdRol());
+                usuario.get().setPassword(rol.get().getPassword());
+                System.out.println(usuario);
+                rolAsignado = rol.get().getRol().toUpperCase();
+            }
+        }
+        if(usuarioService.findIdRolById(usuario.get().getIdUsuario()) != 0){
+            System.out.println("Tiene rol");
         }
 
-        return userDetailsMapper.toUserDetails(usuario.get());
+        return userDetailsMapper.toUserDetails(usuario.get(),rolAsignado);
     }
 
 }

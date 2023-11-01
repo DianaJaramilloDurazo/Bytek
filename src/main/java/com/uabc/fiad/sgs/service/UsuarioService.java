@@ -2,6 +2,7 @@ package com.uabc.fiad.sgs.service;
 
 
 import com.uabc.fiad.sgs.DTO.UsuarioDTO;
+import com.uabc.fiad.sgs.entity.Rol;
 import com.uabc.fiad.sgs.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -347,5 +348,58 @@ public class UsuarioService implements IUsuarioService {
 
         return results.get(0); // Devuelve el primer resultado
     }
+
+    @Override
+    public Boolean saveRol(Rol rol) {
+
+
+        SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(template)
+                .withProcedureName("insert_rol");
+        Map<String, Object> inParamMap = new HashMap<>();
+        inParamMap.put("rol", rol.getRol());
+        inParamMap.put("idUsuario", rol.getIdUsuario());
+        inParamMap.put("correo", rol.getCorreo());
+        inParamMap.put("pwd", rol.getPassword());
+        SqlParameterSource in = new MapSqlParameterSource(inParamMap);
+
+
+        Map<String, Object> resMap = simpleJdbcCall.execute(in);
+
+
+        Object resObj = resMap.get("res");
+        if (resObj == null) {
+            return false;
+        } else if (!(resObj instanceof Integer)) {
+            return false;
+        }
+
+
+        return (Integer)resObj == 1;
+    }
+
+    @Override
+    public Optional<Rol> findRolByCorreo(String correo) {
+        List<Rol> roles = template.query(
+                "SELECT * FROM rol WHERE Correo_Rol=?;",
+                new Object[]{correo},
+                (rs, rowNum) ->
+                        new Rol(
+                                rs.getInt("idRol"),
+                                rs.getString("Rol_Descripcion"),
+                                rs.getString("Correo_rol"),
+                                rs.getString("password"),
+                                rs.getInt("Usuario_idUsuario")
+                        )
+
+        );
+
+        // Si la lista está vacía regresar un optional vacío, si no regresamos el primer elemento
+        if (roles.size() == 0) {
+            return Optional.empty();
+        } else {
+            return Optional.of(roles.get(0));
+        }
+    }
+
 
 }
