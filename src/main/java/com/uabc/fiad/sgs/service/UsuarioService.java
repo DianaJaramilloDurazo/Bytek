@@ -89,7 +89,7 @@ public class UsuarioService implements IUsuarioService {
                 new Object[]{correo},
                 (rs, rowNum) ->
                         new Usuario(
-                                null,
+                                rs.getInt("idUsuario"),
                                 rs.getString("Usr_Nombre"),
                                 rs.getString("Ap_Paterno"),
                                 rs.getString("Ap_Materno"),

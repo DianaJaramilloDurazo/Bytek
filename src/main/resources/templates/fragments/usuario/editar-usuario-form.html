@@ -70,7 +70,8 @@
 
 
     </div>
-    <div class="container contM">
+    <!-- Si la bandera del perfil es verdadera, no mostrar el campo de rol, si es falsa o nula mostrarla -->
+    <div th:if="${perfil == null || !perfil}" class="container contM">
         <div class="cont-2">
             <label for="idRol">Rol</label>
             <select onchange="mostrarModal()" class="form-control" id="idRol" name="idRol"  required>
@@ -86,11 +87,13 @@
         </div>
     </div>
 
-    <button class="btn btn-primary" id="editar-guardar-btn"
-            data-bs-dismiss="modal"
-            type="submit"
-            hx-include="#editar-perfil-form"
-            hx-swap-oob="true">
-        Guardar Cambios
-    </button>
+    <!-- Si la bandera de perfil es nula, o verdadera, mandar este botón para reemplazar el de editar -->
+    <div th:if="${perfil != null}">
+        <button class="btn btn-primary" id="editar-guardar-btn"
+                data-bs-dismiss="modal"
+                type="submit"
+                hx-swap-oob="true">
+            Guardar Cambios
+        </button>
+    </div>
 </div>

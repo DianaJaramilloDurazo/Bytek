@@ -4,6 +4,7 @@ package com.uabc.fiad.sgs.controller;
 import com.uabc.fiad.sgs.DTO.UsuarioDTO;
 import com.uabc.fiad.sgs.entity.Usuario;
 import com.uabc.fiad.sgs.service.IUsuarioService;
+import com.uabc.fiad.sgs.utils.SessionUtils;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -88,11 +89,16 @@ public class UsuarioController {
      *
      * @param id        el id del usuario a editar
      * @param model     el modelo utilizado para pasar datos a la vista
+     * @param perfil    bandera usada para entregar el formulario adecuado cuando se quiere editar el usuario en el modal
+     *                  de perfil
      * @return          fragmento para mostrar la información a editar
      */
     @GetMapping("/get-editar-form")
     public String getRegistrarUsuarioForm(@RequestParam(value="id") Integer id,
-                                          @RequestParam(value="idRol") Integer idRol,Model model) {
+                                          @RequestParam(value="idRol") Integer idRol,
+                                          @RequestParam(value = "perfil", required = false) Boolean perfil,
+                                          Model model) {
+
         Optional<Usuario> usuario;
         // Verficar si usuario tiene un rol
         if(idRol != 0){
@@ -108,6 +114,10 @@ public class UsuarioController {
         model.addAttribute("estados", usuarioService.listarEstado());
         System.out.println(usuarioService.listarRoles());
         model.addAttribute("roles", usuarioService.listarRoles());
+
+        // Simplemente entrega la bandera de perfil
+        model.addAttribute("perfil", perfil);
+
         return "fragments/usuario/editar-usuario-form :: editar-usuario-form";
     }
 
@@ -136,8 +146,8 @@ public class UsuarioController {
         }
 
         boolean editado = usuarioService.update(usuario);
-        System.out.println(usuarioService.findIdRolById(usuario.getIdUsuario()));
-        System.out.println(usuario);
+//        System.out.println(usuarioService.findIdRolById(usuario.getIdUsuario()));
+//        System.out.println(usuario);
         // Verificar si hubo un cambio de rol en el usuario
         if(usuario.getIdRol()==0){
             System.out.println("No hay cambios");
@@ -167,27 +177,15 @@ public class UsuarioController {
     @GetMapping(value = "/perfil")
     public String getPerfil(Model model) {
 
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        Authentication authentication = securityContext.getAuthentication();
-        UserDetails ud = null;
-        if (authentication != null) {
-            Object principal = authentication.getPrincipal();
-            ud = principal instanceof UserDetails ? (UserDetails) principal : null;
-        }
+        // Obtener el usuario de la sesión
+        Usuario u = SessionUtils.getUsuario(usuarioService);
 
-        if (ud == null) {
+        // Si no existe redirigir al login
+        if (u == null) {
             return "redirect:/login";
         }
 
-        System.out.println(ud.getUsername());
-        Optional<Usuario> uo = usuarioService.findByCorreo(ud.getUsername());
-        if (uo.isEmpty()) {
-            System.out.println("uo null");
-            return "redirect:/login";
-        }
-
-        Usuario u = uo.get();
-
+        // Si sí existe, proceder a entregar la vista con los datos de usuario
         model.addAttribute("usuario", u);
         model.addAttribute("carrera", usuarioService.listarCarreras().get(u.getIdCarrera() - 1));
         model.addAttribute("categoria", usuarioService.listarCategorias().get(u.getIdCategoria() - 1));
@@ -195,5 +193,49 @@ public class UsuarioController {
         model.addAttribute("rol", "docente");
 
         return "fragments/usuario/perfil-usuario :: perfil-usuario";
+    }
+
+    @GetMapping("/perfil/editar")
+    public String GetEditarPerfil(Model model) {
+        // Obtener el usuario de la sesión
+        Usuario u = SessionUtils.getUsuario(usuarioService);
+
+        // Si no existe redirigir al login
+        if (u == null) {
+            return "redirect:/login";
+        }
+
+        // Si sí existe, proceder a entregar la vista con los datos de usuario
+        // Se usa la misma vista que el formulario de editar usuario, con los datos de la sesión.
+        // el rol se manda como 0 para que no se edite
+        return getRegistrarUsuarioForm(u.getIdUsuario(), 0, true, model);
+    }
+
+    @PostMapping(value = "/perfil/editar",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.TEXT_HTML_VALUE)
+    @HxTrigger("refresh")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public String editarPerfil(Usuario usuario) {
+
+        // Revisar que el usuario a editar sea el mismo que tiene iniciada la sesión
+        // Obtener el usuario de la sesión
+        Usuario u = SessionUtils.getUsuario(usuarioService);
+
+        // Si no existe redirigir al login
+        if (u == null) {
+            return "redirect:/login";
+        }
+
+        // Si sí existe, revisar que sea el mismo a editar
+        if (!Objects.equals(u.getIdUsuario(), usuario.getIdUsuario())) {
+
+            // Si no es el mismo, regresar el error
+            return "<div class='alert alert-danger' role='alert'>El usuario que intentó editar no es el suyo </div>";
+        }
+
+        // Si sí es el mismo, editarlo y regresar el resultado del método acorde
+        return editarUsuario(usuario);
     }
 }

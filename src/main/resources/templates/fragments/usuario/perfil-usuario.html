@@ -42,22 +42,12 @@
       <input th:value="${estado.status}" class="form-control" disabled>
       </select>
     </div>
-
-
-  </div>
-  <div class="container contM">
-    <div class="cont-2">
-      <label>Rol</label>
-      <input th:value="${rol}" class="form-control" disabled>
-    </div>
   </div>
 
-  <input type="hidden" th:value="${usuario.idUsuario}" name="id">
-  <input type="hidden" th:value="${usuario.idRol}" name="idRol">
+  <!-- Recibir el formulario de edición de usuario, pero con la bandera de perfil en verdadero -->
   <button class="btn btn-primary" id="editar-guardar-btn"
-          hx-get="/usuario/get-editar-form"
+          hx-get="/usuario/perfil/editar"
           hx-target="#modal-perfil-body"
-          hx-include="[name='id'],[name='idRol']"
           hx-swap-oob="true">
     Editar
   </button>
