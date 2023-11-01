@@ -2,6 +2,7 @@ package com.uabc.fiad.sgs.controller;
 
 
 import com.uabc.fiad.sgs.DTO.UsuarioDTO;
+import com.uabc.fiad.sgs.entity.Filtros;
 import com.uabc.fiad.sgs.entity.Usuario;
 import com.uabc.fiad.sgs.service.IUsuarioService;
 import com.uabc.fiad.sgs.utils.SessionUtils;
@@ -9,10 +10,6 @@ import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -38,28 +35,35 @@ public class UsuarioController {
     @GetMapping("/administrarCuenta")
     public String listarUsuario(Model model) {
         int page = 1;
-        model.addAttribute("current", page);
+        Filtros filtros = new Filtros();
+        filtros.setPage(page);
+//        model.addAttribute("current", page);
+        model.addAttribute("filtros", filtros);
         return "ListarUsuarios";
     }
 
     /**
      * Obtiene una página de usuarios paginada.
-     * @param page      el número de página actual
+     * @param filtros   los filstros aplicados, número de página, nombre, etc.
      * @param model     el modelo utilizado para pasar datos a la vista
      * @return          fragmento para mostrar la lista de usuarios
      */
 
     @GetMapping("/pagination")
-    public String paginacion(@RequestParam(value="page") Integer page, Model model) {
+    public String paginacion(@ModelAttribute Filtros filtros, Model model) {
+
+        // Manejar filtros
+        System.out.println(filtros);
+        model.addAttribute("filtros", filtros);
 
         // Tamaño de página: cuántos registros se mostrarán por página
         int pageSize = 4;
 
         // Calcular el desplazamiento (offset) para determinar desde qué registro se debe iniciar en la base de datos
-        int offset = (page - 1) * pageSize;
+        int offset = (filtros.getPage() - 1) * pageSize;
 
         //Obtener total de registros
-        Integer totalRecords = usuarioService.TotalRecords();
+        Integer totalRecords = usuarioService.TotalRecords(filtros);
 
         // Calcular el número total de páginas (totalPages) usando una división entera
         int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
@@ -67,19 +71,19 @@ public class UsuarioController {
         int maxPagesToShow = 4;
 
         // Calcula el rango de páginas a mostrar
-        int startPage = Math.max(1, page - maxPagesToShow / 2);
+        int startPage = Math.max(1, filtros.getPage() - maxPagesToShow / 2);
         int endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
 
         // Crear una lista de números de página para mostrar en la interfaz de usuario
         List<Integer> pages = IntStream.rangeClosed(startPage, endPage).boxed().toList();
         model.addAttribute("first", startPage);
         model.addAttribute("pages", pages);
-        model.addAttribute("current", page);
-        model.addAttribute("next", page + 1);
-        model.addAttribute("prev", page - 1);
+        model.addAttribute("current", filtros.getPage());
+        model.addAttribute("next", filtros.getPage() + 1);
+        model.addAttribute("prev", filtros.getPage() - 1);
         model.addAttribute("end", endPage);
         model.addAttribute("last", totalPages);
-        List<UsuarioDTO> users = usuarioService.pagination(pageSize,offset);
+        List<UsuarioDTO> users = usuarioService.pagination(pageSize, offset, filtros);
         model.addAttribute("users",users);
         return "ListarUsuarios :: listaUsuarios";
     }
@@ -166,7 +170,11 @@ public class UsuarioController {
         return resultado;
     }
 
-
+    /**
+     * Obtener el perfil del usuario basado en la sesión
+     * @param model el modelo
+     * @return      el fragmento para la vista del perfil de usuario
+     */
     @GetMapping(value = "/perfil")
     public String getPerfil(Model model) {
 
@@ -188,6 +196,11 @@ public class UsuarioController {
         return "fragments/usuario/perfil-usuario :: perfil-usuario";
     }
 
+    /**
+     * Método para obtener el formulario para editar la información en el perfil
+     * @param model el modelo
+     * @return      el fragmento del formulario para editar usuario, con la información de la sesión
+     */
     @GetMapping("/perfil/editar")
     public String GetEditarPerfil(Model model) {
         // Obtener el usuario de la sesión
@@ -204,6 +217,12 @@ public class UsuarioController {
         return getRegistrarUsuarioForm(u.getIdUsuario(), 0, true, model);
     }
 
+    /**
+     * Método para editar la información del perfil de usuario. Si el usuario entregado no coincide con el de la sesión
+     * (sus ids son diferentes) no permite la edición
+     * @param usuario   la información nueva del usuario
+     * @return          html plano con mensaje de estado
+     */
     @PostMapping(value = "/perfil/editar",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.TEXT_HTML_VALUE)

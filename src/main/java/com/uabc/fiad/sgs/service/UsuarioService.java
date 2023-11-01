@@ -2,6 +2,7 @@ package com.uabc.fiad.sgs.service;
 
 
 import com.uabc.fiad.sgs.DTO.UsuarioDTO;
+import com.uabc.fiad.sgs.entity.Filtros;
 import com.uabc.fiad.sgs.entity.Rol;
 import com.uabc.fiad.sgs.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -263,12 +264,26 @@ public class UsuarioService implements IUsuarioService {
      * Regresa una lista de usuarios con una cantidad especifica para realizar una paginación
      * @param limit     cantidad de registros a regresar
      * @param offset    Indica el punto de inicio de los registros que se recuperarán
+     * @param filtros   los filtros a aplicar
      * @return          lista de usuarios
      */
     @Override
-    public List<UsuarioDTO> pagination(Integer limit, Integer offset) {
+    public List<UsuarioDTO> pagination(Integer limit, Integer offset, Filtros filtros) {
+        String nombre = "%" + filtros.getNombre() + "%";
         return template.query(
-                "((SELECT u.idUsuario,u.Usr_Nombre ,u.Ap_Paterno ,u.Ap_Materno ,r.Correo_rol as Correo,r.Rol_Descripcion as rol, r.idRol FROM rol AS r INNER JOIN usuario u ON r.Usuario_idUsuario = u.idUsuario) UNION ALL (SELECT idUsuario, Usr_Nombre, Ap_Paterno,Ap_Materno, Correo,'Docente' as rol, 0 as idRol FROM usuario)) LIMIT ? OFFSET ?",
+                """
+                (
+                    (SELECT u.idUsuario,u.Usr_Nombre ,u.Ap_Paterno ,u.Ap_Materno ,r.Correo_rol as Correo,r.Rol_Descripcion as rol, r.idRol
+                    FROM rol AS r
+                    INNER JOIN usuario u
+                    ON r.Usuario_idUsuario = u.idUsuario
+                	where concat_ws(' ', u.Usr_Nombre, u.Ap_Paterno, u.Ap_Materno) like ?)
+                UNION all
+                	(SELECT u.idUsuario, u.Usr_Nombre, u.Ap_Paterno,u.Ap_Materno, u.Correo,'Docente' as rol, 0 as idRol
+                	FROM usuario u
+                	where concat_ws(' ', Usr_Nombre, Ap_Paterno, Ap_Materno) like ?)
+                ) limit ? offset ?;
+                """,
                 (rs, rowNum) ->
                         new UsuarioDTO(
                                 rs.getInt("idUsuario"),
@@ -280,18 +295,24 @@ public class UsuarioService implements IUsuarioService {
                                 rs.getInt("idRol")
 
                         ),
-                limit, offset
-        );
+                nombre, nombre, limit, offset
+                );
     }
 
     /**
      * Recupera el total de usuarios que estan registrados (sirve para la paginación)
-     * @return      total de registros en la tabla usuarios
+     *
+     * @param filtros   los filtros a aplicar
+     * @return          total de registros en la tabla usuarios
      */
     @Override
-    public Integer TotalRecords() {
+    public Integer TotalRecords(Filtros filtros) {
 
-        return template.queryForObject("SELECT COUNT(*) FROM usuario", Integer.class)
+        return template.queryForObject("""
+                select count(*) from usuario u
+                where concat_ws(" ", u.Usr_Nombre, u.Ap_Paterno, u.Ap_Materno) like ?
+                """,
+                Integer.class, "%" + filtros.getNombre() + "%")
                 + template.queryForObject("SELECT COUNT(*) FROM rol", Integer.class)
                 ;
     }

@@ -21,12 +21,24 @@
 <div th:replace="~{fragments/layout :: nav}">
 
 </div>
-<div hx-target="#listaUsuarios" hx-swap="outerHTML" hx-trigger="load" th:attr="hx-get=@{'/usuario/pagination?page=' + ${current}}"></div>
+<div hx-target="#listaUsuarios"
+     hx-swap="outerHTML"
+     hx-trigger="load"
+     hx-include="[name='filtros-form']"
+     th:attr="hx-get=@{'/usuario/pagination'}">
+
+</div>
 <div id="result"></div>
 <div th:fragment="listaUsuarios" class="listaUsuarios" id="listaUsuarios">
 <div class="container">
     <div class="div-encabezado">
-        <div hx-target="#listaUsuarios" hx-swap="outerHTML" hx-trigger="refresh from:body" th:attr="hx-get=@{'/usuario/pagination?page=' + ${current}}"></div>
+        <div hx-target="#listaUsuarios"
+             hx-swap="outerHTML"
+             hx-trigger="refresh from:body"
+             hx-include="[name='filtros-form']"
+             th:attr="hx-get=@{'/usuario/pagination?page=' + ${current}}">
+
+        </div>
         <div class="titulo">
             <h1 class="display-6">Listado de Usuarios</h1>
         </div>
@@ -39,6 +51,41 @@
             </button>
         </div>
 
+    </div>
+
+    <div class="container-fluid">
+        <!-- Formulario con los filtros -->
+        <form class="row row-cols-lg-auto align-items-center g-3"
+              name="filtros-form"
+              hx-get="/usuario/pagination"
+              hx-indicator=".htmx-indicator"
+              hx-target=".listaUsuarios"
+              th:object="${filtros}"
+        >
+            <input type="hidden" id="page" name="page" th:value="*{page}">
+            <!-- La página a mostrar -->
+            <div class="col-12">
+                <label for="search-box" class="visually-hidden">Nombre</label>
+                <div class="input-group">
+                    <input id="search-box" name="nombre"
+                           class="form-control" type="text"
+                           placeholder="Nombre"
+                           th:value="*{nombre}"
+                    >
+                </div>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary"
+                        onclick="document.getElementById('page').value = 1">
+                    Buscar
+                </button>
+            </div>
+
+        </form>
+        <span class="htmx-indicator">
+            Buscando...
+        </span>
     </div>
 
     <table class="table">
@@ -72,15 +119,23 @@
     </table>
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <nav aria-label="Pagination">
+            <nav aria-label="Pagination" th:object="${filtros}">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${prev == 0 ? 'disabled': ''}">
                         <a class="page-link"
-                           th:attr="hx-get=@{'/usuario/pagination?page=' + ${prev}}, hx-target='.listaUsuarios'">Anterior</a>
+                           hx-include="[name='filtros-form']"
+                           hx-get="/usuario/pagination"
+                           hx-target=".listaUsuarios"
+                           th:onclick="'document.getElementById(\'page\').value = ' + ${prev}">
+                            Anterior
+                        </a>
                     </li>
                     <li class="page-item" th:if="${first > 1}">
                         <a class="page-link"
-                           th:attr="hx-get=@{'/usuario/pagination?page=1'}, hx-target='.listaUsuarios'"
+                           hx-include="[name='filtros-form']"
+                           hx-get="/usuario/pagination"
+                           hx-target=".listaUsuarios"
+                           onclick="document.getElementById('page').value = 1"
                            >1</a>
                     </li>
                     <li class="page-item" th:if="${first > 1}">
@@ -88,7 +143,10 @@
                     </li>
                     <li class="page-item" th:each="page : ${pages}" th:classappend="${current == page ? 'active': ''}">
                         <a class="page-link"
-                           th:attr="hx-get=@{'/usuario/pagination?page=' + ${page}}, hx-target='.listaUsuarios'"
+                           hx-include="[name='filtros-form']"
+                           hx-get="/usuario/pagination"
+                           hx-target=".listaUsuarios"
+                           th:onclick="'document.getElementById(\'page\').value=' + ${page}"
                            th:text="${page}"></a>
                     </li>
                     <li class="page-item" th:if="${end < last }">
@@ -96,13 +154,21 @@
                     </li>
                     <li class="page-item" th:if="${end < last }">
                         <a class="page-link"
-                           th:attr="hx-get=@{'/usuario/pagination?page=' + ${last}}, hx-target='.listaUsuarios'"
+                           hx-include="[name='filtros-form']"
+                           hx-get="/usuario/pagination"
+                           hx-target=".listaUsuarios"
+                           th:onclick="'document.getElementById(\'page\').value=' + ${last}"
                            th:text="${last}"
                         >...</a>
                     </li>
                     <li class="page-item" th:classappend="${current == last ? 'disabled': ''}">
                         <a class="page-link"
-                           th:attr="hx-get=@{'/usuario/pagination?page=' + ${next}}, hx-target='.listaUsuarios'">Siguiente</a>
+                           hx-include="[name='filtros-form']"
+                           hx-get="/usuario/pagination"
+                           hx-target=".listaUsuarios"
+                           th:onclick="'document.getElementById(\'page\').value=' + ${next}">
+                            Siguiente
+                        </a>
                     </li>
                 </ul>
             </nav>

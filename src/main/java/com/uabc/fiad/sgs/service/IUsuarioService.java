@@ -1,7 +1,7 @@
 package com.uabc.fiad.sgs.service;
 
 import com.uabc.fiad.sgs.DTO.UsuarioDTO;
-import com.uabc.fiad.sgs.entity.Rol;
+import com.uabc.fiad.sgs.entity.Filtros;
 import com.uabc.fiad.sgs.entity.Usuario;
 
 import java.util.List;
@@ -26,9 +26,9 @@ public interface IUsuarioService {
 
     Boolean updateRol(Integer idUser, Integer idRol);
 
-    Integer TotalRecords();
+    Integer TotalRecords(Filtros filtros);
 
-    List<UsuarioDTO> pagination(Integer limit, Integer offset);
+    List<UsuarioDTO> pagination(Integer limit, Integer offset, Filtros filtros);
 
     List<Map<String, Object>> listarCarreras();
 
