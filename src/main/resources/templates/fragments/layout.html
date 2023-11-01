@@ -50,7 +50,13 @@
                         </li>
 
                         <li class="nav-item opc">
-                            <button class="btn" id="btn-perfil" data-bs-toggle="modal" data-bs-target="#ModalPerfil">Ver Perfil</button>
+                            <!-- Este botón hace una petición get para obtener el perfil, el resultado se coloca en el
+                                 elemento de la clase modal-body dentro del modal ModalPerfil -->
+                            <button id="btn-perfil" class="btn"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#ModalPerfil"
+                                    hx-get="/usuario/perfil"
+                                    hx-target="#ModalPerfil .modal-body">Ver Perfil</button>
                         </li>
 
                     </ul>

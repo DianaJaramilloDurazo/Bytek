@@ -158,4 +158,18 @@ public class UsuarioController {
         }
         return resultado;
     }
+
+
+    @GetMapping(value = "/perfil")
+    public String getPerfil(Model model) {
+        Usuario u = usuarioService.findById(2).get();
+
+        model.addAttribute("usuario", u);
+        model.addAttribute("carrera", usuarioService.listarCarreras().get(u.getIdCarrera() - 1));
+        model.addAttribute("categoria", usuarioService.listarCategorias().get(u.getIdCategoria() - 1));
+        model.addAttribute("estado", usuarioService.listarEstado().get(u.getIdEstado() - 1));
+        model.addAttribute("rol", "docente");
+
+        return "fragments/usuario/perfil-usuario :: perfil-usuario";
+    }
 }

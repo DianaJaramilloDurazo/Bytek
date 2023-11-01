@@ -1,0 +1,64 @@
+<div th:fragment="perfil-usuario">
+
+  <label>Nombre(s)</label>
+  <input th:value="${usuario.username}"
+         class="form-control" type="text" disabled>
+
+  <div class="container contM">
+    <div class="cont-1">
+      <label>Apellido paterno</label>
+      <input th:value="${usuario.apPaterno}" class="form-control" type="text" disabled>
+    </div>
+    <div class="cont-2">
+      <label>Apellido materno</label>
+      <input th:value="${usuario.apMaterno}" class="form-control" type="text" disabled>
+    </div>
+  </div>
+
+    <label>Correo</label>
+    <input th:value="${usuario.correo}" class="form-control" disabled>
+
+  <div class="container contM">
+    <div class="cont-2">
+      <label>Numero de empleado</label>
+      <input th:value="${usuario.numEmpleado}" class="form-control" type="number" disabled>
+    </div>
+
+    <div class="cont-2">
+      <label>Carrera</label>
+      <input th:value="${carrera.Carrera_Nombre}" class="form-control" disabled>
+    </div>
+
+  </div>
+
+  <div class="container contM">
+    <div class="cont-2">
+      <label>Categoria</label>
+      <input th:value="${categoria.Cat_Descripcion}" class="form-control" disabled>
+      </select>
+    </div>
+    <div class="cont-2">
+      <label>Estado</label>
+      <input th:value="${estado.status}" class="form-control" disabled>
+      </select>
+    </div>
+
+
+  </div>
+  <div class="container contM">
+    <div class="cont-2">
+      <label>Rol</label>
+      <input th:value="${rol}" class="form-control" disabled>
+    </div>
+  </div>
+
+  <input type="hidden" th:value="${usuario.idUsuario}" name="id">
+  <input type="hidden" th:value="${usuario.idRol}" name="idRol">
+  <button class="btn btn-primary" id="editar-guardar-btn"
+          hx-get="/usuario/get-editar-form"
+          hx-target="#modal-perfil-body"
+          hx-include="[name='id'],[name='idRol']"
+          hx-swap-oob="true">
+    Editar
+  </button>
+</div>

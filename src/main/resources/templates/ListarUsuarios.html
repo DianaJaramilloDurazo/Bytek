@@ -32,10 +32,10 @@
         </div>
 
         <div class="add">
-            <button class="btn btn-primary btn-agregar" data-bs-target="#ModalPerfil" data-bs-toggle="modal"
+            <button class="btn btn-primary btn-agregar" data-bs-target="#ModalRegistrar" data-bs-toggle="modal"
                     hx-get="/registrar-usuario/get-registrar-form"
-                    hx-target="#modal-perfil-body">
-                Agregar Usuario
+                    hx-target="#modal-registrar-body">
+                Registrar Usuario
             </button>
         </div>
 
@@ -111,27 +111,58 @@
 </div>
 </div>
 <!--Perfil de usuario-->
-<!-- Modal -->
 <div class="modal fade m1" id="ModalPerfil" tabindex="-1" role="dialog" aria-labelledby="ModalPerfilTitle"
      aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
 
         <!--method="post" action="/registrar-usuario/registrar"-->
         <div class="modal-content" id="modal">
-            <form class="form-control" id="registrar-usuario-form"
-                  hx-post="/registrar-usuario/registrar"
-                  hx-target="#result-msg">
+            <form class="form-control"
+                  hx-post="/usuario/editar"
+                  hx-target="#result"
+                  hx-confirm="¿Seguro que desea guardar los cambios?"
+                  hx-disinherit="hx-confirm"
+                  hx-swap="innerHTML">
 
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalPerfilTitle">Editar Usuario</h5>
-                    <div id="result-msg"></div>
                 </div>
 
                 <div class="modal-body" id="modal-perfil-body" hx-swap="innerHTML">
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="/*quitarModal()*/">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button class="btn btn-primary" id="editar-guardar-btn">
+                        Editar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para registrar usuario -->
+<div class="modal fade m1" id="ModalRegistrar" tabindex="-1" role="dialog" aria-labelledby="ModalPerfilTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+
+        <!--method="post" action="/registrar-usuario/registrar"-->
+        <div class="modal-content">
+            <form class="form-control" id="registrar-usuario-form"
+                  hx-post="/registrar-usuario/registrar"
+                  hx-target="#result-msg">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Usuario</h5>
+                    <div id="result-msg"></div>
+                </div>
+
+                <div class="modal-body" id="modal-registrar-body" hx-swap="innerHTML">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </div>
             </form>
