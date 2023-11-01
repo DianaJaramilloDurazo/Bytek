@@ -12,8 +12,13 @@
 
     </div>
 
+    <span sec:authentication="principal.username"></span>
+    <span th:text="${#authentication.getPrincipal()}"></span>
 
-    </div>
+
+            <div sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Cerrar
+                sesión</a></div>
+
 <!--Perfil de usuario-->
         <!-- Modal -->
         <div class="modal fade m1" id="ModalPerfil" tabindex="-1" role="dialog" aria-labelledby="ModalPerfilTitle" aria-hidden="true">

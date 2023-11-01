@@ -49,17 +49,17 @@
 <!--fin titulo del sistema________________.-->
 
 <!--inicio sesion________________________-->
-<form class="w-50 p-3 mx-auto inicio-sesion " id="formInicio" method="post" action="index.html">
+<form class="w-50 p-3 mx-auto inicio-sesion " id="formInicio" method="post" th:action="@{/login}">
     <div class="form-group">
-        <label for="correo">Dirección de correo</label>
-        <input type="email" class="form-control" id="correo" aria-describedby="emailHelp" onkeyup="habilitar()">
+        <label for="username">Dirección de correo</label>
+        <input type="email" class="form-control" id="username" name="username" placeholder="Username" aria-describedby="emailHelp" onkeyup="habilitar()">
     </div>
     <div class="form-group d-block">
-        <label for="pwd">Contraseña</label>
-        <input type="password" class="form-control" id="pwd" onkeyup="habilitar()">
+        <label for="password">Contraseña</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
     </div>
     <br>
-    <button type="submit" class="btn btn-secondary btn-enviar" id="btn-enviar" disabled>Iniciar sesión</button>
+    <button type="submit" class="btn btn-secondary btn-enviar" id="btn-enviar" >Iniciar sesión</button>
 </form>
 <!--fin inicio sesion_______________________.-->
 
