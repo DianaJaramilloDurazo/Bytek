@@ -2,6 +2,7 @@ package com.uabc.fiad.sgs.service;
 
 import com.uabc.fiad.sgs.DTO.UsuarioDTO;
 import com.uabc.fiad.sgs.entity.Filtros;
+import com.uabc.fiad.sgs.entity.Rol;
 import com.uabc.fiad.sgs.entity.Usuario;
 
 import java.util.List;
