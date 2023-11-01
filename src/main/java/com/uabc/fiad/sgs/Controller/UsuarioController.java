@@ -48,7 +48,7 @@ public class UsuarioController {
     public String paginacion(@RequestParam(value="page") Integer page, Model model) {
 
         // Tamaño de página: cuántos registros se mostrarán por página
-        int pageSize = 5;
+        int pageSize = 4;
 
         // Calcular el desplazamiento (offset) para determinar desde qué registro se debe iniciar en la base de datos
         int offset = (page - 1) * pageSize;
@@ -58,14 +58,22 @@ public class UsuarioController {
 
         // Calcular el número total de páginas (totalPages) usando una división entera
         int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+        // Define el número máximo de páginas a mostrar en la barra de paginación
+        int maxPagesToShow = 4;
 
+        // Calcula el rango de páginas a mostrar
+        int startPage = Math.max(1, page - maxPagesToShow / 2);
+        int endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+        System.out.println(startPage);
+        System.out.println(endPage);
         // Crear una lista de números de página para mostrar en la interfaz de usuario
-        List<Integer> pages = IntStream.rangeClosed(1, totalPages).boxed().toList();
-
+        List<Integer> pages = IntStream.rangeClosed(startPage, endPage).boxed().toList();
+        model.addAttribute("first", startPage);
         model.addAttribute("pages", pages);
         model.addAttribute("current", page);
         model.addAttribute("next", page + 1);
         model.addAttribute("prev", page - 1);
+        model.addAttribute("end", endPage);
         model.addAttribute("last", totalPages);
         List<UsuarioDTO> users = usuarioService.pagination(pageSize,offset);
         model.addAttribute("users",users);
@@ -111,6 +119,18 @@ public class UsuarioController {
     @ResponseBody
     @ResponseStatus(code = HttpStatus.CREATED)
     public String editarUsuario(Usuario usuario) {
+        String resultado = "";
+
+        //Validar si no hay campos vacios
+        Optional<Usuario> user = usuarioService.findById(usuario.getIdUsuario());
+
+        if(usuario.getUsername().isEmpty()){
+            usuario.setUsername(user.get().getUsername());
+        }
+        if(usuario.getApMaterno().isEmpty()){
+            usuario.setUsername(user.get().getApMaterno());
+        }
+
         boolean editado = usuarioService.update(usuario);
         System.out.println(usuarioService.findIdRolById(usuario.getIdUsuario()));
         System.out.println(usuario);
@@ -121,15 +141,21 @@ public class UsuarioController {
             // En caso de que haya un cambio se verifica si no es el mismo rol que tiene el usuario
             if(!Objects.equals(usuario.getIdRol(), usuarioService.findIdRolById(usuario.getIdUsuario()))){
                 //En caso de que no sea el mismo rol, se actuliza el Rol del usuario
-                usuarioService.updateRol(usuario.getIdUsuario(), usuario.getIdRol());
+                if(usuarioService.updateRol(usuario.getIdUsuario(), usuario.getIdRol())){
+                    resultado+="<div class='alert alert-success' role='alert'> El rol fue actulizado con exito </div>";
+                }else{
+                    resultado+= "<div class='alert alert-danger' role='alert'>Ha ocurrido un error al actualizar el rol </div>";
+                }
+
             }else{
                 System.out.println("No hay cambios");
             }
         }
         if (editado) {
-            return "<div class='alert alert-success' role='alert'> La información fue actulizada con exito </div>";
+            resultado+= "<div class='alert alert-success' role='alert'> La información fue actulizada con exito </div>";
         }else{
-            return "<div class='alert alert-danger' role='alert'>Ha ocurrido un error al actualzar la información </div>";
+            resultado+= "<div class='alert alert-danger' role='alert'>Ha ocurrido un error al actualizar la información </div>";
         }
+        return resultado;
     }
 }

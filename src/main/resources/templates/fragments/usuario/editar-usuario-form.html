@@ -1,12 +1,17 @@
 <div th:fragment="editar-usuario-form" class="container-fluid">
-    <input th:value="${usuario.idUsuario}" class="form-control " type="text" id="idUsuario" name="idUsuario" hidden="">
+    <input th:value="${usuario.idUsuario}"
+           class="form-control " type="text" id="idUsuario" name="idUsuario" hidden="">
     <label for="username">Nombre(s)</label>
-    <input th:value="${usuario.username}" class="form-control " type="text" id="username" name="username" required>
+    <input th:value="${usuario.username}"
+           th:attr="onchange='validarCampos(\'' + ${usuario.username} + '\', \'username\')'"
+           class="form-control " type="text" id="username" name="username" required>
 
     <div class="container contM">
         <div class="cont-1">
             <label for="apPaterno">Apellido paterno</label>
-            <input th:value="${usuario.apPaterno}" class="form-control " type="text" id="apPaterno" name="apPaterno" required>
+            <input
+                    th:attr="onchange='validarCampos(\'' + ${usuario.apPaterno} + '\', \'apPaterno\')'"
+                    th:value="${usuario.apPaterno}" class="form-control " type="text" id="apPaterno" name="apPaterno" required>
         </div>
         <div class="cont-2">
             <label for="apMaterno">Apellido materno</label>
@@ -68,7 +73,7 @@
     <div class="container contM">
         <div class="cont-2">
             <label for="idRol">Rol</label>
-            <select class="form-control" id="idRol" name="idRol"  required>
+            <select onchange="mostrarModal()" class="form-control" id="idRol" name="idRol"  required>
                 <!-- Agrega la opción predeterminada si user.idRol es 0 -->
                 <option th:if="${usuario.idRol == 0}" th:value="0" th:text="Docente"></option>
                 <option th:each="rol : ${roles}"

@@ -50,3 +50,28 @@ const config = { childList: true };
 
 // Inicia la observación del div con las opciones configuradas
 observer.observe(myDiv, config);
+
+// function hola() {
+// 		console.log("click");
+// 		Swal.fire('El perfil del rol seleccionado cambiará su información por la información de este usuario')
+//
+// }
+function validarCampos(campo, idcampo){
+	var input = document.getElementById(idcampo);
+	if (input.value.trim() === "") {
+		// El input está vacío
+		input.value=campo;
+	}
+}
+// Función para mostrar el modal
+function mostrarModal() {
+	var modal = document.getElementById("miModal");
+	modal.style.display = "block";
+}
+
+// Función para cerrar el modal
+function cerrarModal() {
+	var modal = document.getElementById("miModal");
+	modal.style.display = "none";
+}
+
