@@ -79,7 +79,7 @@ public class SgsSecurityConfig   {
                         .requestMatchers(mvc.pattern("css/**"),mvc.pattern("js/**"),mvc.pattern("img/**")).permitAll()
                         .requestMatchers(mvc.pattern("/usuario/perfil")).hasRole("DOCENTE")
                         .requestMatchers(mvc.pattern("/usuario/**")).hasAnyRole("SUBDIRECTOR","ADMINISTRADOR")
-
+                        .requestMatchers(mvc.pattern("/admin/**")).hasAnyRole("SUBDIRECTOR","ADMINISTRADOR")
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable);
