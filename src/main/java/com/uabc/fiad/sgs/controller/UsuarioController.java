@@ -69,8 +69,7 @@ public class UsuarioController {
         // Calcula el rango de páginas a mostrar
         int startPage = Math.max(1, page - maxPagesToShow / 2);
         int endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
-        System.out.println(startPage);
-        System.out.println(endPage);
+
         // Crear una lista de números de página para mostrar en la interfaz de usuario
         List<Integer> pages = IntStream.rangeClosed(startPage, endPage).boxed().toList();
         model.addAttribute("first", startPage);
@@ -106,13 +105,11 @@ public class UsuarioController {
 
         }else{
             usuario =  usuarioService.findById(id);
-            System.out.println(usuario);
         }
         model.addAttribute("usuario", usuario.get());
         model.addAttribute("carreras", usuarioService.listarCarreras());
         model.addAttribute("categorias", usuarioService.listarCategorias());
         model.addAttribute("estados", usuarioService.listarEstado());
-        System.out.println(usuarioService.listarRoles());
         model.addAttribute("roles", usuarioService.listarRoles());
 
         // Simplemente entrega la bandera de perfil
@@ -149,9 +146,7 @@ public class UsuarioController {
 //        System.out.println(usuarioService.findIdRolById(usuario.getIdUsuario()));
 //        System.out.println(usuario);
         // Verificar si hubo un cambio de rol en el usuario
-        if(usuario.getIdRol()==0){
-            System.out.println("No hay cambios");
-        }else{
+        if(!(usuario.getIdRol()==0)){
             // En caso de que haya un cambio se verifica si no es el mismo rol que tiene el usuario
             if(!Objects.equals(usuario.getIdRol(), usuarioService.findIdRolById(usuario.getIdUsuario()))){
                 //En caso de que no sea el mismo rol, se actuliza el Rol del usuario
@@ -161,8 +156,6 @@ public class UsuarioController {
                     resultado+= "<div class='alert alert-danger' role='alert'>Ha ocurrido un error al actualizar el rol </div>";
                 }
 
-            }else{
-                System.out.println("No hay cambios");
             }
         }
         if (editado) {
