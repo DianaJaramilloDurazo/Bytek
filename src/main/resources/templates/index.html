@@ -12,8 +12,13 @@
 
     </div>
 
-    <span sec:authentication="principal.username"></span>
-    <span th:text="${#authentication.getPrincipal()}"></span>
+
+
+    <!-- <span sec:authentication="principal.username"></span>
+
+     <span th:text="${#authentication.getPrincipal()}"></span>
+     -->
+
 
 
             <div sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Cerrar

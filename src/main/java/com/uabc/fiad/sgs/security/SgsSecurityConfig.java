@@ -77,8 +77,9 @@ public class SgsSecurityConfig   {
         http
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(mvc.pattern("css/**"),mvc.pattern("js/**"),mvc.pattern("img/**")).permitAll()
-                        .requestMatchers(mvc.pattern("/usuario/**")).hasRole("DIRECTOR")
-                        .requestMatchers(mvc.pattern("/usuario/**")).hasRole("SUBDIRECTOR")
+                        .requestMatchers(mvc.pattern("/usuario/perfil")).hasRole("DOCENTE")
+                        .requestMatchers(mvc.pattern("/usuario/**")).hasAnyRole("SUBDIRECTOR","ADMINISTRADOR")
+
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable);

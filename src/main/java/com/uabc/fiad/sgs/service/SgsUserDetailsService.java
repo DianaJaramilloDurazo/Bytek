@@ -27,7 +27,7 @@ public class SgsUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
         Optional<Usuario> usuario = usuarioService.findByCorreo(correo);
         Optional<Rol> rol = usuarioService.findRolByCorreo(correo);
-        String rolAsignado = "Docente";
+        String rolAsignado = "DOCENTE";
 
         if (usuario.isEmpty()) {
             System.out.println(usuarioService.findRolByCorreo(correo));
@@ -39,6 +39,9 @@ public class SgsUserDetailsService implements UserDetailsService {
                 System.out.println(usuario);
                 rolAsignado = rol.get().getRol().toUpperCase();
             }
+        }
+        if(usuario.get().getIdEstado() != 1){
+            throw new UsernameNotFoundException("El usuario no esta activo ");
         }
         if(usuarioService.findIdRolById(usuario.get().getIdUsuario()) != 0){
             System.out.println("Tiene rol");
