@@ -150,7 +150,7 @@ public class UsuarioController {
 //        System.out.println(usuarioService.findIdRolById(usuario.getIdUsuario()));
 //        System.out.println(usuario);
         // Verificar si hubo un cambio de rol en el usuario
-        if(!(usuario.getIdRol()==0)){
+        if(!(usuario.getIdRol() == null || usuario.getIdRol()==0)){
             // En caso de que haya un cambio se verifica si no es el mismo rol que tiene el usuario
             if(!Objects.equals(usuario.getIdRol(), usuarioService.findIdRolById(usuario.getIdUsuario()))){
                 //En caso de que no sea el mismo rol, se actuliza el Rol del usuario

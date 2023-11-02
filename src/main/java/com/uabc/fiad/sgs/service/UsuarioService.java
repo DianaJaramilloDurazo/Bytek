@@ -87,8 +87,7 @@ public class UsuarioService implements IUsuarioService {
         // Hacer una query para obtener todos los usuarios con ese correo, que debería ser máximo 1, y los guardamos en
         // una lista
         List<Usuario> usuarios = template.query(
-                "SELECT * FROM usuario WHERE Correo=?;",
-                new Object[]{correo},
+                "call get_usuario(?)",
                 (rs, rowNum) ->
                         new Usuario(
                                 rs.getInt("idUsuario"),
@@ -101,7 +100,8 @@ public class UsuarioService implements IUsuarioService {
                                 rs.getInt("Carrera_idCarrera"),
                                 rs.getInt("Categoria_idCategoria1"),
                                 rs.getInt("Estado_idEstado"),0
-                        )
+                        ),
+                correo
         );
 
         // Si la lista está vacía regresar un optional vacío, si no regresamos el primer elemento
