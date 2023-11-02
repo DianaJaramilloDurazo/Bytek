@@ -24,7 +24,12 @@ public class SgsUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        // Del usuario, se elimina lo que se haya puesto luego del @ y se le agrega el dominio, se usa este correo para
+        // buscar el usuario
+        String correo = username.split("@", 2)[0] + "@uabc.edu.mx";
+
         Optional<Usuario> usuario = usuarioService.findByCorreo(correo);
         Optional<Rol> rol = usuarioService.findRolByCorreo(correo);
         String rolAsignado = "DOCENTE";
