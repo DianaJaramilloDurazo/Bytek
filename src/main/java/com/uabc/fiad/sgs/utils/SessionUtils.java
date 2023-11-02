@@ -28,6 +28,8 @@ public class SessionUtils {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
 
+        System.out.println(authentication.getAuthorities());
+
         // Si la autenticación no es nula, obtener los detalles del principal
         if (authentication != null) {
             Object principal = authentication.getPrincipal();

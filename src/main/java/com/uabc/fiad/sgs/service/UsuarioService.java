@@ -99,7 +99,8 @@ public class UsuarioService implements IUsuarioService {
                                 rs.getInt("Num_Empleado"),
                                 rs.getInt("Carrera_idCarrera"),
                                 rs.getInt("Categoria_idCategoria1"),
-                                rs.getInt("Estado_idEstado"),0
+                                rs.getInt("Estado_idEstado"),
+                                rs.getInt("idRol")
                         ),
                 correo
         );

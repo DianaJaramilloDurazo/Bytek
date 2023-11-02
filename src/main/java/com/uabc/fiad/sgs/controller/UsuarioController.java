@@ -181,6 +181,8 @@ public class UsuarioController {
         // Obtener el usuario de la sesión
         Usuario u = SessionUtils.getUsuario(usuarioService);
 
+
+
         // Si no existe redirigir al login
         if (u == null) {
             return "redirect:/login";

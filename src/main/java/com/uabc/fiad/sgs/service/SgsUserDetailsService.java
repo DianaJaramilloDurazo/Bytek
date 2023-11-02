@@ -30,29 +30,30 @@ public class SgsUserDetailsService implements UserDetailsService {
         // buscar el usuario
         String correo = username.split("@", 2)[0] + "@uabc.edu.mx";
 
-        Optional<Usuario> usuario = usuarioService.findByCorreo(correo);
-        Optional<Rol> rol = usuarioService.findRolByCorreo(correo);
+        Optional<Usuario> oUsuario = usuarioService.findByCorreo(correo);
+
+        if (oUsuario.isEmpty()) {
+            throw new UsernameNotFoundException("No se encontró el usuario " + correo);
+        }
+
+        Usuario usuario = oUsuario.get();
+
         String rolAsignado = "DOCENTE";
 
-        if (usuario.isEmpty()) {
-            System.out.println(usuarioService.findRolByCorreo(correo));
+        if (usuario.getIdRol() != 0) {
+            Optional<Rol> rol = usuarioService.findRolByCorreo(correo);
             if(rol.isEmpty()){
-                throw new UsernameNotFoundException("No se encontró el usuario " + correo);
-            }else{
-                usuario = usuarioService.findRolById(rol.get().getIdRol());
-                usuario.get().setPassword(rol.get().getPassword());
-                System.out.println(usuario);
+                throw new UsernameNotFoundException("El usuario '" + correo + "' tiene asignado un rol inexistente");
+            } else {
                 rolAsignado = rol.get().getRol().toUpperCase();
             }
         }
-        if(usuario.get().getIdEstado() != 1){
+
+        if(usuario.getIdEstado() != 1){
             throw new UsernameNotFoundException("El usuario no esta activo ");
         }
-        if(usuarioService.findIdRolById(usuario.get().getIdUsuario()) != 0){
-            System.out.println("Tiene rol");
-        }
 
-        return userDetailsMapper.toUserDetails(usuario.get(),rolAsignado);
+        return userDetailsMapper.toUserDetails(usuario, rolAsignado);
     }
 
 }
