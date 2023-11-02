@@ -45,10 +45,12 @@
   </div>
 
   <!-- Recibir el formulario de edición de usuario, pero con la bandera de perfil en verdadero -->
+  <!-- No mostrarlo si no se tiene el rol de docente -->
   <button class="btn btn-primary" id="editar-guardar-btn"
           hx-get="/usuario/perfil/editar"
           hx-target="#modal-perfil-body"
-          hx-swap-oob="true">
+          hx-swap-oob="true"
+          sec:authorize="hasAnyRole('ROLE_DOCENTE')">
     Editar
   </button>
 </div>

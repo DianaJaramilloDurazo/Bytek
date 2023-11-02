@@ -78,7 +78,7 @@ public class SgsSecurityConfig   {
         http
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(mvc.pattern("css/**"),mvc.pattern("js/**"),mvc.pattern("img/**")).permitAll()
-                        .requestMatchers(mvc.pattern("/usuario/perfil"),mvc.pattern("/usuario/perfil/editar")).hasRole("DOCENTE")
+                        .requestMatchers(mvc.pattern("/usuario/perfil"),mvc.pattern("/usuario/perfil/editar")).permitAll()
                         .requestMatchers(mvc.pattern("/usuario/**")).hasAnyRole("SUBDIRECTOR","ADMINISTRADOR")
                         .requestMatchers(mvc.pattern("/admin/**")).hasAnyRole("SUBDIRECTOR","ADMINISTRADOR")
                         .anyRequest().authenticated()
