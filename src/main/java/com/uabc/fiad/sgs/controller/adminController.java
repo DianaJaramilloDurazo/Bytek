@@ -1,5 +1,6 @@
 package com.uabc.fiad.sgs.controller;
 
+import com.uabc.fiad.sgs.DTO.UsuarioDTO;
 import com.uabc.fiad.sgs.entity.Filtros;
 import com.uabc.fiad.sgs.entity.Rol;
 import com.uabc.fiad.sgs.entity.Usuario;
@@ -12,6 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/admin")
@@ -82,4 +86,51 @@ public class adminController {
         }
         return "<p>Error al registrar  el Rol</p>";
     }
+
+    /**
+     * Obtiene una página de usuarios paginada.
+     * @param filtros   los filstros aplicados, número de página, nombre, etc.
+     * @param model     el modelo utilizado para pasar datos a la vista
+     * @return          fragmento para mostrar la lista de usuarios
+     */
+
+    @GetMapping("/pagination")
+    public String paginacion(@ModelAttribute Filtros filtros, Model model) {
+
+        // Manejar filtros
+        System.out.println(filtros);
+        model.addAttribute("filtros", filtros);
+
+        // Tamaño de página: cuántos registros se mostrarán por página
+        int pageSize = 4;
+
+        // Calcular el desplazamiento (offset) para determinar desde qué registro se debe iniciar en la base de datos
+        int offset = (filtros.getPage() - 1) * pageSize;
+
+        //Obtener total de registros
+        Integer totalRecords = usuarioService.TotalRecords(filtros);
+
+        // Calcular el número total de páginas (totalPages) usando una división entera
+        int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+        // Define el número máximo de páginas a mostrar en la barra de paginación
+        int maxPagesToShow = 4;
+
+        // Calcula el rango de páginas a mostrar
+        int startPage = Math.max(1, filtros.getPage() - maxPagesToShow / 2);
+        int endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+        // Crear una lista de números de página para mostrar en la interfaz de usuario
+        List<Integer> pages = IntStream.rangeClosed(startPage, endPage).boxed().toList();
+        model.addAttribute("first", startPage);
+        model.addAttribute("pages", pages);
+        model.addAttribute("current", filtros.getPage());
+        model.addAttribute("next", filtros.getPage() + 1);
+        model.addAttribute("prev", filtros.getPage() - 1);
+        model.addAttribute("end", endPage);
+        model.addAttribute("last", totalPages);
+        List<UsuarioDTO> users = usuarioService.pagination(pageSize, offset, filtros);
+        model.addAttribute("users",users);
+        return "ListarUsuarios :: listaUsuarios";
+    }
+
 }
