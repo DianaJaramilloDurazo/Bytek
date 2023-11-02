@@ -370,6 +370,11 @@ public class UsuarioService implements IUsuarioService {
         return results.get(0); // Devuelve el primer resultado
     }
 
+    /**
+     * Guarda  el registro de un rol
+     * @param rol   Rol a registrar
+     * @return      Si se logró registrar el rol
+     */
     @Override
     public Boolean saveRol(Rol rol) {
 
@@ -398,6 +403,11 @@ public class UsuarioService implements IUsuarioService {
         return (Integer)resObj == 1;
     }
 
+    /**
+     * Busca un rol por medio de su correo
+     * @param correo    Correo del rol a buscar
+     * @return          Retorna el rol en caso de encontrarlo
+     */
     @Override
     public Optional<Rol> findRolByCorreo(String correo) {
         List<Rol> roles = template.query(

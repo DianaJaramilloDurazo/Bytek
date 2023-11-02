@@ -51,6 +51,12 @@
 
 <!--inicio sesion________________________-->
 <form class="w-50 p-3 mx-auto inicio-sesion " id="formInicio" method="post" th:action="@{/login}">
+    <div th:if="${param.error}">
+        <div class="alert alert-danger">
+            Usuario o contraseña inválidos
+        </div>
+    </div>
+
     <div class="form-group">
         <label for="username">Dirección de correo</label>
         <input type="text" class="form-control" id="username" name="username" placeholder="Username" aria-describedby="emailHelp" onkeyup="habilitar()">
