@@ -58,7 +58,9 @@
                         th:selected="${categoria.idCategoria == usuario.idCategoria}"></option>
             </select>
         </div>
-        <div class="cont-2">
+
+        <!-- Si la bandera del perfil es verdadera, no mostrar el campo de estado, si es falsa o nula mostrarlo -->
+        <div th:if="${perfil == null || !perfil}" class="cont-2" >
             <label for="idCategoria">Estado</label>
             <select class="form-control" id="idEstado" name="idEstado" required>
                 <option th:each="estado : ${estados}"
@@ -70,7 +72,7 @@
 
 
     </div>
-    <!-- Si la bandera del perfil es verdadera, no mostrar el campo de rol, si es falsa o nula mostrarla -->
+    <!-- Si la bandera del perfil es verdadera, no mostrar el campo de rol, si es falsa o nula mostrarlo -->
     <div th:if="${perfil == null || !perfil}" class="container contM">
         <div class="cont-2">
             <label for="idRol">Rol</label>
