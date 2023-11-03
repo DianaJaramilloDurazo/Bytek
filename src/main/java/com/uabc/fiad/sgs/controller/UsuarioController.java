@@ -73,7 +73,6 @@ public class UsuarioController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public String editarUsuario(Usuario usuario) {
         String resultado = "";
-
         //Validar si no hay campos vacios
         Optional<Usuario> user = usuarioService.findById(usuario.getIdUsuario());
 
@@ -83,7 +82,9 @@ public class UsuarioController {
         if(usuario.getApMaterno().isEmpty()){
             usuario.setUsername(user.get().getApMaterno());
         }
-
+        if(usuario.getIdEstado() == null){
+            usuario.setIdEstado(1);
+        }
         boolean editado = usuarioService.update(usuario);
 //        System.out.println(usuarioService.findIdRolById(usuario.getIdUsuario()));
 //        System.out.println(usuario);
