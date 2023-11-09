@@ -1,15 +1,15 @@
 <div th:fragment="registrar-usuario-form" class="container-fluid">
     <label for="username">Nombre(s)</label>
-    <input class="form-control " type="text" id="username" name="username" required>
+    <input class="form-control " type="text" id="username" name="username" maxlength="100" required>
 
     <div class="container contM">
         <div class="cont-1">
             <label for="apPaterno">Apellido paterno</label>
-            <input class="form-control " type="text" id="apPaterno" name="apPaterno" required>
+            <input class="form-control " type="text" id="apPaterno" name="apPaterno" maxlength="45" required>
         </div>
         <div class="cont-2">
             <label for="apMaterno">Apellido materno</label>
-            <input class="form-control" type="text" id="apMaterno" name="apMaterno">
+            <input class="form-control" type="text" id="apMaterno" name="apMaterno" maxlength="45">
         </div>
     </div>
 
