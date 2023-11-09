@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -74,7 +75,9 @@ public class RegistrarUsuarioController {
      * @return  fragmento de thymeleaf con el cuerpo del formulario
      */
     @GetMapping("/get-registrar-form")
-    public String getRegistrarUsuarioForm() {
+    public String getRegistrarUsuarioForm(Model model) {
+        model.addAttribute("carreras", usuarioService.listarCarreras());
+        model.addAttribute("categorias", usuarioService.listarCategorias());
         return "fragments/usuario/registrar-usuario-form :: registrar-usuario-form";
     }
 

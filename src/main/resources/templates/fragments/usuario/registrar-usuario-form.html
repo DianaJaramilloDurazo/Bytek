@@ -44,7 +44,9 @@
             <label for="idCategoria">Categoria</label>
             <select class="form-control" id="idCategoria" name="idCategoria" required>
                 <option value="0" selected>Selecciona una categoria</option>
-                <option value="1">Administrador</option>
+                <option th:each="categoria : ${categorias}"
+                        th:value="${categoria.idCategoria}"
+                        th:text="${categoria.Cat_Descripcion}"></option>
             </select>
         </div>
 
@@ -52,7 +54,9 @@
             <label for="idCarrera">Carrera</label>
             <select class="form-control " id="idCarrera" name="idCarrera" required>
                 <option value="0" selected>Selecciona una carrera</option>
-                <option value="1">ingenieria en computacion</option>
+                <option th:each="carrera : ${carreras}"
+                           th:value="${carrera.idCarrera}"
+                           th:text="${carrera.Carrera_Nombre}"></option>
             </select>
         </div>
     </div>
