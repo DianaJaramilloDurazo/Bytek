@@ -79,8 +79,8 @@ public class UsuarioController {
         if(usuario.getUsername().isEmpty()){
             usuario.setUsername(user.get().getUsername());
         }
-        if(usuario.getApMaterno().isEmpty()){
-            usuario.setUsername(user.get().getApMaterno());
+        if(usuario.getApPaterno().isEmpty()){
+            usuario.setApPaterno(user.get().getApPaterno());
         }
         if(usuario.getIdEstado() == null){
             usuario.setIdEstado(1);

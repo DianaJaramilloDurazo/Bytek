@@ -324,7 +324,7 @@ public class UsuarioService implements IUsuarioService {
      */
     @Override
     public List<Map<String, Object>> listarCarreras() {
-        return template.queryForList("SELECT *FROM Carrera");
+        return template.queryForList("SELECT *FROM carrera");
     }
 
     /**
@@ -334,7 +334,7 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public List<Map<String, Object>> listarCategorias() {
-        return template.queryForList("SELECT *FROM Categoria");
+        return template.queryForList("SELECT *FROM categoria");
     }
 
     /**
@@ -343,7 +343,7 @@ public class UsuarioService implements IUsuarioService {
      */
     @Override
     public List<Map<String, Object>> listarEstado() {
-        return template.queryForList("SELECT *FROM Estado");
+        return template.queryForList("SELECT *FROM estado");
     }
 
     /**
