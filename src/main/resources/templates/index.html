@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:hx="http://www.w3.org/1999/xhtml">
+<html lang="es">
 <head>
-    <div th:replace="fragments/layout :: head">
+    <div th:replace="fragments/layout :: head(title='Principal')">
 
     </div>
+    <link rel="stylesheet" href="/css/Inicio.css">
+    <script src="../static/js/Inicio.js"></script>
 </head>
 
 <body>
@@ -12,93 +13,490 @@
 
     </div>
 
+  <a href="#cont_navid" class="btn btn-primary" id="btn_IrArriba">^</a>
+  <div class="cont_nav justify-content-center" id="cont_navid">
+      <div class="item1" id="item1id" sec:authorize="hasAnyRole('ROLE_DOCENTE')">
+          <div class="card">
+              <div class="card-body">
+                  <h5 class="card-title card-header">Solicitudes de salida</h5>
+                  <ul class="list-group list-group-flush">
 
+                      <li class="list-group-item">Conoce el estado de tus solicitudes de salida. Las opciones que puedes elegir son:
+                      </li>
+                  </ul>
+                  <ul class="list-group list-group-flush">
+                      <li class="list-group-item"> > Editar solicitud de salida</li>
+                      <li class="list-group-item"> > Ver informacion de tus solicitudes</li>
+                      <li class="list-group-item"> > Eliminar tus solicitudes</li>
+                  </ul>
 
-    <!-- <span sec:authentication="principal.username"></span>
-
-     <span th:text="${#authentication.getPrincipal()}"></span>
-     -->
-
-<!--Perfil de usuario-->
-        <!-- Modal -->
-        <div class="modal fade m1" id="ModalPerfil" tabindex="-1" role="dialog" aria-labelledby="ModalPerfilTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-
-        <div class="modal-content" id="modal">
-
-            <div class="modal-header">
-              <h5 class="modal-title" id="ModalPerfilTitle">Editar Usuario</h5>
-            </div>
-
-          <div class="modal-body">
-              <form class="form-control" id="EditarPerfil" method="post" action="index.html">
-                <label>Nombre(s)</label>
-                <input class="form-control " type="text" id="nombre" value="Edgar" disabled required>
-
-                <div class="container cont">
-                    <div class="cont-a">
-                        <label>Apellido paterno</label>
-                        <input class="form-control " type="text" id="apPat" value="Nava" disabled required>
-                    </div>
-                    <div class="cont-b">
-                        <label>Apellido materno</label>
-                        <input class="form-control " type="text" id="apMat" value="Hernández" disabled required>
-                    </div>
-                </div>
-
-                <label>Correo</label>
-                <input class="form-control " type="email" id="correo" value="edgar.nava.hernandez@uabc.edu.mx" disabled required>
-                <div class="container cont">
-
-                    <div class="cont-a">
-                      <label>Contreseña</label>
-                      <input class="form-control " type="password" id="pwd" value="admin" disabled required>
-                    </div>
-
-                    <div class="cont-b">
-                      <label>Numero de empleado</label>
-                      <input class="form-control" type="number" id="numEmpleado" value="36148" required min="10000" max="999999" disabled>
-                    </div>
-                </div>
-
-                <div class="container cont">
-                  <div class="cont-a">
-                      <label>Categoria</label>
-                      <select class="form-control  " id="categoria" disabled required value="2">
-                            <option value="1">Selecciona una categoria</option>
-                            <option value="2" selected="true">Administrador</option>
-                      </select>
-                  </div>
-
-                  <div class="cont-b">
-                      <label>Carrera</label>
-                      <select class="form-control " id="carrera" disabled required value="2">
-                          <option value="1">Selecciona una carrera</option>
-                          <option value="2" selected="true">ingenieria en computacion</option>
-                      </select>
-                  </div>
-                </div>
-              
-                            <br>
-              </form>
+              </div>
+              <div class="card-footer">
+                  <a href="#opc1" class="btn btn-primary">Conoce mas...</a>
+              </div>
           </div>
-
-          <div class="modal-footer">
-
-            <button type="button" class="btn btn-secondary" onclick="quitarModal()">Cerrar</button>
-            <button  type="button" class="btn btn-primary" id="editPerfil" onclick="habilitar_edicion()">Editar perfil</button>
-            <button type="submit" class="btn btn-primary" >Guardar Cambios</button>
-          </div>
-        </form>
-        </div>
       </div>
-    </div>
-<!--Fin perfil de usuario-->
 
-    <!--iframe para cambiar contenido-->
-    <div class="contIframe">
-        <iframe id="contenedor" src="Inicio.html" width="100%" height="100%"></iframe>
-    </div>
-    <!--fin iframe-->
+
+      <div class="item2" id="item2" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR')">
+          <div class="card">
+              <div class="card-body ">
+                  <h5 class="card-title card-header">Subir reporte</h5>
+                  <ul class="list-group list-group-flush">
+
+                      <li class="list-group-item">
+                          Lista de mis reportes de salida que aun se encuentran pendientes por subir
+                      </li>
+                  </ul>
+                  <ul class="list-group list-group-flush">
+                      <li class="list-group-item"> > Ver informacion de las solicitudes</li>
+                      <li class="list-group-item"> > Subir reporte de salida en formato PDF</li>
+                  </ul>
+              </div>
+              <div class="card-footer">
+                  <a href="#opc3" class="btn btn-primary">Conoce mas...</a>
+              </div>
+          </div>
+      </div>
+
+      <div class="item3" id="item3" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR')">
+          <div class="card">
+              <div class="card-body">
+                  <h5 class="card-title card-header">Firmar reportes</h5>
+                  <ul class="list-group list-group-flush">
+
+                      <li class="list-group-item">
+                          Mira las solicitudes de salidas que se encuentran pendientes de firmar
+                      </li>
+                  </ul>
+                  <ul class="list-group list-group-flush">
+                      <li class="list-group-item"> > Ver informacion de las solicitudes</li>
+                      <li class="list-group-item"> > Firmar solicitudes</li>
+                      <li class="list-group-item"> > Rechazar solicitudes</li>
+                  </ul>
+              </div>
+              <div class="card-footer">
+                  <a href="#opc2" class="btn btn-primary">Conoce mas...</a>
+              </div>
+          </div>
+      </div>
+
+  </div>
+  <div class="separadordetablas" id="opc1"></div>
+  <div class="solicitudContenedor" sec:authorize="hasAnyRole('ROLE_DOCENTE')"><!--CONTENEDOR TABLA SOLICITUDES DE SALIDA-->
+      <h4>Mis solicitudes de salida</h4>
+      <table class="table">
+          <thead class="table-bordered"><!--ENCABEZADO DE LA TABLA-->
+          <tr>
+              <th scope="col">Nombre del evento</th>
+              <th scope="col">Estado de la solicitud</th>
+              <th scope="col">Opciones</th>
+          </tr>
+          </thead><!--FIN ENCABEZADO DE TABLA-->
+
+          <tbody><!--CUERPO DE LA TABLA-->
+          <tr th:each="sol : ${solicitudes}">
+              <td th:text="${sol.nombreEvento}"></td>
+              <td th:text="${sol.estadoSolicitud}"></td>
+              <td>
+<!--                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalEditarSolicitud">Editar</button>-->
+<!--                  <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo">ver +</button>-->
+<!--                  <button class="btn btn-warning" id="btn_eliminarslc">x</button>-->
+              </td>
+
+          </tr>
+          <tr>
+              <td colspan="2">IMPORTANTE: *Cuentas con 5 dias habiles para entregar el reporte de salida despues de la fecha de regreso*</td>
+              <td>
+                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalCrearSolicitud">
+                      Crear nueva solicitud
+                  </button>
+              </td>
+          </tr>
+
+          </tbody><!--FIN CUERPO TABLA-->
+      </table>
+  </div><!--FIN CONTENEDOR SOLICITUDES-->
+
+  <div class="separadordetablas" id="opc2"></div><!--NO QUITAR LO USO PARA QUE SE ACOMODEN BIEN LAS VISTAS AL USAR LA BARRA DE NAVEGACION-->
+
+  <!--MODAL PARA VER INFORMACION DE SOLICITUD-->
+  <div class="modal fade m1" id="ModalSolicitudInfo" tabindex="-1" role="dialog" aria-labelledby="ModalSolicitudInfoLabel" aria-hidden="false">
+      <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content" id="cuadroModal">
+              <div class="modal-content" id="tituloModal">
+                  <h5 class="modal-title" id="ModalSolicitudInfoLabel">Evento:
+                      <span id="slc_Evento">Nombre del evento</span>
+                  </h5>
+
+              </div>
+              <div class="modal-body">
+                  <div class="cont_Formato">
+
+                      <div class="izquierda">
+                          <div >
+                              <label class="txt_Nombre">Nombre: </label>
+                              <span id="slc_Nombre">Edgar Nava Hernandez</span>
+                          </div>
+
+                          <div >
+                              <label class="txt_Categoria">Categoria: </label>
+                              <span id="slc_Categoria">Profesor de asignatura</span>
+                          </div>
+
+                          <div >
+                              <label class="txt_Costo">Costo del evento: $ </label>
+                              <span id="slc_Costo">0</span>
+                          </div>
+
+                          <div >
+                              <label class="txt_FechaSalida">Fecha y hora de salida: </label>
+                              <span id="slc_FechaSalida">02/11/2023 01:25pm</span>
+                          </div>
+
+                      </div>
+                      <div class="derecha">
+                          <div >
+                              <label class="txt_NumEmpleado">No Empleado: </label>
+                              <span id="slcNumEmpleado">12345</span>
+                          </div>
+
+                          <div >
+                              <label class="txt_Carrera">Carrera: </label>
+                              <span id="slc_carrera">Ingeniería en computación</span>
+                          </div>
+
+                          <div >
+                              <label class="txt_Lugar">Lugar: </label>
+                              <span id="slc_Lugar">Tecate, Baja California</span>
+                          </div>
+
+                          <div >
+                              <label class="txt_FechaRegreso">Fecha y hora de Regreso </label>
+                              <span id="slc_FechaRegreso">03/11/2023 01:25pm</span>
+                          </div>
+                      </div>
+                      <div class="completo">
+                          <form id="form_verInfo" method="post" action="#">
+                              <div >
+                                  <label>Recurso a solicitar:</label><br>
+
+                                  <input type="checkbox" id="Hospedaje_c" disabled checked><span>Hospedaje</span>
+                                  <input type="checkbox" id="Transporte_c" onclick="activarInput('Transporte_c','Transporte_v')" disabled>
+                                  <span>Transporte: </span>
+                                  <input type="text" id="Transporte_v" value="0" disabled>
+
+                                  <input type="checkbox" id="Combustible_c" onclick="activarInput('Combustible_c','Combustible_v')" disabled>
+                                  <span>Combustible: </span>
+                                  <input type="text" id="Combustible_v" value="0" disabled>
+
+                                  <input type="checkbox" id="Viatico_c" disabled>
+                                  <span>Viáticos</span><br>
+                                  <input type="checkbox" id="OficioComision_c" disabled><span>Oficio comisón</span>
+
+                                  <input type="checkbox" id="Otro_recurso_c" onclick="activarInput('Otro_recurso_c','Otro_recurso_v')" disabled>
+                                  <span>Otro:</span>
+                                  <input type="text" id="Otro_recurso_v" value="0" disabled>
+                                  <br>
+                              </div>
+                              <div>
+                                  <label>Actividad asociada a:</label><br>
+                                  <label for="CACEI" id="normText">CACEI</label>
+                                  <input type="checkbox" id="CACEI" value="CACEI" disabled>
+                                  <label for="Licenciatura" id="normText">Licenciatura</label>
+                                  <input type="checkbox" id="Licenciatura" value="Licenciatura" disabled>
+                                  <label for="Personal" id="normText">Personal</label>
+                                  <input type="checkbox" id="Personal" value="Personal" disabled>
+                                  <label for="ISO 9001:2008" id="normText">ISO 9001:2008</label>
+                                  <input type="checkbox" id="ISO 9001:2008" value="ISO 9001:2008" disabled>
+                                  <label for="Posgrado" id="normText">Posgrado</label>
+                                  <input type="checkbox" id="Posgrado" value="Posgrado" disabled>
+                                  <div class="Recursos">
+                                      <label for="Otra" id="normText">Otra:</label>
+                                      <span id="otra">Otra</span>
+                                  </div>
+
+                              </div>
+                              <div>
+                                  <label>Firmas:</label><br>
+                                  <label for="Profesor" id="normText">Profesor</label>
+                                  <input type="checkbox" id="Profesor" value="Profesor" checked disabled>
+                                  <label for="Coordinador" id="normText">Coordinador</label>
+                                  <input type="checkbox" id="Coordinador" value="Coordinador" disabled>
+                                  <label for="subdirector" id="normText">Subdirector</label>
+                                  <input type="checkbox" id="subdirector" value="subdirector" disabled>
+                                  <label for="Administrador" id="normText">Administrador</label>
+                                  <input type="checkbox" id="Administrador" value="Administrador" disabled>
+                                  <div>
+                                      <label for="Director" id="normText">Director</label>
+                                      <input type="checkbox" id="Director" value="Director" disabled>
+                                      <label for="Posgrado" id="normText">Posgrado</label>
+                                      <input type="checkbox" id="Posgrado" value="Posgrado" disabled>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" onclick="quitarModal(ModalSolicitudInfo)">Cerrar</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!--FIN MODAL VER SOLICITUD INFO-->
+
+  <!--MODAL CREAR SOLICITUD-->
+  <!-- Modal -->
+  <div class="modal fade" id="ModalCrearSolicitud" tabindex="-1" role="dialog" aria-labelledby="ModalCrearSolicitudTitle" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h6 class="modal-title" id="ModalCrearSolicitudTitle">Nueva solicitud</h6>
+              </div>
+              <div class="modal-body">
+                  <form method="post" action="#" id="form_CrearSolicitud">
+                      <div>
+                          <div>
+                              <label>Nombre de la actividad o evento:</label>
+                              <input type="text" name="nombreEvento" id="nombreEvento" class="form-control">
+                          </div>
+                      </div>
+
+                      <div class="modalEditar">
+                          <div class="izquierda">
+                              <div>
+                                  <label>Costo del evento: $</label>
+                                  <input type="number" id="CostoEvento" class="form-control">
+                                  <label>Fecha de salida:</label>
+                                  <input type="date" id="fechaSalida" class="form-control">
+                                  <label>Fecha de regreso:</label>
+                                  <input type="date" id="fechaRegreso" class="form-control">
+                              </div>
+                          </div>
+                          <div class="derecha">
+                              <label>Lugar: </label>
+                              <input type="text" id="LugarEvento" class="form-control">
+                              <label>Hora de salida:</label>
+                              <input type="time" id="horaSalida" class="form-control">
+                              <label>Hora de regresp:</label>
+                              <input type="time" id="horaRegreso" class="form-control">
+                          </div>
+
+                      </div>
+                      <div class="checkbox">
+                          <label>Recurso a solicitar:</label><br>
+
+                          <input type="checkbox" id="Hospedaje_c"><span>Hospedaje</span>
+                          <input type="checkbox" id="Transporte_c" onclick="activarInput('Transporte_c','Transporte_v')">
+                          <span>Transporte: </span>
+                          <input type="text" id="Transporte_v" value="0" disabled>
+
+                          <input type="checkbox" id="Combustible_c" onclick="activarInput('Combustible_c','Combustible_v')">
+                          <span>Combustible: </span>
+                          <input type="text" id="Combustible_v" value="0" disabled>
+
+                          <input type="checkbox" id="Viatico_c">
+                          <span>Viáticos</span><br>
+                          <input type="checkbox" id="OficioComision_c"><span>Oficio comisón</span>
+
+                          <input type="checkbox" id="Otro_recurso_c" onclick="activarInput('Otro_recurso_c','Otro_recurso_v')">
+                          <span>Otro:</span>
+                          <input type="text" id="Otro_recurso_v" value="0" disabled>
+                          <br>
+                      </div>
+                      <div class="checkbox">
+                          <label>Actividad asociada a:</label>
+                          <input type="checkbox" id="CACEI"><span>CACEI</span>
+                          <input type="checkbox" id="Licenciatura"><span>Licenciatura</span>
+                          <input type="checkbox" id="Personal"><span>Personal</span>
+                          <input type="checkbox" id="ISO"><span>ISO 9001:2008</span>
+                          <input type="checkbox" id="Posgrado"><span>Posgrado</span><br>
+                          <input type="checkbox" id="Otra_actividadCheck" onclick="activarInput('Otra_actividadCheck','Otra_actividadDesc')">
+                          <label for="Otra_actividad" id="normText">Otra</label>
+                          <input type="text" id="Otra_actividadDesc" disabled>
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" onclick="quitarModal(ModalCrearSolicitud)">Cerrar</button>
+                  <button type="button" class="btn btn-primary">Crear solicitud</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!--FIN MODAL CREAR SOLICITUD-->
+
+  <!--MODAL EDITAR SOLICITUD-->
+  <!-- Modal -->
+  <div class="modal fade" id="ModalEditarSolicitud" tabindex="-1" role="dialog" aria-labelledby="ModalEditarSolicitudTitle" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h6 class="modal-title" id="ModalEditarSolicitudTitle">Editar solicitud</h6>
+              </div>
+              <div class="modal-body">
+                  <form id="form_EditarSolicitud" method="post" action="#">
+                      <div>
+                          <div>
+                              <label>Nombre de la actividad o evento:</label>
+                              <input type="text" name="nombreEvento" id="nombreEvento" class="form-control">
+                          </div>
+                      </div>
+
+                      <div class="modalEditar">
+                          <div class="izquierda">
+                              <div>
+                                  <label>Costo del evento: $</label>
+                                  <input type="number" id="CostoEvento" class="form-control">
+                                  <label>Fecha de salida:</label>
+                                  <input type="date" id="fechaSalida" class="form-control">
+                                  <label>Fecha de regreso:</label>
+                                  <input type="date" id="fechaRegreso" class="form-control">
+                              </div>
+                          </div>
+                          <div class="derecha">
+                              <label>Lugar: </label>
+                              <input type="text" id="LugarEvento" class="form-control">
+                              <label>Hora de salida:</label>
+                              <input type="time" id="horaSalida" class="form-control">
+                              <label>Hora de regresp:</label>
+                              <input type="time" id="horaRegreso" class="form-control">
+                          </div>
+                      </div>
+                      <div class="checkbox">
+                          <label>Recurso a solicitar:</label><br>
+
+                          <input type="checkbox" id="Hospedaje_E"><span>Hospedaje</span>
+                          <input type="checkbox" id="Transporte_E" onclick="activarInput('Transporte_E','Transporte_EI')">
+                          <span>Transporte: </span>
+                          <input type="text" id="Transporte_EI" value="0" disabled>
+
+                          <input type="checkbox" id="Combustible_E" onclick="activarInput('Combustible_E','Combustible_EI')">
+                          <span>Combustible: </span>
+                          <input type="text" id="Combustible_EI" value="0" disabled>
+
+                          <input type="checkbox" id="Viatico_E">
+                          <span>Viáticos</span><br>
+                          <input type="checkbox" id="OficioComision_E">
+                          <span>Oficio comisón</span>
+
+                          <input type="checkbox" id="Otro_recurso_E" onclick="activarInput('Otro_recurso_E','Otro_recurso_EI')">
+                          <span>Otro:</span>
+                          <input type="text" id="Otro_recurso_EI" value="0" disabled>
+                          <br>
+                      </div>
+                      <div class="checkbox">
+                          <label>Actividad asociada a:</label>
+                          <input type="checkbox" id="CACEI"><span>CACEI</span>
+                          <input type="checkbox" id="Licenciatura"><span>Licenciatura</span>
+                          <input type="checkbox" id="Personal"><span>Personal</span>
+                          <input type="checkbox" id="ISO"><span>ISO 9001:2008</span>
+                          <input type="checkbox" id="Posgrado"><span>Posgrado</span><br>
+                          <input type="checkbox" id="Otra_actividadEdit" onclick="activarInput('Otra_actividadEdit','OtraActividadDescEdit')">
+                          <label for="Otra_actividad" id="normText">Otra</label>
+                          <input type="text" id="OtraActividadDescEdit" disabled>
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" onclick="quitarModal(ModalEditarSolicitud)">Cerrar</button>
+                  <button type="button" class="btn btn-primary">Guardar Cambios</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!--FIN MODAL EDITAR SOLICITUD-->
+
+
+  <!--CONTENEDOR TABLA SOLICITUDES POR FIRMAR-->
+
+  <div class="solicitudContenedor" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR')">
+      <h4>Solicitudes pendientes por firmar</h4>
+      <table class="table">
+          <thead class="table-bordered"><!--ENCABEZADO DE LA TABLA-->
+          <tr>
+              <th scope="col">Nombre del evento</th>
+              <th scope="col">Nombre del solicitante</th>
+              <th scope="col">No. Empleado</th>
+              <th scope="col">Opciones</th>
+          </tr>
+          </thead><!--FIN ENCABEZADO DE TABLA-->
+
+          <tbody><!--CUERPO DE LA TABLA-->
+          <tr>
+              <td>Evento 1</td>
+              <td>Edgar Nava Hernandez</td>
+              <td>12345</td>
+              <td>
+                  <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo">ver +</button>
+                  <button class="btn btn-primary" id="btn_Firmar">Firmar</button>
+                  <button class="btn btn-warning" id="btn_Firmar">Rechazar</button>
+              </td>
+
+          </tr>
+          <tr>
+              <td>Evento 2</td>
+              <td>Edgar Nava Hernandez</td>
+              <td>12345</td>
+              <td>
+                  <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo">ver +</button>
+                  <button class="btn btn-primary" id="btn_Firmar">Firmar</button>
+                  <button class="btn btn-warning" id="btn_Firmar">Rechazar</button>
+              </td>
+          </tr>
+          <tr>
+              <td>Evento 3</td>
+              <td>Edgar Nava Hernandez</td>
+              <td>12345</td>
+              <td>
+                  <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo">ver +</button>
+                  <button class="btn btn-primary" id="btn_Firmar">Firmar</button>
+                  <button class="btn btn-warning" id="btn_Firmar">Rechazar</button>
+              </td>
+          </tr>
+          </tbody><!--FIN CUERPO TABLA-->
+      </table>
+  </div><!--FIN CONTENEDOR SOLICITUDES POR FIRMAR-->
+
+  <div class="separadordetablas" id="opc3"></div><!--NO QUITAR LO USO PARA QUE SE ACOMODEN BIEN LAS VISTAS AL USAR LA BARRA DE NAVEGACION-->
+
+  <div class="reporteSalida" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR')">
+      <h4>Reportes de salida pendientes</h4>
+      <table class="table">
+          <thead class="table-bordered"><!--ENCABEZADO DE LA TABLA-->
+          <tr>
+              <th scope="col">Nombre del evento</th>
+              <th scope="col">Archivo PDF</th>
+              <th scope="col">Opciones</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          <tr>
+              <td>Evento 4</td>
+              <td><input type="file" accept=".pdf" id="PDF_ReporteSalida" class="form-control"></td>
+              <td><button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo">ver +</button></td>
+          </tr>
+          <tr>
+              <td>Evento 5</td>
+              <td><input type="file" accept=".pdf" id="PDF_ReporteSalida" class="form-control"></td>
+              <td><button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo">ver +</button></td>
+          </tr>
+          <tr>
+              <td>Evento 6</td>
+              <td><input type="file" accept=".pdf" id="PDF_ReporteSalida" class="form-control"></td>
+              <td><button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo">ver +</button></td>
+          </tr>
+
+          </tbody>
+      </table>
+  </div>
+
+
+
+  <div class="piedepagina">
+  </div>
+    <script type="text/javascript" src="/js/Inicio.js"></script>
 </body>
 </html>

@@ -1,0 +1,256 @@
+.solicitudContenedor{
+	margin: 0 auto;
+	max-width: 80%;
+	text-align: center;
+	margin-top: 80px;
+}
+.solicitudContenedor h4{
+	padding-bottom: 100px;
+}
+#tituloModal{
+	text-align: center;
+
+}
+#tituloModal h5{
+	font-weight: bold;
+	position: relative;
+	margin: 0 auto;
+	margin-bottom: 0px;
+	
+}
+
+#btn_Guardar
+{
+	display: none;
+}
+
+.sn_borde{
+	width: 0 auto;
+	border: none;
+}
+
+.cont_Formato{
+	margin: 0 auto;
+	width: 100%;
+	display: grid;
+	grid-template-areas:
+    "izquierdo derecho"
+    "completo completo";
+
+}
+.cont_Formato label{
+
+	font-weight: bold;
+}
+
+.Form_input{
+	width: 60%;
+	border: none;
+}
+
+#slc_Costo{
+	width: 60px;
+}
+.izquierda{
+	position: relative;
+	grid-area: izquierdo;
+	margin-bottom: 10px;
+	margin-right: 3px;
+}
+.izquierda input{
+	margin-top: 3px;
+	margin-right: 3px;
+	border-radius: 3px;
+}
+.derecha{
+	position: relative;
+	grid-area: derecho;
+	margin-bottom: 10px;
+	margin-right: 3px;
+}
+.derecha input{
+	margin-top: 3px;
+	margin-right: 3px;
+	border-radius: 3px;
+}
+.completo{
+	position: relative;
+	grid-area: completo;
+}
+#normText{
+	font-weight: normal;
+}
+
+.completo span{
+	margin-top: 3px;
+	margin-right: 20px;
+}
+.completo input{
+	margin-right: 7px;
+	max-width: 70px;
+	margin-top: 2px;
+	border: 1px solid;
+	border-color: #DFDFDF;
+	border-radius: 3px;
+	border-style: solid;
+}
+
+#slc_Evento{
+	border: none;
+	border-radius: 3px;
+}
+.Recursos{
+	margin-bottom: 10px;
+}
+.pieTabla{
+	text-align: center;
+}
+.modalEditar{
+	
+	width: 100%;
+	display: grid;
+	grid-template-areas:
+    "izquierdo derecho"
+    "completo1 completo1";
+}
+#nombreEvento{
+	height: 30px;
+}
+.modalEditar input{
+	margin-right: 10px;
+	height: 30px;
+}
+
+.completo1{
+	position: relative;
+	grid-area: completo1;
+}
+.completo1 label{
+	font-weight: bold;
+}
+.completo1 input{
+	border: 1px solid;
+	border-color: #F2F2F2;
+	border-radius: 3px;
+	margin-top: 3px;
+	width: 60px;
+	height: 30px;
+	border-style: solid;
+
+}
+.checkbox input{
+	margin-left: 20px;
+	margin-right: 5px;
+	max-width: 70px;
+	margin-top: 2px;
+	border: 1px solid;
+	border-color: #DFDFDF;
+	border-radius: 3px;
+	border-style: solid;
+}
+.checkbox label{
+	font-weight: bold;
+}
+#Otra_actividad{
+	border-radius: 3xp;
+	border-color: #F2F2F2;
+	border-style: solid;
+}
+.cont_nav{
+	position: relative;
+	margin: 0 auto;
+	margin-top: 20px;
+	width: 80%;
+	z-index: 20;
+	height: 500px;
+
+	display: grid;
+	grid-template-columns: auto auto auto auto auto auto;
+    justify-items: center;
+}
+#opc1{
+	height: 0px;
+}
+.cont_nav a{
+	margin-left: 20px;
+}
+.piedepagina{
+	height: 400px;
+}
+.separadordetablas
+{
+	position: relative;
+	height: 50px;
+}
+.reporteSalida{
+	padding-top: 60px;
+	width: 80%;
+	margin: 0 auto;
+	text-align: center;
+}
+.form_reporte{
+	padding-top: 20px;
+}
+.reporteSalida h4{
+	padding-bottom: 40px;
+}
+.solicitudContenedor h4{
+	padding-bottom: 40px;
+}
+
+
+.card{
+	height: 100%;
+}
+
+.card-footer{
+	
+	background-color: transparent !important;
+}
+.card-header{
+	background-color: transparent !important;
+}
+
+.item1 {
+  grid-column: 1 / span 2;
+  width: 19rem
+}
+.item2{
+  grid-column: 3 / span 2;
+  width: 19rem
+}
+.item3{
+  grid-column: 5 / span 2;
+  width: 19rem
+}
+
+#btn_IrArriba{
+	display: block;
+	position: fixed !important;
+	left: 50% !important;
+	width: 52px;
+	height: 52px;
+	font-size: 30px;
+	font-weight: bold;
+	border-radius: 50%;
+	z-index: 30;
+	visibility: hidden;
+	opacity: 1;
+	transition: opacity 1s linear;
+}
+
+/*Codigo css para las cards de navegacion segun el numero de cards que se muestren*/
+
+/*grid-column: 1 / span 3;*/
+/*grid-column: 4 / span 3;*/
+/*grid-column: 7 / span 3;*/
+/*grid-column: 10 / span 3;*/
+
+/*grid-column: 1 / span 4;*/
+/*grid-column: 5 / span 4;*/
+/*grid-column: 9 / span 4;*/
+
+/*grid-column: 1 / span 6;*/
+/*grid-column: 7 / span 6;*/
+
+/*grid-column: 1 / span 12;*/
