@@ -62,7 +62,7 @@
         <!-- Si la bandera del perfil es verdadera, no mostrar el campo de estado, si es falsa o nula mostrarlo -->
         <div th:if="${perfil == null || !perfil}" class="cont-2" >
             <label for="idCategoria">Estado</label>
-            <select class="form-control" id="idEstado" name="idEstado" required>
+            <select class="form-control" id="idEstado" name="idEstado" th:disabled="${usuario.idRol != 0}" required>
                 <option th:each="estado : ${estados}"
                         th:value="${estado.idEstado}"
                         th:text="${estado.status}"

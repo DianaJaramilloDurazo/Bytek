@@ -356,7 +356,7 @@ public class UsuarioService implements IUsuarioService {
     }
 
     /**
-     * Obtiene el rol del un usuario
+     * Obtiene el rol de un usuario
      * @param id    id del usuario a buscar su rol
      * @return      id del rol del usuario
      */

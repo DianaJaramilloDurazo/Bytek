@@ -43,10 +43,14 @@ public class UsuarioController {
         Optional<Usuario> usuario;
         // Verficar si usuario tiene un rol
         if(idRol != 0){
+
             usuario =  usuarioService.findRolById(idRol);
 
         }else{
             usuario =  usuarioService.findById(id);
+            // Se verifica si el Usuario tiene un rol, esto para no permitir que se le cambie el estado a inactivo
+            Integer rol = usuarioService.findIdRolById(usuario.get().getIdUsuario());
+            usuario.get().setIdRol(rol);
         }
         model.addAttribute("usuario", usuario.get());
         model.addAttribute("carreras", usuarioService.listarCarreras());
@@ -92,17 +96,23 @@ public class UsuarioController {
         if(!(usuario.getIdRol() == null || usuario.getIdRol()==0)){
             // En caso de que haya un cambio se verifica si no es el mismo rol que tiene el usuario
             if(!Objects.equals(usuario.getIdRol(), usuarioService.findIdRolById(usuario.getIdUsuario()))){
-                //En caso de que no sea el mismo rol, se actuliza el Rol del usuario
-                if(usuarioService.updateRol(usuario.getIdUsuario(), usuario.getIdRol())){
-                    resultado+="<div class='alert alert-success' role='alert'> El rol fue actulizado con exito </div>";
+                //Verificar si el usuario esta activo
+                if(usuario.getIdEstado() != 2){
+                    //En caso de que no sea el mismo rol, se actuliza el Rol del usuario
+                    if(usuarioService.updateRol(usuario.getIdUsuario(), usuario.getIdRol())){
+                        resultado+="<div class='alert alert-success' role='alert'> El rol fue actualizado con exito </div>";
+                    }else{
+                        resultado+= "<div class='alert alert-danger' role='alert'>Ha ocurrido un error al actualizar el rol </div>";
+                    }
                 }else{
-                    resultado+= "<div class='alert alert-danger' role='alert'>Ha ocurrido un error al actualizar el rol </div>";
+                    resultado+= "<div class='alert alert-danger' role='alert'>Ha ocurrido un error al actualizar el rol, el usuario esta inactivo </div>";
                 }
+
 
             }
         }
         if (editado) {
-            resultado+= "<div class='alert alert-success' role='alert'> La información fue actulizada con exito </div>";
+            resultado+= "<div class='alert alert-success' role='alert'> La información fue actualizada con exito </div>";
         }else{
             resultado+= "<div class='alert alert-danger' role='alert'>Ha ocurrido un error al actualizar la información </div>";
         }
