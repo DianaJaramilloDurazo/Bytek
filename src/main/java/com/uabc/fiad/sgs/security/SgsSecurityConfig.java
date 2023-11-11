@@ -86,7 +86,7 @@ public class SgsSecurityConfig   {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/index", true)
+                        .defaultSuccessUrl("/", true)
                         .permitAll()
                 );
         http
