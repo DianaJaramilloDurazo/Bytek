@@ -108,9 +108,13 @@
           <tr>
               <td colspan="2">IMPORTANTE: *Cuentas con 5 dias habiles para entregar el reporte de salida despues de la fecha de regreso*</td>
               <td>
-                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalCrearSolicitud">
+                  <button 
+                  		hx-get="/docente/get-registrar-solicitud-form"
+                    	hx-target="#modal-crear-solicitud-body"
+                  		class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalCrearSolicitud">
                       Crear nueva solicitud
                   </button>
+                  
               </td>
           </tr>
 
@@ -255,73 +259,20 @@
                   <h6 class="modal-title" id="ModalCrearSolicitudTitle">Nueva solicitud</h6>
               </div>
               <div class="modal-body">
-                  <form method="post" action="#" id="form_CrearSolicitud">
-                      <div>
-                          <div>
-                              <label>Nombre de la actividad o evento:</label>
-                              <input type="text" name="nombreEvento" id="nombreEvento" class="form-control">
-                          </div>
-                      </div>
-
-                      <div class="modalEditar">
-                          <div class="izquierda">
-                              <div>
-                                  <label>Costo del evento: $</label>
-                                  <input type="number" id="CostoEvento" class="form-control">
-                                  <label>Fecha de salida:</label>
-                                  <input type="date" id="fechaSalida" class="form-control">
-                                  <label>Fecha de regreso:</label>
-                                  <input type="date" id="fechaRegreso" class="form-control">
-                              </div>
-                          </div>
-                          <div class="derecha">
-                              <label>Lugar: </label>
-                              <input type="text" id="LugarEvento" class="form-control">
-                              <label>Hora de salida:</label>
-                              <input type="time" id="horaSalida" class="form-control">
-                              <label>Hora de regresp:</label>
-                              <input type="time" id="horaRegreso" class="form-control">
-                          </div>
-
-                      </div>
-                      <div class="checkbox">
-                          <label>Recurso a solicitar:</label><br>
-
-                          <input type="checkbox" id="Hospedaje_c"><span>Hospedaje</span>
-                          <input type="checkbox" id="Transporte_c" onclick="activarInput('Transporte_c','Transporte_v')">
-                          <span>Transporte: </span>
-                          <input type="text" id="Transporte_v" value="0" disabled>
-
-                          <input type="checkbox" id="Combustible_c" onclick="activarInput('Combustible_c','Combustible_v')">
-                          <span>Combustible: </span>
-                          <input type="text" id="Combustible_v" value="0" disabled>
-
-                          <input type="checkbox" id="Viatico_c">
-                          <span>Viáticos</span><br>
-                          <input type="checkbox" id="OficioComision_c"><span>Oficio comisón</span>
-
-                          <input type="checkbox" id="Otro_recurso_c" onclick="activarInput('Otro_recurso_c','Otro_recurso_v')">
-                          <span>Otro:</span>
-                          <input type="text" id="Otro_recurso_v" value="0" disabled>
-                          <br>
-                      </div>
-                      <div class="checkbox">
-                          <label>Actividad asociada a:</label>
-                          <input type="checkbox" id="CACEI"><span>CACEI</span>
-                          <input type="checkbox" id="Licenciatura"><span>Licenciatura</span>
-                          <input type="checkbox" id="Personal"><span>Personal</span>
-                          <input type="checkbox" id="ISO"><span>ISO 9001:2008</span>
-                          <input type="checkbox" id="Posgrado"><span>Posgrado</span><br>
-                          <input type="checkbox" id="Otra_actividadCheck" onclick="activarInput('Otra_actividadCheck','Otra_actividadDesc')">
-                          <label for="Otra_actividad" id="normText">Otra</label>
-                          <input type="text" id="Otra_actividadDesc" disabled>
-                      </div>
+                  <form hx-post="/docente/registrar"
+                  		hx-target="#result-msg"
+                  		>
+					  <div id="result-msg"></div>
+					  
+					  <div id="modal-crear-solicitud-body"></div>
+					  
+				  <div class="modal-footer">
+                  		<button type="button" class="btn btn-secondary" onclick="quitarModal(ModalCrearSolicitud)">Cerrar</button>
+                  		<button type="submit" class="btn btn-primary">Crear solicitud</button>
+              	  </div>
                   </form>
               </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" onclick="quitarModal(ModalCrearSolicitud)">Cerrar</button>
-                  <button type="button" class="btn btn-primary">Crear solicitud</button>
-              </div>
+
           </div>
       </div>
   </div>

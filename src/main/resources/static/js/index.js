@@ -77,3 +77,11 @@ function quitarModal(){
 	pwd.disabled = true;
 	editPerfil.style.display = "block";
 }
+
+function validarCampos(campo, idcampo){
+	var input = document.getElementById(idcampo);
+	if (input.value.trim() === "") {
+		// El input está vacío
+		input.value=campo;
+	}
+}

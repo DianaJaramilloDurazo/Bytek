@@ -17,7 +17,7 @@ public class Solicitud {
 
     private LocalDateTime fechaRegreso;
 
-    private float costo;
+    private Float costo;
 
     private String lugar;
 

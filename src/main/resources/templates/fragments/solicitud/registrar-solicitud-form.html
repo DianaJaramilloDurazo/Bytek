@@ -1,0 +1,72 @@
+<div th:fragment="registrar-solicitud-form">
+	<div>
+		<div>
+			<label>Nombre de la actividad o evento:</label>
+			<input type="text" id="nombreEvento" name="nombreEvento" class="form-control" required>
+			
+		</div>
+	</div>
+
+	<div class="modalEditar">
+		<div class="izquierda">
+			<div>
+				<label>Costo del evento: $</label>
+				<input type="number" id="costo" name="costo" class="form-control" required>
+				<label>Fecha de salida:</label>
+				<input type="date" id="fSalida" name="fSalida" class="form-control" required>
+				<label>Fecha de regreso:</label>
+				<input type="date" id="fRegreso" name="fRegreso" class="form-control" required>
+			</div>
+		</div>
+		<div class="derecha">
+			<label>Lugar: </label>
+			<input type="text" id="lugar" name="lugar" class="form-control" required>
+			<label>Hora de salida:</label>
+			<input type="time" id="horaSalida" name="horaSalida" class="form-control" required>
+			<label>Hora de regresp:</label>
+			<input type="time" id="horaRegreso" name="horaRegreso" class="form-control" required>
+		</div>
+
+	</div>
+	<label for="idCarrera">Carrera</label>
+	<select class="form-control " id="idCarrera" name="idCarrera" required>
+		<option value="0" selected>Selecciona una carrera</option>
+		<option th:each="carrera : ${carreras}" th:value="${carrera.idCarrera}" th:text="${carrera.Carrera_Nombre}">
+		</option>
+	</select>
+	<div class="checkbox">
+		<label>Recurso a solicitar:</label><br>
+
+		<input name="recursos" type="checkbox" id="Hospedaje_c" value="1"><span>Hospedaje</span>
+		<input name="recursos" type="checkbox" id="Transporte_c" value="2" onclick="activarInput('Transporte_c','Transporte_v')">
+		<span>Transporte: </span>
+		<input type="text" id="Transporte_v" value="0">
+
+		<input name="recursos" type="checkbox" id="Combustible_c" value="3"
+			onclick="activarInput('Combustible_c','Combustible_v')">
+		<span>Combustible: </span>
+		<input type="text" id="Combustible_v" value="0">
+
+		<input name="recursos" type="checkbox" id="Viatico_c" value="4">
+		<span>Viáticos</span><br>
+		<input name="recursos" type="checkbox" id="OficioComision_c" value="5"><span>Oficio comisón</span>
+
+		<input name="recursos" type="checkbox" id="Otro_recurso_c " value="6"
+			onclick="activarInput('Otro_recurso_c','Otro_recurso_v')">
+		<span>Otro:</span>
+		<input type="text" id="Otro_recurso_v" value="0">
+		<br>
+	</div>
+	<div class="checkbox">
+		<label>Actividad asociada a:</label>
+		<input name="actividades" value="1" type="checkbox" id="CACEI"><span>CACEI</span>
+		<input name="actividades"  value="2" type="checkbox" id="Licenciatura"><span>Licenciatura</span>
+		<input name="actividades"  value="3" type="checkbox" id="Personal"><span>Personal</span>
+		<input name="actividades"  value="4" type="checkbox" id="ISO"><span>ISO 9001:2008</span>
+		<input name="actividades"  value="5" type="checkbox" id="Posgrado"><span>Posgrado</span><br>
+		<input name="actividades"  value="6" type="checkbox" id="Otra_actividadCheck"
+			onclick="activarInput('Otra_actividadCheck','Otra_actividadDesc')">
+		<label for="Otra_actividad" id="normText">Otra</label>
+		<input type="text" id="Otra_actividadDesc" disabled>
+	</div>
+</div>
