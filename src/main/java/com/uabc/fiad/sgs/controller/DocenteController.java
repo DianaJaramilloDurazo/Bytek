@@ -87,7 +87,6 @@ public class DocenteController {
 		solicitud.setFechaRegreso(fechaRegreso.atTime(horaRegreso));
 		
 		// Se guarda la solicitud y se obtiene su id 
-		System.out.println(solicitudService.saveSolicitud(solicitud));
 		Integer idSolicitud = solicitudService.saveSolicitud(solicitud);
 		if(idSolicitud != 0) {
 			//Registrar Recursos 
