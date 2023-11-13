@@ -432,6 +432,42 @@ public class UsuarioService implements IUsuarioService {
             return Optional.of(roles.get(0));
         }
     }
+    
 
+	@Override
+	public Integer findIdRolByName(String rol) {
+		List<Integer> results = template.query("select r.idRol  from rol r where Rol_Descripcion = ?;", new Object[]{rol}, (rs, rowNum) -> rs.getInt("idRol"));
+
+        if (results.isEmpty()) {
+            return 0; // O si no se encuentra un resultado.
+        }
+
+        return results.get(0); // Devuelve el primer resultado
+	}
+
+	@Override
+	public Integer findIdRolByIdCarrera(Integer idCarrera) {
+		
+		List<Integer> results = template.query("select r.idRol  from rol r where Carrera_idCarrera = ?;", new Object[]{idCarrera}, (rs, rowNum) -> rs.getInt("idRol"));
+
+        if (results.isEmpty()) {
+            return 0; // O si no se encuentra un resultado.
+        }
+
+        return results.get(0); // Devuelve el primer resultado
+	}
+	
+	@Override
+	public String findNameRolById(Integer idRol) {
+		
+		List<String> results = template.query("select r.Rol_Descripcion  from rol r where idRol =?;", new Object[]{idRol}, (rs, rowNum) -> rs.getString("Rol_Descripcion"));
+
+        if (results.isEmpty()) {
+            return ""; // O si no se encuentra un resultado.
+        }
+
+        return results.get(0); // Devuelve el primer resultado
+	}
+	
 
 }

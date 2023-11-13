@@ -45,6 +45,10 @@ public interface IUsuarioService {
 
     Optional<Rol> findRolByCorreo(String correo);
 
-
+    Integer findIdRolByName(String rol);
+    
+    Integer findIdRolByIdCarrera(Integer idCarrera);
+    
+    String findNameRolById(Integer idrol);
 
 }

@@ -40,21 +40,20 @@
 		<input name="recursos" type="checkbox" id="Hospedaje_c" value="1"><span>Hospedaje</span>
 		<input name="recursos" type="checkbox" id="Transporte_c" value="2" onclick="activarInput('Transporte_c','Transporte_v')">
 		<span>Transporte: </span>
-		<input type="text" id="Transporte_v" value="0">
+		<input name="transporte" type="text" id="Transporte_v" value="0">
 
 		<input name="recursos" type="checkbox" id="Combustible_c" value="3"
 			onclick="activarInput('Combustible_c','Combustible_v')">
 		<span>Combustible: </span>
-		<input type="text" id="Combustible_v" value="0">
+		<!-- <input type="text" id="Combustible_v" value="0">-->
 
 		<input name="recursos" type="checkbox" id="Viatico_c" value="4">
 		<span>Viáticos</span><br>
-		<input name="recursos" type="checkbox" id="OficioComision_c" value="5"><span>Oficio comisón</span>
-
-		<input name="recursos" type="checkbox" id="Otro_recurso_c " value="6"
+		
+		<input name="recursos" type="checkbox" id="Otro_recurso_c " value="5"
 			onclick="activarInput('Otro_recurso_c','Otro_recurso_v')">
 		<span>Otro:</span>
-		<input type="text" id="Otro_recurso_v" value="0">
+		<input name="otroRecurso" type="text" id="Otro_recurso_v" value="0">
 		<br>
 	</div>
 	<div class="checkbox">
@@ -62,11 +61,12 @@
 		<input name="actividades" value="1" type="checkbox" id="CACEI"><span>CACEI</span>
 		<input name="actividades"  value="2" type="checkbox" id="Licenciatura"><span>Licenciatura</span>
 		<input name="actividades"  value="3" type="checkbox" id="Personal"><span>Personal</span>
-		<input name="actividades"  value="4" type="checkbox" id="ISO"><span>ISO 9001:2008</span>
+		<input name="actividades"  value="4" type="checkbox" id="ISO"><span>Sistema de Gestión de Calidad</span>
 		<input name="actividades"  value="5" type="checkbox" id="Posgrado"><span>Posgrado</span><br>
 		<input name="actividades"  value="6" type="checkbox" id="Otra_actividadCheck"
 			onclick="activarInput('Otra_actividadCheck','Otra_actividadDesc')">
 		<label for="Otra_actividad" id="normText">Otra</label>
-		<input type="text" id="Otra_actividadDesc" disabled>
+		<input name="otroActividad" type="text" id="Otra_actividadDesc" disabled>
 	</div>
+	<br>
 </div>
