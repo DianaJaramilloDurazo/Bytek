@@ -1,9 +1,9 @@
 package com.uabc.fiad.sgs.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 
+import com.uabc.fiad.sgs.DTO.UsuarioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -19,7 +19,67 @@ public class SolicitudService implements ISolicitudService{
     @Autowired
     private JdbcTemplate template;
 
-    /**
+	@Override
+	public List<Solicitud> findByUserId(Integer userId) {
+		return template.query(
+				"""
+                select *
+                from solicitud s
+                left join estado_solicitud es
+                on s.idEstado_Solicitud = es.idEstado_Solicitud
+                where s.idUsuario = ?;
+                """,
+				(rs, rowNum) ->
+						new Solicitud(
+								rs.getInt("idSolicitud"),
+								rs.getString("Nombre_Evento"),
+								rs.getObject("Fecha_Salida", LocalDateTime.class),
+								rs.getObject("Fecha_Regreso", LocalDateTime.class),
+								rs.getFloat("Costo"),
+								rs.getString("Lugar"),
+								rs.getString("Reporte_Final"),
+								rs.getInt("idUsuario"),
+								rs.getInt("idCarrera"),
+								rs.getString("DescripcionEstado")
+						),
+				userId
+		);
+	}
+
+	@Override
+	public Optional<Solicitud> findById(Integer id) {
+		List<Solicitud> solicitudes = template.query(
+				"""
+                select *
+                from solicitud s
+                left join estado_solicitud es
+                on s.idEstado_Solicitud = es.idEstado_Solicitud
+                where s.idSolicitud = ?;
+                """,
+				(rs, rowNum) ->
+						new Solicitud(
+								rs.getInt("idSolicitud"),
+								rs.getString("Nombre_Evento"),
+								rs.getObject("Fecha_Salida", LocalDateTime.class),
+								rs.getObject("Fecha_Regreso", LocalDateTime.class),
+								rs.getFloat("Costo"),
+								rs.getString("Lugar"),
+								rs.getString("Reporte_Final"),
+								rs.getInt("idUsuario"),
+								rs.getInt("idCarrera"),
+								rs.getString("DescripcionEstado")
+						),
+				id
+		);
+
+		if (solicitudes.size() == 0) {
+			return Optional.empty();
+		} else {
+			return Optional.of(solicitudes.get(0));
+		}
+	}
+
+	/**
      * Guarda una solicitud de salida
      * @param solicitud  Solicitud a guardar
      * @return           id de la Solicitud a guardar

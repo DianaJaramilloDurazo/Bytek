@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <div th:replace="fragments/layout :: head(title='Principal')">
+    <div th:replace="~{fragments/layout :: head(title='Principal')}">
 
     </div>
     <link rel="stylesheet" href="/css/Inicio.css">
@@ -100,7 +100,12 @@
               <td th:text="${sol.estadoSolicitud}"></td>
               <td>
 <!--                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalEditarSolicitud">Editar</button>-->
-<!--                  <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo">ver +</button>-->
+<!--                  <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo"-->
+<!--                          th:hx-get="'/solicitud?id=' + ${sol.getIdSolicitud}"-->
+<!--                          hx-target="#solicitud-info-body"-->
+<!--                  >-->
+<!--                      ver +-->
+<!--                  </button>-->
 <!--                  <button class="btn btn-warning" id="btn_eliminarslc">x</button>-->
               </td>
 
@@ -134,113 +139,8 @@
                   </h5>
 
               </div>
-              <div class="modal-body">
-                  <div class="cont_Formato">
+              <div class="modal-body" id="solicitud-info-body">
 
-                      <div class="izquierda">
-                          <div >
-                              <label class="txt_Nombre">Nombre: </label>
-                              <span id="slc_Nombre">Edgar Nava Hernandez</span>
-                          </div>
-
-                          <div >
-                              <label class="txt_Categoria">Categoria: </label>
-                              <span id="slc_Categoria">Profesor de asignatura</span>
-                          </div>
-
-                          <div >
-                              <label class="txt_Costo">Costo del evento: $ </label>
-                              <span id="slc_Costo">0</span>
-                          </div>
-
-                          <div >
-                              <label class="txt_FechaSalida">Fecha y hora de salida: </label>
-                              <span id="slc_FechaSalida">02/11/2023 01:25pm</span>
-                          </div>
-
-                      </div>
-                      <div class="derecha">
-                          <div >
-                              <label class="txt_NumEmpleado">No Empleado: </label>
-                              <span id="slcNumEmpleado">12345</span>
-                          </div>
-
-                          <div >
-                              <label class="txt_Carrera">Carrera: </label>
-                              <span id="slc_carrera">Ingeniería en computación</span>
-                          </div>
-
-                          <div >
-                              <label class="txt_Lugar">Lugar: </label>
-                              <span id="slc_Lugar">Tecate, Baja California</span>
-                          </div>
-
-                          <div >
-                              <label class="txt_FechaRegreso">Fecha y hora de Regreso </label>
-                              <span id="slc_FechaRegreso">03/11/2023 01:25pm</span>
-                          </div>
-                      </div>
-                      <div class="completo">
-                          <form id="form_verInfo" method="post" action="#">
-                              <div >
-                                  <label>Recurso a solicitar:</label><br>
-
-                                  <input type="checkbox" id="Hospedaje_c" disabled checked><span>Hospedaje</span>
-                                  <input type="checkbox" id="Transporte_c" onclick="activarInput('Transporte_c','Transporte_v')" disabled>
-                                  <span>Transporte: </span>
-                                  <input type="text" id="Transporte_v" value="0" disabled>
-
-                                  <input type="checkbox" id="Combustible_c" onclick="activarInput('Combustible_c','Combustible_v')" disabled>
-                                  <span>Combustible: </span>
-                                  <input type="text" id="Combustible_v" value="0" disabled>
-
-                                  <input type="checkbox" id="Viatico_c" disabled>
-                                  <span>Viáticos</span><br>
-                                  <input type="checkbox" id="OficioComision_c" disabled><span>Oficio comisón</span>
-
-                                  <input type="checkbox" id="Otro_recurso_c" onclick="activarInput('Otro_recurso_c','Otro_recurso_v')" disabled>
-                                  <span>Otro:</span>
-                                  <input type="text" id="Otro_recurso_v" value="0" disabled>
-                                  <br>
-                              </div>
-                              <div>
-                                  <label>Actividad asociada a:</label><br>
-                                  <label for="CACEI" id="normText">CACEI</label>
-                                  <input type="checkbox" id="CACEI" value="CACEI" disabled>
-                                  <label for="Licenciatura" id="normText">Licenciatura</label>
-                                  <input type="checkbox" id="Licenciatura" value="Licenciatura" disabled>
-                                  <label for="Personal" id="normText">Personal</label>
-                                  <input type="checkbox" id="Personal" value="Personal" disabled>
-                                  <label for="ISO 9001:2008" id="normText">ISO 9001:2008</label>
-                                  <input type="checkbox" id="ISO 9001:2008" value="ISO 9001:2008" disabled>
-                                  <label for="Posgrado" id="normText">Posgrado</label>
-                                  <input type="checkbox" id="Posgrado" value="Posgrado" disabled>
-                                  <div class="Recursos">
-                                      <label for="Otra" id="normText">Otra:</label>
-                                      <span id="otra">Otra</span>
-                                  </div>
-
-                              </div>
-                              <div>
-                                  <label>Firmas:</label><br>
-                                  <label for="Profesor" id="normText">Profesor</label>
-                                  <input type="checkbox" id="Profesor" value="Profesor" checked disabled>
-                                  <label for="Coordinador" id="normText">Coordinador</label>
-                                  <input type="checkbox" id="Coordinador" value="Coordinador" disabled>
-                                  <label for="subdirector" id="normText">Subdirector</label>
-                                  <input type="checkbox" id="subdirector" value="subdirector" disabled>
-                                  <label for="Administrador" id="normText">Administrador</label>
-                                  <input type="checkbox" id="Administrador" value="Administrador" disabled>
-                                  <div>
-                                      <label for="Director" id="normText">Director</label>
-                                      <input type="checkbox" id="Director" value="Director" disabled>
-                                      <label for="Posgrado" id="normText">Posgrado</label>
-                                      <input type="checkbox" id="Posgrado" value="Posgrado" disabled>
-                                  </div>
-                              </div>
-                          </form>
-                      </div>
-                  </div>
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" onclick="quitarModal(ModalSolicitudInfo)">Cerrar</button>

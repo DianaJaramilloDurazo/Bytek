@@ -1,17 +1,30 @@
 package com.uabc.fiad.sgs.controller;
 
 import com.uabc.fiad.sgs.entity.Solicitud;
+import com.uabc.fiad.sgs.entity.Usuario;
+import com.uabc.fiad.sgs.service.ISolicitudService;
+import com.uabc.fiad.sgs.service.IUsuarioService;
+import com.uabc.fiad.sgs.utils.SessionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
 public class HomeController {
+
+    @Autowired
+    private ISolicitudService solicitudService;
+
+    @Autowired
+    private IUsuarioService usuarioService;
 
     /**
      * Muestra la pantalla inicial del sistema
@@ -21,48 +34,13 @@ public class HomeController {
     @GetMapping("")
     public String home(Model model) {
 
-        // Solicitudes de prueba
         // Obtener lista de solicitudes
-        ArrayList<Solicitud> solicitudes = new ArrayList<>();
-        solicitudes.add(new Solicitud(
-                1,
-                "Visita a SoftTek",
-                LocalDateTime.now().minusDays(5),
-                LocalDateTime.now(),
-                500.0f,
-                "SoftTek",
-                null,
-                1,
-                1,
-                "Pendiente"
-        ));
+        Usuario u = SessionUtils.getUsuario(usuarioService);
+        if (u == null) {
+            return "redirect:/login";
+        }
 
-        solicitudes.add(new Solicitud(
-                2,
-                "Reunión con Clientes",
-                LocalDateTime.now().minusDays(3),
-                LocalDateTime.now(),
-                300.0f,
-                "Clientes",
-                null,
-                2,
-                2,
-                "Firma Parcial"
-        ));
-
-        // Tercera solicitud
-        solicitudes.add(new Solicitud(
-                3,
-                "Capacitación Interna",
-                LocalDateTime.now().minusDays(2),
-                LocalDateTime.now(),
-                200.0f,
-                "Departamento de Recursos Humanos",
-                null,
-                3,
-                3,
-                "Reporte Pendiente"
-        ));
+        List<Solicitud> solicitudes = solicitudService.findByUserId(u.getIdUsuario());
 
         model.addAttribute("solicitudes", solicitudes);
 
