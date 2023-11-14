@@ -8,6 +8,8 @@ import com.uabc.fiad.sgs.service.IUsuarioService;
 import com.uabc.fiad.sgs.service.UsuarioService;
 import com.uabc.fiad.sgs.utils.SessionUtils;
 
+import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -68,6 +70,7 @@ public class DocenteController {
 	 */
 	@PostMapping(value = "/registrar", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
 	@ResponseBody
+	@HxTrigger("resetForm")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public String registrarSolicitud(Solicitud solicitud,
 			@RequestParam(value = "fSalida") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaSalida,
