@@ -79,7 +79,7 @@ var recursos = document.getElementsByName('recursos');
 	  alertaActividad.style.display = 'block';
   }
   if(actvidadSeleccionada && recursoSeleccionado){
-	  boton.click();
+	  mostrarModal();
   }
 
 }
