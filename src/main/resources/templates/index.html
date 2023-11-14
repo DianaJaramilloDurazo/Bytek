@@ -152,30 +152,42 @@
 
   <!--MODAL CREAR SOLICITUD-->
   <!-- Modal -->
-  <div class="modal fade" id="ModalCrearSolicitud" tabindex="-1" role="dialog" aria-labelledby="ModalCrearSolicitudTitle" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h6 class="modal-title" id="ModalCrearSolicitudTitle">Nueva solicitud</h6>
-              </div>
-              <div class="modal-body">
-                  <form hx-post="/docente/registrar"
-                  		hx-target="#result-msg"
-                  		>
+  
+ <!--MODAL CREAR SOLICITUD-->
+ <!-- Modal -->
+         <div
+            hx-swap="outerHTML"
+            hx-trigger="resetForm from:body"
+            hx-get="/docente/get-registrar-solicitud-form"
+            hx-target="#modal-crear-solicitud-body"
+            >
+       </div>
+ <div class="modal fade" id="ModalCrearSolicitud" tabindex="-1" role="dialog" aria-labelledby="ModalCrearSolicitudTitle" aria-hidden="true">
+     <div class="modal-dialog modal-lg" role="document">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h6 class="modal-title" id="ModalCrearSolicitudTitle">Nueva solicitud</h6>
+             </div>
+             <div class="modal-body">
+                 <form hx-post="/docente/registrar"
+                 		hx-target="#result-msg"
+                 		id="crearSolictud"
+                 		>
 					  <div id="result-msg"></div>
-					  
+					 
 					  <div id="modal-crear-solicitud-body"></div>
-					  
-				  <div class="modal-footer">
-                  		<button type="button" class="btn btn-secondary" onclick="quitarModal(ModalCrearSolicitud)">Cerrar</button>
-                  		<button type="submit" class="btn btn-primary">Crear solicitud</button>
-              	  </div>
-                  </form>
-              </div>
+				
+					        <button hidden id="crearSolicitud" type="submit" ></button>
+                 </form>
+                 <div class="modal-footer">
+						<button type="button"  class="btn btn-secondary" onclick="quitarModal(ModalCrearSolicitud)">Cerrar</button>
+                 		<button onclick="validarForm()"  id="buttonCrearSolicitud" class="btn btn-primary">Crear solicitud</button>
+             	  </div>
+             </div>
+         </div>
+     </div>
+ </div>
 
-          </div>
-      </div>
-  </div>
   <!--FIN MODAL CREAR SOLICITUD-->
 
   <!--MODAL EDITAR SOLICITUD-->

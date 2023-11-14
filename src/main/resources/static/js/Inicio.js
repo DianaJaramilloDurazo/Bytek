@@ -36,3 +36,50 @@ function activarInput(checkboxid,inputid) {
         input.disabled = true;
       }
     }
+   
+   // Función para mostrar el modal
+function mostrarModal() {
+	var modal = document.getElementById("miModal");
+	modal.style.display = "block";
+}
+
+// Función para cerrar el modal
+function cerrarModal() {
+	var modal = document.getElementById("miModal");
+	modal.style.display = "none";
+}  
+
+var boton = document.getElementById('crearSolicitud');
+function validarForm(){
+var recursos = document.getElementsByName('recursos');
+  var checkboxes = document.getElementsByName('actividades');
+  var actvidadSeleccionada = false;
+  var recursoSeleccionado = false;
+  // Verifica si al menos uno de los checkboxes está seleccionado
+  for (var i = 0; i < checkboxes.length; i++) {
+    if (checkboxes[i].checked) {
+      actvidadSeleccionada = true;
+      break;
+    }
+  }
+  // Verifica si al menos uno de los checkboxes está seleccionado
+  for (var i = 0; i < recursos.length; i++) {
+    if (recursos[i].checked) {
+      recursoSeleccionado = true;
+      break;
+    }
+  }
+  // Muestra un mensaje si no hay ningún checkbox seleccionado
+  if (!recursoSeleccionado) {
+      var alertaRecurso = document.getElementById('recurso-alert');
+	  alertaRecurso.style.display = 'block';
+  }
+  if(!actvidadSeleccionada){
+	  var alertaActividad = document.getElementById('actividad-alert');
+	  alertaActividad.style.display = 'block';
+  }
+  if(actvidadSeleccionada && recursoSeleccionado){
+	  boton.click();
+  }
+
+}
