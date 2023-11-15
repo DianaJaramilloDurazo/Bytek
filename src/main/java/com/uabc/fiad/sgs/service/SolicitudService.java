@@ -46,7 +46,8 @@ public class SolicitudService implements ISolicitudService{
 								rs.getString("Reporte_Final"),
 								rs.getInt("idUsuario"),
 								rs.getInt("idCarrera"),
-								rs.getString("DescripcionEstado")
+								rs.getString("DescripcionEstado"),
+								rs.getInt("idEstado_Solicitud")
 						),
 				userId
 		);
@@ -78,7 +79,8 @@ public class SolicitudService implements ISolicitudService{
 								rs.getString("Reporte_Final"),
 								rs.getInt("idUsuario"),
 								rs.getInt("idCarrera"),
-								rs.getString("DescripcionEstado")
+								rs.getString("DescripcionEstado"),
+								rs.getInt("idEstado_Solicitud")
 						),
 				id
 		);
@@ -177,7 +179,7 @@ public class SolicitudService implements ISolicitudService{
 	/**
      * Guarda una solicitud de salida
      * @param solicitud  Solicitud a guardar
-     * @return           id de la Solicitud a guardar
+     * @return           id de la Solicitud registrada
      */
 	@Override
 	public Integer saveSolicitud(Solicitud solicitud) {
@@ -200,7 +202,13 @@ public class SolicitudService implements ISolicitudService{
         System.out.println(resMap);
         return idSolicitud;
 	}
-	
+
+	/**
+	 * Guardo los recursos solicitados en la solicitud
+	 * @param idSolicitud	id de la solicitud
+	 * @param idRecurso		id de los recursos solicitidos
+	 * @param detalle		detalle del recurso solo si es necesario especificarlo
+	 */
 	@Override
 	public void saveRecurso(Integer idSolicitud, Integer idRecurso, String detalle) {
 		if(detalle == null) {
@@ -214,6 +222,12 @@ public class SolicitudService implements ISolicitudService{
 		
 	}
 
+	/**
+	 * Guarda las actividades relacionadas a la actividad
+	 * @param idSolicitud	id de la solicitud
+	 * @param idAtividad	id de las actividades a realizar
+	 * @param detalle		detalle de la actividad solo si es necesario especificarlo (otro)
+	 */
 	@Override
 	public void saveActividad(Integer idSolicitud, Integer idAtividad, String detalle) {
 		if(detalle == null) {
@@ -227,6 +241,11 @@ public class SolicitudService implements ISolicitudService{
 		}
 	}
 
+	/**
+	 * Registra las firmas requeridas en la solicitud, de acuerdo al usuario
+	 * @param idSolicitud	id la solcitud
+	 * @param firmas		lista de las firmas requeridas (id de los usuarios a firmar)
+	 */
 	@Override
 	public void saveFirmas(Integer idSolicitud, List<Integer> firmas) {
 		String sql = "INSERT INTO firmas_solicitud (idSolicitud, idRol) VALUES(?,?);";
@@ -234,6 +253,26 @@ public class SolicitudService implements ISolicitudService{
 			template.update(sql,idSolicitud,firma);
 		}
 		
+	}
+
+	/**
+	 * Cambia el estado de una solicitud a cancelado
+	 * @param idSolicitud	id de la solcitud a cancelar
+	 * @return				si se registró o no la solicitud
+	 */
+	@Override
+	public Boolean cancelarSolicitud(Integer idSolicitud) {
+        String sql = "UPDATE solicitud SET idEstado_Solicitud  = 8 WHERE idSolicitud = ?";
+
+        int filasAfectadas = template.update(sql,idSolicitud);
+
+        if (filasAfectadas > 0) {
+            System.out.println("La actualización se realizó con éxito.");
+            return true;
+        } else {
+            System.out.println("No se encontraron filas que cumplan con la condición.");
+            return false;
+        }
 	}
 
 }

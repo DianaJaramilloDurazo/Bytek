@@ -28,4 +28,6 @@ public class Solicitud {
     private Integer idCarrera;
 
     private String estadoSolicitud;
+    
+    private Integer idEstadoSolicitud;
 }

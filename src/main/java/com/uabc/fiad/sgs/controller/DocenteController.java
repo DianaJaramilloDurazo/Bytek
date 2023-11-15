@@ -47,7 +47,6 @@ public class DocenteController {
 	 */
 	@GetMapping("/get-registrar-solicitud-form")
 	public String getForm(Model model) {
-		System.out.println("Golaa");
 		model.addAttribute("carreras", usuarioService.listarCarreras());
 		return "fragments/solicitud/registrar-solicitud-form :: registrar-solicitud-form";
 	}
@@ -166,6 +165,26 @@ public class DocenteController {
 			return "<div class='alert alert-success' role='alert'> La solicitud fue creada </div>";
 		}		
 		return "<div class='alert alert-danger' role='alert'>Ha ocurrido un error al crear la solicitud </div>>";
+	}
+	
+	/**
+	 * Cancelar una solictud
+	 * @param idSolicitud	id de la solcitud a cancelar 
+	 * @return				Respuesta sobre si se cancelo la solicitud o no
+	 */
+	@PostMapping(value = "/cancelar", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
+	@ResponseBody
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public String CancelarSolicitud(@RequestParam(value = "solicitudCancelar", required = false) Integer idSolicitud) {
+		
+		System.out.print(idSolicitud);
+		if(idSolicitud != null) {
+			Boolean cancelada = solicitudService.cancelarSolicitud(idSolicitud);
+			if(cancelada) {
+				return "<div class='alert alert-success' role='alert'> La solicitud fue cancelada </div>";
+			}
+		}
+		return "<div class='alert alert-danger' role='alert'> Ha ocurrido un error al intentar cancelar la solcitud </div>";
 	}
 
 }

@@ -83,3 +83,18 @@ var recursos = document.getElementsByName('recursos');
   }
 
 }
+const myDiv = document.getElementById('result-cancelar');
+// Crea una instancia de MutationObserver
+const observer = new MutationObserver((mutationsList, observer) => {
+	// Se ejecutará cada vez que haya un cambio en el div
+	console.log("Hubo cambios");
+	setTimeout(function() {
+		// Elimina el elemento
+		myDiv.innerHTML = "";
+	}, 3000); // 3000 milisegundos = 3 segundos
+});
+// Configura las opciones para observar cambios en el contenido del div
+const config = { childList: true };
+
+// Inicia la observación del div con las opciones configuradas
+observer.observe(myDiv, config);

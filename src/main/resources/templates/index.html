@@ -83,7 +83,9 @@
 
   </div>
   <div class="separadordetablas" id="opc1"></div>
+
   <div class="solicitudContenedor" sec:authorize="hasAnyRole('ROLE_DOCENTE')"><!--CONTENEDOR TABLA SOLICITUDES DE SALIDA-->
+      <div id="result-cancelar"></div>
       <h4>Mis solicitudes de salida</h4>
       <table class="table">
           <thead class="table-bordered"><!--ENCABEZADO DE LA TABLA-->
@@ -106,8 +108,12 @@
                   >
                       ver +
                   </button>
+                  <button  id="btn_eliminarslc"
+                  th:disabled="${sol.idEstadoSolicitud == 5 or sol.idEstadoSolicitud == 6 or sol.idEstadoSolicitud == 8}"
+                  th:onclick="'document.getElementById(\'solicitudCancelar\').value = ' + ${sol.getIdSolicitud}"
+                  type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalCancelar">x</button>
 <!--                  <button class="btn btn-warning" id="btn_eliminarslc">x</button>-->
-              </td>
+              </td>				
 
           </tr>
           <tr>
@@ -150,8 +156,34 @@
   </div>
   <!--FIN MODAL VER SOLICITUD INFO-->
 
-  <!--MODAL CREAR SOLICITUD-->
-  <!-- Modal -->
+  <!--MODAL CANCELAR SOLICITUD-->
+<!-- Modal -->
+<div class="modal fade" id="modalCancelar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Cancelar Solicitud</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Desea cancelar esta solicitud? 
+      </div>
+      <form
+      	hx-post="/docente/cancelar"
+      	hx-target="#result-cancelar"
+      	hx-swap="innerHTML"
+      >
+		<div class="modal-footer">
+			<input type="number" name="solicitudCancelar" id="solicitudCancelar" hidden>
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+	        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Confirmar</button>
+      	</div>
+	  </form>
+
+    </div>
+  </div>
+</div>
+  <!-- FIN MODAL CANCELAR SOLICITUD -->
   
  <!--MODAL CREAR SOLICITUD-->
  <!-- Modal -->
