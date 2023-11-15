@@ -19,6 +19,12 @@ public class SolicitudService implements ISolicitudService{
     @Autowired
     private JdbcTemplate template;
 
+	/**
+	 * Función para regresar todas las solicitudes de salida creadas por
+	 * el usuario con la id indicada
+	 * @param userId    la id del usuario
+	 * @return          lista con las solicitudes de salida del usuario
+	 */
 	@Override
 	public List<Solicitud> findByUserId(Integer userId) {
 		return template.query(
@@ -46,6 +52,11 @@ public class SolicitudService implements ISolicitudService{
 		);
 	}
 
+	/**
+	 * Encuentra una solicitud mediante su id
+	 * @param id    la id de la solicitud
+	 * @return      la solicitud encontrada
+	 */
 	@Override
 	public Optional<Solicitud> findById(Integer id) {
 		List<Solicitud> solicitudes = template.query(
@@ -77,6 +88,90 @@ public class SolicitudService implements ISolicitudService{
 		} else {
 			return Optional.of(solicitudes.get(0));
 		}
+	}
+
+	/**
+	 * Lista los recursos existentes, junto con una bandera indicando si está
+	 * registrado en la solicitud de salida y los detalles en caso de que sí.
+	 * @param id    la id de la solicitud
+	 * @return      una lista de mapas con la descripción de cada recurso (desc),
+	 *              si está registrado (registrado) y los detalles (detalles)
+	 */
+	@Override
+	public List<Map<String, Object>> listarRecursos(Integer id) {
+		List<Map<String, Object>> res = template.queryForList(
+				"""
+                select r.Rec_Descripcion, sr.idSolicitudRecursos, sr.Detalles
+                from recursos r
+                left outer join (select * from solicitud_recursos sr where sr.idSolicitud = ?) sr
+                on sr.idRecursos = r.idRecursos;
+                """,
+				id
+		);
+
+		List<Map<String, Object>> recursos = new ArrayList<>();
+		for (Map<String, Object> r : res) {
+			Map<String, Object> rec = new HashMap<>();
+			rec.put("desc", r.get("Rec_Descripcion"));
+			rec.put("registrado", r.get("idSolicitudRecursos") != null);
+			rec.put("detalles", r.get("Detalles"));
+			recursos.add(rec);
+		}
+
+		return recursos;
+	}
+
+	/**
+	 * Lista las actividades asociadas, junto con una bandera indicando si está
+	 * registrado en la solicitud de salida y la descripción en caso de que sí.
+	 * @param id    la id de la solicitud
+	 * @return      una lista de mapas con el nombre de cada actividad (nombre),
+	 *              si está registrado (registrado) y la descripción (desc)
+	 */
+	@Override
+	public List<Map<String, Object>> listarActividadesAsociadas(Integer id) {
+		List<Map<String, Object>> res = template.queryForList(
+				"""
+                select aa.Act_Nombre, aas.Descripcion, aas.Act_asociada_idAct_Asociada
+                from act_asociada aa\s
+                left outer join (select * from act_asociada_solicitud aas where aas.Solicitud_idSolicitud = ?) aas
+                on aas.Act_asociada_idAct_Asociada = aa.idAct_Asociada;
+                """,
+				id
+		);
+
+		List<Map<String, Object>> recursos = new ArrayList<>();
+		for (Map<String, Object> r : res) {
+			Map<String, Object> rec = new HashMap<>();
+			rec.put("nombre", r.get("Act_Nombre"));
+			rec.put("desc", r.get("Descripcion"));
+			rec.put("registrado", r.get("Act_asociada_idAct_Asociada") != null);
+			recursos.add(rec);
+		}
+
+		return recursos;
+	}
+
+	/**
+	 * Lista las firmas que necesita una solicitud, junto con el usuario que la firmó
+	 * en caso de que esté firmada
+	 *
+	 * @param id la solicitud de la cual consultar sus firmas
+	 * @return lista con mapas de las firmas, con llaves: rol, rol a firmar;
+	 * usuario, id del usuario que firmó, o nulo si no hay firma;
+	 */
+	@Override
+	public List<Map<String, Object>> listarFirmas(Integer id) {
+		return template.queryForList(
+				"""
+                select r.Rol_Descripcion as rol, fs.idUsuario as usuario
+                from firmas_solicitud fs
+                join rol r\s
+                on fs.idRol = r.idRol
+                where fs.idSolicitud = ?;
+                """,
+				id
+		);
 	}
 
 	/**
