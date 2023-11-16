@@ -9,7 +9,7 @@
         <div class="col">
             <div >
                 <label class="txt_Nombre">Nombre: </label>
-                <span id="slc_Nombre" th:text="${usuario.username}"></span>
+                <span id="slc_Nombre" th:text="${usuario.username} + ' ' + ${usuario.apPaterno} + ' ' + ${usuario.apMaterno}"></span>
             </div>
 
             <div >

@@ -142,7 +142,42 @@ public class SolicitudService implements ISolicitudService {
 				join rol r\s
 				on fs.idRol = r.idRol
 				where fs.idSolicitud = ?;
-				""", id);
+				""",
+				id);
+	}
+
+	/**
+	 * Lista todas las solicitudes que requieren la firma del usuario con la id indicada.
+	 * @param rolId		la id del rol a consultar sus firmas
+	 * @return          lista solicitudes pendientes por firmar por el usuario
+	 */
+	@Override
+	public List<Solicitud> listarSolicitudesPendientes(Integer rolId) {
+		return template.query(
+				"""
+				select s.*, es.DescripcionEstado\s
+				from solicitud s
+				right join firmas_solicitud fs\s
+				on s.idSolicitud = fs.idSolicitud
+				left join estado_solicitud es
+				on s.idEstado_Solicitud = es.idEstado_Solicitud
+				where fs.idRol = ? and fs.idUsuario is null;
+				""",
+				(rs, rowNum) ->
+						new Solicitud(
+								rs.getInt("idSolicitud"),
+								rs.getString("Nombre_Evento"),
+								rs.getObject("Fecha_Salida", LocalDateTime.class),
+								rs.getObject("Fecha_Regreso", LocalDateTime.class),
+								rs.getFloat("Costo"),
+								rs.getString("Lugar"),
+								rs.getString("Reporte_Final"),
+								rs.getInt("idUsuario"),
+								rs.getInt("idCarrera"),
+								rs.getString("DescripcionEstado")
+						),
+				rolId
+		);
 	}
 
 	/**

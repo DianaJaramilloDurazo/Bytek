@@ -38,7 +38,7 @@
       </div>
 
 
-      <div class="item2" id="item2" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR')">
+      <div class="item2" id="item2" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR', 'ROLE_DIRECTOR')">
           <div class="card">
               <div class="card-body ">
                   <h5 class="card-title card-header">Subir reporte</h5>
@@ -59,7 +59,7 @@
           </div>
       </div>
 
-      <div class="item3" id="item3" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR')">
+      <div class="item3" id="item3" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR', 'ROLE_DIRECTOR')">
           <div class="card">
               <div class="card-body">
                   <h5 class="card-title card-header">Firmar reportes</h5>
@@ -265,7 +265,7 @@
 
   <!--CONTENEDOR TABLA SOLICITUDES POR FIRMAR-->
 
-  <div class="solicitudContenedor" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR')">
+  <div class="solicitudContenedor" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR', 'ROLE_DIRECTOR')">
       <h4>Solicitudes pendientes por firmar</h4>
       <table class="table">
           <thead class="table-bordered"><!--ENCABEZADO DE LA TABLA-->
@@ -278,36 +278,22 @@
           </thead><!--FIN ENCABEZADO DE TABLA-->
 
           <tbody><!--CUERPO DE LA TABLA-->
-          <tr>
-              <td>Evento 1</td>
-              <td>Edgar Nava Hernandez</td>
-              <td>12345</td>
+          <tr th:each="sol, iter : ${solicitudes_pendientes}">
+
+              <td th:text="${sol.nombreEvento}"></td>
+              <td th:text="${usuarios_firmar[iter.index].username} + ' ' + ${usuarios_firmar[iter.index].apPaterno} + ' ' + ${usuarios_firmar[iter.index].apMaterno}"></td>
+              <td th:text="${usuarios_firmar[iter.index].numEmpleado}"></td>
               <td>
-                  <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo">ver +</button>
-                  <button class="btn btn-primary" id="btn_Firmar">Firmar</button>
-                  <button class="btn btn-warning" id="btn_Firmar">Rechazar</button>
+                  <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo"
+                          th:hx-get="'/solicitud?id=' + ${sol.getIdSolicitud}"
+                          hx-target="#solicitud-info-body"
+                  >
+                      ver +
+                  </button>
+<!--                  <button class="btn btn-primary" id="btn_Firmar">Firmar</button>-->
+<!--                  <button class="btn btn-warning" id="btn_Firmar">Rechazar</button>-->
               </td>
 
-          </tr>
-          <tr>
-              <td>Evento 2</td>
-              <td>Edgar Nava Hernandez</td>
-              <td>12345</td>
-              <td>
-                  <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo">ver +</button>
-                  <button class="btn btn-primary" id="btn_Firmar">Firmar</button>
-                  <button class="btn btn-warning" id="btn_Firmar">Rechazar</button>
-              </td>
-          </tr>
-          <tr>
-              <td>Evento 3</td>
-              <td>Edgar Nava Hernandez</td>
-              <td>12345</td>
-              <td>
-                  <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo">ver +</button>
-                  <button class="btn btn-primary" id="btn_Firmar">Firmar</button>
-                  <button class="btn btn-warning" id="btn_Firmar">Rechazar</button>
-              </td>
           </tr>
           </tbody><!--FIN CUERPO TABLA-->
       </table>
@@ -315,7 +301,7 @@
 
   <div class="separadordetablas" id="opc3"></div><!--NO QUITAR LO USO PARA QUE SE ACOMODEN BIEN LAS VISTAS AL USAR LA BARRA DE NAVEGACION-->
 
-  <div class="reporteSalida" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR')">
+  <div class="reporteSalida" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR', 'ROLE_DIRECTOR')">
       <h4>Reportes de salida pendientes</h4>
       <table class="table">
           <thead class="table-bordered"><!--ENCABEZADO DE LA TABLA-->
