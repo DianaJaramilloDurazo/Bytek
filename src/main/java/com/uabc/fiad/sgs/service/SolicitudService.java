@@ -155,9 +155,9 @@ public class SolicitudService implements ISolicitudService {
 	public List<Solicitud> listarSolicitudesPendientes(Integer rolId) {
 		return template.query(
 				"""
-				select s.*, es.DescripcionEstado\s
+				select s.*, es.DescripcionEstado
 				from solicitud s
-				right join firmas_solicitud fs\s
+				right join firmas_solicitud fs
 				on s.idSolicitud = fs.idSolicitud
 				left join estado_solicitud es
 				on s.idEstado_Solicitud = es.idEstado_Solicitud

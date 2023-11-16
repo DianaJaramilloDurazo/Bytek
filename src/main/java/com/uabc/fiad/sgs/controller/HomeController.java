@@ -40,23 +40,28 @@ public class HomeController {
             return "redirect:/login";
         }
 
-        List<Solicitud> solicitudes = solicitudService.findByUserId(u.getIdUsuario());
+        if (SessionUtils.getUserDetails().getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_DOCENTE"))) {
 
-        model.addAttribute("solicitudes", solicitudes);
+            List<Solicitud> solicitudes = solicitudService.findByUserId(u.getIdUsuario());
 
-        // Lista de solicitudes para firmar
-        List<Solicitud> solicitudesPendientes = solicitudService.listarSolicitudesPendientes(usuarioService.findIdRolById(u.getIdUsuario()));
+            model.addAttribute("solicitudes", solicitudes);
+        } else {
 
-        // También los usuarios registrados
-        // todo: Monitorear por problemas de rendimiento cargando la página de inicio, simplemente es la solución más
-        //  sencilla que se me ocurrió
-        List<Usuario> usuarios = new ArrayList<>();
-        for (Solicitud s : solicitudesPendientes) {
-            usuarios.add(usuarioService.findById(s.getIdUsuario()).get());
+            // Si tiene rol
+            // Lista de solicitudes para firmar
+            List<Solicitud> solicitudesPendientes = solicitudService.listarSolicitudesPendientes(usuarioService.findIdRolById(u.getIdUsuario()));
+
+            // También los usuarios registrados
+            // todo: Monitorear por problemas de rendimiento cargando la página de inicio, simplemente es la solución más
+            //  sencilla que se me ocurrió
+            List<Usuario> usuarios = new ArrayList<>();
+            for (Solicitud s : solicitudesPendientes) {
+                usuarios.add(usuarioService.findById(s.getIdUsuario()).get());
+            }
+
+            model.addAttribute("solicitudes_pendientes", solicitudesPendientes);
+            model.addAttribute("usuarios_firmar", usuarios);
         }
-
-        model.addAttribute("solicitudes_pendientes", solicitudesPendientes);
-        model.addAttribute("usuarios_firmar", usuarios);
 
 
         return "index.html";
