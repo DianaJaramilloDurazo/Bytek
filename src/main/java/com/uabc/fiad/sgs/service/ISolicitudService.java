@@ -50,11 +50,18 @@ public interface ISolicitudService {
     List<Map<String, Object>> listarFirmas(Integer id);
 
     /**
+     * Lista todas las solicitudes que requieren la firma del usuario con la id indicada.
+     * @param rolId		la id del rol a consultar sus firmas
+     * @return          lista solicitudes pendientes por firmar por el usuario
+     */
+    List<Solicitud> listarSolicitudesPendientes(Integer rolId);
+
+    /**
      * Guarda una solicitud de salida
      * @param solicitud  Solicitud a guardar
      * @return           id de la Solicitud registrada
      */
-	Integer saveSolicitud(Solicitud solicitud);
+    Integer saveSolicitud(Solicitud solicitud);
 
     /**
      * Guardo los recursos solicitados en la solicitud

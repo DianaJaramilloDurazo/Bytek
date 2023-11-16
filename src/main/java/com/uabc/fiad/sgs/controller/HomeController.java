@@ -44,6 +44,21 @@ public class HomeController {
 
         model.addAttribute("solicitudes", solicitudes);
 
+        // Lista de solicitudes para firmar
+        List<Solicitud> solicitudesPendientes = solicitudService.listarSolicitudesPendientes(usuarioService.findIdRolById(u.getIdUsuario()));
+
+        // También los usuarios registrados
+        // todo: Monitorear por problemas de rendimiento cargando la página de inicio, simplemente es la solución más
+        //  sencilla que se me ocurrió
+        List<Usuario> usuarios = new ArrayList<>();
+        for (Solicitud s : solicitudesPendientes) {
+            usuarios.add(usuarioService.findById(s.getIdUsuario()).get());
+        }
+
+        model.addAttribute("solicitudes_pendientes", solicitudesPendientes);
+        model.addAttribute("usuarios_firmar", usuarios);
+
+
         return "index.html";
     }
 }
