@@ -1,0 +1,60 @@
+<div th:fragment="editar-solicitud">
+	<div>
+		<input type="number" th:value="${solicitud.idSolicitud}" name="idSolicitud" hidden>
+		<input type="text" th:value="${solicitud.estadoSolicitud}" name="estadoSolicitud" hidden>
+		<input type="number" th:value="${solicitud.idCarrera}" name="carreraAnterior" hidden>
+		<div>
+			<label>Nombre de la actividad o evento:</label>
+			<input th:value="${solicitud.nombreEvento}" type="text" id="nombreEvento" name="nombreEvento" class="form-control">
+		</div>
+	</div>
+
+	<div class="modalEditar">
+		<div class="izquierda">
+			<div>
+				<label>Costo del evento: $</label>
+				<input th:value="${solicitud.costo}" type="number" id="costo" name="costo" class="form-control">
+				<label>Fecha de salida:</label>
+				<input th:value="${fechaSalida}" type="date" id="fSalida" name="fSalida" class="form-control">
+				<label>Fecha de regreso:</label>
+				<input th:value="${fechaRegreso}" type="date" id="fRegreso" name="fRegreso" class="form-control">
+			</div>
+		</div>
+		<div class="derecha">
+			<label>Lugar: </label>
+			<input th:value="${solicitud.lugar}"  type="text" id="lugar" name="lugar" class="form-control">
+			<label>Hora de salida:</label>
+			<input th:value="${horaSalida}" type="time"  id="horaSalida" name="horaSalida" class="form-control">
+			<label>Hora de regreso:</label>
+			<input th:value="${horaRegreso}" type="time" id="horaRegreso" name="horaRegreso" class="form-control">
+		</div>
+	</div>
+	<label for="idCarrera">Carrera</label>
+    	<select class="form-control " id="idCarrera" name="idCarrera" required>
+        	<option value="0" selected>Selecciona una carrera</option>
+            <option th:each="carrera : ${carreras}"
+            		th:value="${carrera.idCarrera}"
+                    th:text="${carrera.Carrera_Nombre}"
+                    th:selected="${carrera.idCarrera == solicitud.idCarrera}"></option>
+       	</select>
+	<div class="checkbox recursos">
+		<label>Recurso a solicitar:</label><br>
+
+        <div th:each="recurso : ${recursos}">
+             <input name="recursos" th:value="${recurso.idRecurso}" type="checkbox" th:attr="checked=${recurso.registrado}?'checked':null" checked>
+             	<span th:text="${recurso.desc}"></span>
+             	<input type="text" th:if="${recurso.desc == 'Transporte' or recurso.desc == 'Otro'}" th:name="${recurso.desc}" th:value="${recurso.detalles}">
+             </div>
+		<br>
+	</div>
+	<div class="checkbox actividades">
+		<label>Actividad asociada a:</label>
+		<div th:each="act : ${actividades}">
+             <input name="actividades" th:value="${act.idActividad}" type="checkbox" th:attr="checked=${act.registrado}?'checked':null" checked>
+             <span th:text="${act.nombre}"></span>
+             <input type="text" th:if="${act.nombre == 'Otra'}" th:value="${act.desc}" th:name="${act.nombre}">
+        </div>
+		
+	</div>
+	<br>
+</div>

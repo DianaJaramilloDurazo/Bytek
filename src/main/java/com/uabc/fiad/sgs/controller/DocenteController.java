@@ -5,6 +5,7 @@ import com.uabc.fiad.sgs.entity.Solicitud;
 import com.uabc.fiad.sgs.entity.Usuario;
 import com.uabc.fiad.sgs.service.ISolicitudService;
 import com.uabc.fiad.sgs.service.IUsuarioService;
+import com.uabc.fiad.sgs.service.MailManager;
 import com.uabc.fiad.sgs.service.UsuarioService;
 import com.uabc.fiad.sgs.utils.SessionUtils;
 
@@ -14,7 +15,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -38,6 +43,9 @@ public class DocenteController {
 
 	@Autowired
 	private ISolicitudService solicitudService;
+	
+	@Autowired
+	private MailManager mailManager;
 
 	/**
 	 * Obtiene el cuerpo del formulario de registrar una solicitud
@@ -87,14 +95,15 @@ public class DocenteController {
 		Usuario u = SessionUtils.getUsuario(usuarioService);
 		// Se obtine su id
 		solicitud.setIdUsuario(u.getIdUsuario());
-
+		System.out.print(fechaSalida);
+		System.out.print(horaSalida);
 		// Se guarda la fehca y hora
 		solicitud.setFechaSalida(fechaSalida.atTime(horaSalida));
 		solicitud.setFechaRegreso(fechaRegreso.atTime(horaRegreso));
 
 		// Se guarda la solicitud y se obtiene su id
 		Integer idSolicitud = solicitudService.saveSolicitud(solicitud);
-		
+
 		// Se verifica si la solicitud fue guardada
 		if (idSolicitud != 0) {
 			// Registrar Recursos
@@ -163,28 +172,185 @@ public class DocenteController {
 			System.out.println(firmas);
 
 			return "<div class='alert alert-success' role='alert'> La solicitud fue creada </div>";
-		}		
-		return "<div class='alert alert-danger' role='alert'>Ha ocurrido un error al crear la solicitud </div>>";
+		}
+		return "<div class='alert alert-danger' role='alert'>Ha ocurrido un error al crear la solicitud </div>";
 	}
-	
+
 	/**
 	 * Cancelar una solictud
-	 * @param idSolicitud	id de la solcitud a cancelar 
-	 * @return				Respuesta sobre si se cancelo la solicitud o no
+	 * 
+	 * @param idSolicitud id de la solcitud a cancelar
+	 * @return Respuesta sobre si se cancelo la solicitud o no
 	 */
 	@PostMapping(value = "/cancelar", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
 	@ResponseBody
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public String CancelarSolicitud(@RequestParam(value = "solicitudCancelar", required = false) Integer idSolicitud) {
-		
+
 		System.out.print(idSolicitud);
-		if(idSolicitud != null) {
+		if (idSolicitud != null) {
 			Boolean cancelada = solicitudService.cancelarSolicitud(idSolicitud);
-			if(cancelada) {
+			if (cancelada) {
 				return "<div class='alert alert-success' role='alert'> La solicitud fue cancelada </div>";
 			}
 		}
 		return "<div class='alert alert-danger' role='alert'> Ha ocurrido un error al intentar cancelar la solcitud </div>";
+	}
+
+	@GetMapping("/get-editar-form")
+	public String editarSolicitud(@RequestParam(value = "id") Integer idSolicitud, Model model) {
+
+		System.out.println(solicitudService.findById(idSolicitud));
+		Solicitud solicitud = solicitudService.findById(idSolicitud).get();
+		model.addAttribute("solicitud", solicitud);
+		LocalDate fechaSalida = solicitud.getFechaSalida().toLocalDate();
+		LocalDate fechaRegreso = solicitud.getFechaRegreso().toLocalDate();
+		LocalTime horaSalida = solicitud.getFechaSalida().toLocalTime();
+		LocalTime horaRegreso = solicitud.getFechaRegreso().toLocalTime();
+		System.out.println(solicitud);
+		model.addAttribute("fechaSalida", fechaSalida);
+		model.addAttribute("fechaRegreso", fechaRegreso);
+		model.addAttribute("horaRegreso", horaRegreso);
+		model.addAttribute("horaSalida", horaSalida);
+
+		model.addAttribute("recursos", solicitudService.listarRecursos(idSolicitud));
+		model.addAttribute("actividades", solicitudService.listarActividadesAsociadas(idSolicitud));
+		model.addAttribute("carreras", usuarioService.listarCarreras());
+		System.out.println(solicitudService.listarRecursos(idSolicitud));
+		return "fragments/solicitud/editar-solicitud :: editar-solicitud";
+	}
+
+	@PostMapping(value = "/editar", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
+	@ResponseBody
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public String editarSolicitud(Solicitud solicitud,
+			@RequestParam(value = "fSalida") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaSalida,
+			@RequestParam(value = "fRegreso") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaRegreso,
+			@DateTimeFormat(pattern = "HH:mm:ss") LocalTime horaSalida,
+			@DateTimeFormat(pattern = "HH:mm:ss") LocalTime horaRegreso,
+			@RequestParam(value = "recursos") List<Integer> recursos,
+			@RequestParam(value = "actividades") List<Integer> actividades,
+			@RequestParam(value = "Transporte", required = false) String numPasajeros,
+			@RequestParam(value = "Otro", required = false) String otroRecurso,
+			@RequestParam(value = "Otra", required = false) String otroActividad,
+			@RequestParam(value = "carreraAnterior", required = false) Integer carreraAnterior) {
+
+		// Guarda id y fechas dentro de la solciitud a editar
+		Integer idSolicitud = solicitud.getIdSolicitud();
+		solicitud.setFechaSalida(fechaSalida.atTime(horaSalida));
+		solicitud.setFechaRegreso(fechaRegreso.atTime(horaRegreso));
+		Boolean editado = solicitudService.updateSolicitud(solicitud);
+		mailManager.sendMessaje("omar.herrera13@uabc.edu.mx", "Holiii");
+
+		if (editado) {
+			// Se actualiza los recursos y las actividades seleccionadas
+			
+			// Se obtienen los recursos seleccionados anteriormente
+			Set<Integer> setRecursos1 = new HashSet<>();
+			List<Map<String, Object>> recursosS = solicitudService.listarRecursos(solicitud.getIdSolicitud());
+			for (Map<String, Object> recurso : recursosS) {
+				// Verifica si el mapa contiene la clave "idRecurso"
+				if ((Boolean) recurso.get("registrado")) {
+					if (recurso.containsKey("idRecurso")) {
+						// Obtén el valor asociado a la clave "idRecurso" y se agrega al conjunto
+						setRecursos1.add((Integer) recurso.get("idRecurso"));
+					}
+				}
+			}
+
+			// Se obtienen los id de los recursos seleccionados actualmente
+			Set<Integer> setRecursos2 = new HashSet<>(recursos);
+
+			Set<Integer> borrarRecursos = new HashSet<>(setRecursos1);
+			Set<Integer> agregarRecursos = setRecursos2;
+
+			// Se obtienen los recursos que se quitaron de la solicitud
+			borrarRecursos.removeAll(setRecursos2);
+			// Se obtienen los nuevos recursos seleccionados
+			agregarRecursos.removeAll(setRecursos1);
+
+			// Se intera sobre los nuevos recursos que fueron seleccionados
+			for (Integer recurso : agregarRecursos) {
+
+				// En caso de que se haya selccionado Transporte se registra su detalle
+				if (recurso == 2) {
+					solicitudService.saveRecurso(idSolicitud, recurso, numPasajeros);
+
+					// En caso de que se haya selccionado Otro se registra su detalle
+				} else if (recurso == 5) {
+					solicitudService.saveRecurso(idSolicitud, recurso, otroRecurso);
+
+					// Coso contrario se registra solo el recurso
+				} else {
+					solicitudService.saveRecurso(idSolicitud, recurso, null);
+				}
+			}
+			// Se actualizan los detalles de los recursos si es que hubo un cambio
+			if (recursos.contains(2)) {
+				solicitudService.updateDetalleRecurso(idSolicitud, 2, numPasajeros);
+			}
+			if (recursos.contains(5)) {
+				solicitudService.updateDetalleRecurso(idSolicitud, 5, otroRecurso);
+			}
+			// Se borran los recursos que fueron quitados de la solicitud
+			solicitudService.deleteRecursos(idSolicitud, borrarRecursos);
+
+			// Se actualizan las actividades
+
+			Set<Integer> setActividades1 = new HashSet<>();
+
+			// Se obtienen las actividades seleccionadas anteriormente
+			List<Map<String, Object>> actividadesS = solicitudService.listarActividadesAsociadas(idSolicitud);
+			for (Map<String, Object> actividad : actividadesS) {
+				// Verifica si el mapa contiene la clave "idRecurso"
+				if ((Boolean) actividad.get("registrado")) {
+					if (actividad.containsKey("idActividad")) {
+						// Obtén el valor asociado a la clave "idRecurso" y se agrega al conjunto
+						setActividades1.add((Integer) actividad.get("idActividad"));
+					}
+				}
+			}
+
+			// Se obtienen las actividades seleccionadas actualmente
+			Set<Integer> setActividades2 = new HashSet<>(actividades);
+
+			Set<Integer> borrarActividades = new HashSet<>(setActividades1);
+			Set<Integer> agregarActividades = setActividades2;
+
+			// Se obtienen las actividades que se quitaron de la solicitud
+			borrarActividades.removeAll(setActividades2);
+
+			// Se obtienen las nuevas actividades fueron seleccionadas
+			agregarActividades.removeAll(setActividades1);
+
+			// Se intera sobre las nuevas actividades que fueron seleccionadas
+			for (Integer actividad : agregarActividades) {
+
+				// En caso de que se haya selccionado Otra se registra su detalle
+				if (actividad == 6) {
+					solicitudService.saveActividad(idSolicitud, actividad, otroActividad);
+				} else {
+					// Coso contrario se registra solo la actividad
+					solicitudService.saveActividad(idSolicitud, actividad, null);
+				}
+			}
+
+			// Actualizar detalle de Actividad si es necesario
+			if (actividades.contains(6)) {
+				solicitudService.updateDetalleActividad(idSolicitud, 6, otroActividad);
+			}
+			// Se borran las actividades que fueron quitadas de la solicitud
+			solicitudService.deleteActividades(idSolicitud, borrarActividades);
+			
+			if(solicitud.getEstadoSolicitud().equalsIgnoreCase("En correción")) {
+				System.out.println("Estaba en correcion");
+				//Borrar Firmas 
+				solicitudService.reiniciarFirmas(idSolicitud);
+			}
+			return "<div class='alert alert-success' role='alert'> La solicitud fue actualizada </div>";
+		} else {
+			return "<div class='alert alert-danger' role='alert'> Ha ocurrido un error al intentar de editar la solcitud </div>";
+		}
 	}
 
 }

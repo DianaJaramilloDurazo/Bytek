@@ -2,8 +2,10 @@ package com.uabc.fiad.sgs.service;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import com.uabc.fiad.sgs.entity.Solicitud;
+import com.uabc.fiad.sgs.entity.Usuario;
 
 public interface ISolicitudService {
 
@@ -85,4 +87,16 @@ public interface ISolicitudService {
      * @return				si se registró o no la solicitud
      */
     Boolean cancelarSolicitud(Integer idSolicitud);
+    
+    Boolean updateSolicitud(Solicitud solicitud);
+    
+    void deleteRecursos(Integer idSolicitud, Set<Integer> recursos);
+    
+    void deleteActividades(Integer idSolicitud, Set<Integer> actividades);
+    
+    void updateDetalleRecurso(Integer idSolicitud,Integer idRecurso, String detalle);
+    
+    void updateDetalleActividad(Integer idSolicitud,Integer idActividad, String detalle);
+    
+    void reiniciarFirmas(Integer idSolicitud);
 }

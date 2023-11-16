@@ -151,6 +151,11 @@
 .checkbox label{
 	font-weight: bold;
 }
+
+.actividades, .recursos{
+	display: flex;
+	flex-wrap: wrap;
+}
 #Otra_actividad{
 	border-radius: 3xp;
 	border-color: #F2F2F2;
