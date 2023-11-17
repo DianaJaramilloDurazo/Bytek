@@ -85,7 +85,8 @@
   <div class="separadordetablas" id="opc1"></div>
 
   <div class="solicitudContenedor" sec:authorize="hasAnyRole('ROLE_DOCENTE')"><!--CONTENEDOR TABLA SOLICITUDES DE SALIDA-->
-      <div id="result-cancelar"></div>
+      <img class="htmx-indicator" src="https://i.imgur.com/8THYvPQ.gif">
+      <div id="result-accion"></div>
       <h4>Mis solicitudes de salida</h4>
       <table class="table">
           <thead class="table-bordered"><!--ENCABEZADO DE LA TABLA-->
@@ -109,6 +110,7 @@
                       ver +
                   </button>
                   <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalEditarSolicitud"
+                  		  th:disabled="${sol.idEstadoSolicitud != 1 and sol.idEstadoSolicitud != 7}"
                   		  th:hx-get="'/docente/get-editar-form?id=' + ${sol.getIdSolicitud}"
                           hx-target="#modal-editar-solicitud-body"
                   >Editar</button>
@@ -175,7 +177,7 @@
       </div>
       <form
       	hx-post="/docente/cancelar"
-      	hx-target="#result-cancelar"
+      	hx-target="#result-accion"
       	hx-swap="innerHTML"
       >
 		<div class="modal-footer">
@@ -207,7 +209,8 @@
              </div>
              <div class="modal-body">
                  <form hx-post="/docente/registrar"
-                 		hx-target="#result-msg"
+				      	hx-target="#result-accion"
+				      	hx-swap="innerHTML"
                  		id="crearSolictud"
                  		>
 					  <div id="result-msg"></div>
@@ -219,7 +222,7 @@
 							<div class="modalConfirmar-content">
 							   <p>¿Todos los datos son correctos?</p>
 							   <button type="button"  class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
-							   <button class="btn btn-primary" onclick="cerrarModal()" type="submit" >Confirmar</button>
+							   <button class="btn btn-primary" data-bs-dismiss="modal" onclick="cerrarModal()" type="submit" >Confirmar</button>
 							</div>
 						</div>
                  </form>
@@ -244,17 +247,25 @@
               </div>
               <div class="modal-body">
                   <form id="form_EditarSolicitud" hx-post="/docente/editar"
-                 		hx-target="#result-editar"
+				      	hx-target="#result-accion"
+				      	hx-swap="innerHTML"
+      					hx-indicator=".htmx-indicator"
                  		>
                  	<div id="result-editar"></div>
 				  	<div id="modal-editar-solicitud-body"></div>
-				  	
-				  	              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" onclick="quitarModal(ModalEditarSolicitud)">Cerrar</button>
-                  <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-              </div>
+              
+         			<div id="miModalEditar" class="modalConfirmar">
+						<div class="modalConfirmar-content">
+							   <p>¿Desea guardar los cambios?</p>
+							   <button type="button"  class="btn btn-secondary" onclick="miModalEditar()">Cancelar</button>
+							   <button class="btn btn-primary" data-bs-dismiss="modal" onclick="cerrarModalEditar()" type="submit" >Confirmar</button>
+						</div>
+					</div>
                   </form>
-                  
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" onclick="quitarModal(ModalEditarSolicitud)">Cerrar</button>
+                  <button onclick="validarFormEditar()" class="btn btn-primary">Guardar Cambios</button>
+              </div>
               </div>
 
           </div>
@@ -332,8 +343,6 @@
           </tbody>
       </table>
   </div>
-
-
 
   <div class="piedepagina">
   </div>

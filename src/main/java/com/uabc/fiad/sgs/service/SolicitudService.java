@@ -352,4 +352,22 @@ public class SolicitudService implements ISolicitudService {
 		template.update(sql,idSolicitud);			
 	}
 
+	@Override
+	public List<String> obtnerCorrreosFirmas(Integer idSolicitud) {
+		String sql = "select fs.idRol from firmas_solicitud fs where idSolicitud = ?;";
+		List<Integer> firmas = template.queryForList(sql, new Object[] {idSolicitud}, Integer.class);	
+		String correo;
+		List<String> correos = new ArrayList<String>();
+		for (Integer id:firmas ) {
+			String sql2 = "select r.Correo_rol from rol r where idRol=?;";
+			correo = template.queryForObject(sql2, new Object[] {id}, String.class);
+			correos.add(correo);
+			System.out.println(correo);
+		}
+
+		System.out.println("HOLAAAAA");
+		System.out.println(firmas);
+		return correos;
+	}
+
 }

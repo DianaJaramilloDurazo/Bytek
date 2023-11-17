@@ -95,7 +95,7 @@ public class DocenteController {
 		Usuario u = SessionUtils.getUsuario(usuarioService);
 		// Se obtine su id
 		solicitud.setIdUsuario(u.getIdUsuario());
-		System.out.print(fechaSalida);
+		System.out.print(solicitud);
 		System.out.print(horaSalida);
 		// Se guarda la fehca y hora
 		solicitud.setFechaSalida(fechaSalida.atTime(horaSalida));
@@ -228,13 +228,14 @@ public class DocenteController {
 			@RequestParam(value = "fRegreso") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaRegreso,
 			@DateTimeFormat(pattern = "HH:mm:ss") LocalTime horaSalida,
 			@DateTimeFormat(pattern = "HH:mm:ss") LocalTime horaRegreso,
-			@RequestParam(value = "recursos") List<Integer> recursos,
-			@RequestParam(value = "actividades") List<Integer> actividades,
+			@RequestParam(value = "recursosEditar") List<Integer> recursos,
+			@RequestParam(value = "actividadesEditar") List<Integer> actividades,
 			@RequestParam(value = "Transporte", required = false) String numPasajeros,
 			@RequestParam(value = "Otro", required = false) String otroRecurso,
 			@RequestParam(value = "Otra", required = false) String otroActividad,
 			@RequestParam(value = "carreraAnterior", required = false) Integer carreraAnterior) {
-
+		
+		Usuario u = SessionUtils.getUsuario(usuarioService);
 		// Guarda id y fechas dentro de la solciitud a editar
 		Integer idSolicitud = solicitud.getIdSolicitud();
 		solicitud.setFechaSalida(fechaSalida.atTime(horaSalida));
@@ -242,7 +243,7 @@ public class DocenteController {
 		Boolean editado = solicitudService.updateSolicitud(solicitud);
 		
 		//mailManager.sendMessaje("omar.herrera13@uabc.edu.mx", "Holiii");
-
+		
 		if (editado) {
 			// Se actualiza los recursos y las actividades seleccionadas
 			
@@ -347,7 +348,14 @@ public class DocenteController {
 				System.out.println("Estaba en correcion");
 				//Borrar Firmas 
 				solicitudService.reiniciarFirmas(idSolicitud);
+				// Enviar correos 
+				String nombreUsuario = u.getUsername()+" " + u.getApPaterno() + " " + u.getApMaterno();
+				List<String> correos = solicitudService.obtnerCorrreosFirmas(idSolicitud);
+				System.out.println(nombreUsuario);
+				System.out.println(correos);
+				//mailManager.Correcion(correos, nombreUsuario);
 			}
+
 			return "<div class='alert alert-success' role='alert'> La solicitud fue actualizada </div>";
 		} else {
 			return "<div class='alert alert-danger' role='alert'> Ha ocurrido un error al intentar de editar la solcitud </div>";

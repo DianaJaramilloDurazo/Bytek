@@ -1,5 +1,7 @@
 package com.uabc.fiad.sgs.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -34,6 +36,25 @@ public class MailManager {
 		}catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
+	
+	public void Correcion(List<String> correos, String nombre) {
+		MimeMessage message = javaMailSender.createMimeMessage();
+		
+		for(String correo : correos) {
+			try {
+				message.setSubject("Correción de solicitud");
+				MimeMessageHelper helper = new MimeMessageHelper(message,true);
+				helper.setTo(correo);
+				helper.setText(nombre + " solita nueva firma, por correción de su solicitud.");
+				
+				helper.setFrom(sender);
+				javaMailSender.send(message);
+			}catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+
 	}
 
 }

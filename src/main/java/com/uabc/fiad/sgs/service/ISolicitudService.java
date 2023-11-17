@@ -106,4 +106,6 @@ public interface ISolicitudService {
     void updateDetalleActividad(Integer idSolicitud,Integer idActividad, String detalle);
     
     void reiniciarFirmas(Integer idSolicitud);
+    
+    List<String> obtnerCorrreosFirmas(Integer idSolicitud);
 }
