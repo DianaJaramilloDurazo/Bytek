@@ -174,7 +174,8 @@ public class SolicitudService implements ISolicitudService {
 								rs.getString("Reporte_Final"),
 								rs.getInt("idUsuario"),
 								rs.getInt("idCarrera"),
-								rs.getString("DescripcionEstado")
+								rs.getString("DescripcionEstado"),
+								rs.getInt("idEstado_Solicitud")
 						),
 				rolId
 		);

@@ -240,7 +240,8 @@ public class DocenteController {
 		solicitud.setFechaSalida(fechaSalida.atTime(horaSalida));
 		solicitud.setFechaRegreso(fechaRegreso.atTime(horaRegreso));
 		Boolean editado = solicitudService.updateSolicitud(solicitud);
-		mailManager.sendMessaje("omar.herrera13@uabc.edu.mx", "Holiii");
+		
+		//mailManager.sendMessaje("omar.herrera13@uabc.edu.mx", "Holiii");
 
 		if (editado) {
 			// Se actualiza los recursos y las actividades seleccionadas
