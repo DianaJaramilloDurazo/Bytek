@@ -265,6 +265,23 @@ public class SolicitudService implements ISolicitudService {
 	}
 
 	/**
+	 * Firma una solicitud con un usuario.
+	 *
+	 * @param idSolicitud la id de la solicitud a firmar
+	 * @param idUsuario   id del usuario a firmar
+	 * @param idRol       id del rol con el cual va a firmar
+	 */
+	@Override
+	public boolean firmarSolicitud(Integer idSolicitud, Integer idUsuario, Integer idRol) {
+
+		String sql = "update firmas_solicitud set idUsuario = ? where idRol = ? and idSolicitud = ?;";
+
+		int filasAfectadas = template.update(sql, idUsuario, idRol, idSolicitud);
+
+		return filasAfectadas > 0;
+	}
+
+	/**
 	 * Cambia el estado de una solicitud a cancelado
 	 * 
 	 * @param idSolicitud id de la solcitud a cancelar

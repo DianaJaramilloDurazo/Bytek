@@ -186,7 +186,7 @@ fechaRegreso.addEventListener('change', function() {
 		fechaRegreso.value = new Date(fechaInicio.getTime() + 86400000).toISOString().split('T')[0];
 	}
 });
-	
+
 }
 
 

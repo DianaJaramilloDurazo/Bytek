@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Filtros {
     private String nombre;
+
     private Integer page;
 
 }

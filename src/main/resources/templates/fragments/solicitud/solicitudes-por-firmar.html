@@ -1,0 +1,40 @@
+<div th:fragment="solicitudes-por-firmar">
+    <div class="solicitudContenedor" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR', 'ROLE_DIRECTOR')">
+        <h4>Solicitudes pendientes por firmar</h4>
+        <table class="table">
+            <thead class="table-bordered"><!--ENCABEZADO DE LA TABLA-->
+            <tr>
+                <th scope="col">Nombre del evento</th>
+                <th scope="col">Nombre del solicitante</th>
+                <th scope="col">Número de empleado</th>
+                <th scope="col">Opciones</th>
+            </tr>
+            </thead><!--FIN ENCABEZADO DE TABLA-->
+
+            <tbody><!--CUERPO DE LA TABLA-->
+            <tr th:each="sol, iter : ${solicitudes_pendientes}">
+                <td th:text="${sol.nombreEvento}"></td>
+                <td th:text="${usuarios_firmar[iter.index].username} + ' ' + ${usuarios_firmar[iter.index].apPaterno} + ' ' + ${usuarios_firmar[iter.index].apMaterno}"></td>
+                <td th:text="${usuarios_firmar[iter.index].numEmpleado}"></td>
+                <td>
+                    <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo"
+                            th:hx-get="'/solicitud?id=' + ${sol.getIdSolicitud}"
+                            hx-target="#solicitud-info-body"
+                    >
+                        ver +
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btn_Firmar"
+                            data-bs-toggle="modal" data-bs-target="#confirmar-firma"
+                            th:attr="data-evento=${sol.nombreEvento}, data-solicitudid=${sol.getIdSolicitud}"
+                            onclick="document.getElementById('confirmar-firma-evento').innerHTML = this.dataset.evento;
+                                        document.getElementById('firmar-solicitud-id').value = this.dataset.solicitudid;"
+                    >
+                        Firmar
+                    </button>
+                    <!--                  <button class="btn btn-warning" id="btn_Firmar">Rechazar</button>-->
+                </td>
+            </tr>
+            </tbody><!--FIN CUERPO TABLA-->
+        </table>
+    </div>
+</div>

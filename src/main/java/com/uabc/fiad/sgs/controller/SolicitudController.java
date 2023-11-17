@@ -4,13 +4,16 @@ import com.uabc.fiad.sgs.entity.Solicitud;
 import com.uabc.fiad.sgs.entity.Usuario;
 import com.uabc.fiad.sgs.service.ISolicitudService;
 import com.uabc.fiad.sgs.service.IUsuarioService;
+import com.uabc.fiad.sgs.utils.SessionUtils;
+import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,6 +27,31 @@ public class SolicitudController {
 
     @Autowired
     private IUsuarioService usuarioService;
+
+    @GetMapping("por-firmar")
+    public String getSolicitudesPorFirmar(Model model) {
+        Usuario u = SessionUtils.getUsuario(usuarioService);
+        if (u == null) {
+            return "redirect:/login";
+        }
+
+        // Si tiene rol
+        // Lista de solicitudes para firmar
+        List<Solicitud> solicitudesPendientes = solicitudService.listarSolicitudesPendientes(usuarioService.findIdRolById(u.getIdUsuario()));
+
+        // También los usuarios registrados
+        // todo: Monitorear por problemas de rendimiento cargando la página de inicio, simplemente es la solución más
+        //  sencilla que se me ocurrió
+        List<Usuario> usuarios = new ArrayList<>();
+        for (Solicitud s : solicitudesPendientes) {
+            usuarios.add(usuarioService.findById(s.getIdUsuario()).get());
+        }
+
+        model.addAttribute("solicitudes_pendientes", solicitudesPendientes);
+        model.addAttribute("usuarios_firmar", usuarios);
+
+        return "fragments/solicitud/solicitudes-por-firmar :: solicitudes-por-firmar";
+    }
 
     @GetMapping("")
     public String getSolicitud(Model model, @RequestParam("id") Integer id) {
@@ -70,5 +98,27 @@ public class SolicitudController {
         model.addAttribute("firmas", solicitudService.listarFirmas(id));
 
         return "fragments/solicitud/solicitud-detalles :: solicitud-detalles";
+    }
+
+    @PostMapping(value = "firmar",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.TEXT_HTML_VALUE)
+    @HxTrigger("refreshSolicitudes")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public String firmarSolicitud(@RequestParam Integer solicitudid) {
+
+        Usuario u = SessionUtils.getUsuario(usuarioService);
+        if (u == null) {
+            return "redirect:/login";
+        }
+
+        boolean success = solicitudService.firmarSolicitud(solicitudid, u.getIdUsuario(), usuarioService.findIdRolById(u.getIdUsuario()));
+
+        if (success) {
+            return "<div class='alert alert-success' role='alert'> La solicitud fue firmada con exito </div>";
+        } else {
+            return "<div class='alert alert-danger' role='alert'> Ocurrió un error al firmar la solicitud </div>";
+        }
     }
 }

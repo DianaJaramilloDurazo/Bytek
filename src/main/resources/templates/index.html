@@ -87,6 +87,7 @@
   <div class="solicitudContenedor" sec:authorize="hasAnyRole('ROLE_DOCENTE')"><!--CONTENEDOR TABLA SOLICITUDES DE SALIDA-->
       <img class="htmx-indicator" src="https://i.imgur.com/8THYvPQ.gif">
       <div id="result-accion"></div>
+      <div id="result-cancelar"></div>
       <h4>Mis solicitudes de salida</h4>
       <table class="table">
           <thead class="table-bordered"><!--ENCABEZADO DE LA TABLA-->
@@ -118,21 +119,21 @@
                   th:disabled="${sol.idEstadoSolicitud == 5 or sol.idEstadoSolicitud == 6 or sol.idEstadoSolicitud == 8}"
                   th:onclick="'document.getElementById(\'solicitudCancelar\').value = ' + ${sol.getIdSolicitud}"
                   type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalCancelar">x</button>
-                  
+
 <!--                  <button class="btn btn-warning" id="btn_eliminarslc">x</button>-->
-              </td>				
+              </td>
 
           </tr>
           <tr>
               <td colspan="2">IMPORTANTE: *Cuentas con 5 dias habiles para entregar el reporte de salida despues de la fecha de regreso*</td>
               <td>
-                  <button 
-                  		hx-get="/docente/get-registrar-solicitud-form"
-                    	hx-target="#modal-crear-solicitud-body"
-                  		class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalCrearSolicitud">
+                  <button
+                        hx-get="/docente/get-registrar-solicitud-form"
+                        hx-target="#modal-crear-solicitud-body"
+                        class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalCrearSolicitud">
                       Crear nueva solicitud
                   </button>
-                  
+
               </td>
           </tr>
 
@@ -177,7 +178,7 @@
       </div>
       <form
       	hx-post="/docente/cancelar"
-      	hx-target="#result-accion"
+      	hx-target="#result-cancelar"
       	hx-swap="innerHTML"
       >
 		<div class="modal-footer">
@@ -209,27 +210,26 @@
              </div>
              <div class="modal-body">
                  <form hx-post="/docente/registrar"
-				      	hx-target="#result-accion"
-				      	hx-swap="innerHTML"
-                 		id="crearSolictud"
-                 		>
-					  <div id="result-msg"></div>
-					 
-					  <div id="modal-crear-solicitud-body"></div>
-				
-					  
-					   <div id="miModal" class="modalConfirmar">
-							<div class="modalConfirmar-content">
-							   <p>¿Todos los datos son correctos?</p>
-							   <button type="button"  class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
-							   <button class="btn btn-primary" data-bs-dismiss="modal" onclick="cerrarModal()" type="submit" >Confirmar</button>
-							</div>
-						</div>
+                        hx-target="#result-msg"
+                        id="crearSolictud"
+                        >
+                      <div id="result-msg"></div>
+
+                      <div id="modal-crear-solicitud-body"></div>
+
+
+                       <div id="miModal" class="modalConfirmar">
+                            <div class="modalConfirmar-content">
+                               <p>¿Todos los datos son correctos?</p>
+                               <button type="button"  class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
+                               <button class="btn btn-primary" onclick="cerrarModal()" type="submit" >Confirmar</button>
+                            </div>
+                        </div>
                  </form>
                  <div class="modal-footer">
-						<button type="button"  class="btn btn-secondary" onclick="quitarModal(ModalCrearSolicitud)">Cerrar</button>
-                 		<button onclick="validarForm()"  id="buttonCrearSolicitud" class="btn btn-primary">Crear solicitud</button>
-             	  </div>
+                        <button type="button"  class="btn btn-secondary" onclick="quitarModal(ModalCrearSolicitud)">Cerrar</button>
+                        <button onclick="validarForm()"  id="buttonCrearSolicitud" class="btn btn-primary">Crear solicitud</button>
+                  </div>
              </div>
          </div>
      </div>
@@ -253,7 +253,7 @@
                  		>
                  	<div id="result-editar"></div>
 				  	<div id="modal-editar-solicitud-body"></div>
-              
+
          			<div id="miModalEditar" class="modalConfirmar">
 						<div class="modalConfirmar-content">
 							   <p>¿Desea guardar los cambios?</p>
@@ -275,42 +275,47 @@
 
 
   <!--CONTENEDOR TABLA SOLICITUDES POR FIRMAR-->
+    <div id="firmar-result"></div>
 
-  <div class="solicitudContenedor" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR', 'ROLE_DIRECTOR')">
-      <h4>Solicitudes pendientes por firmar</h4>
-      <table class="table">
-          <thead class="table-bordered"><!--ENCABEZADO DE LA TABLA-->
-          <tr>
-              <th scope="col">Nombre del evento</th>
-              <th scope="col">Nombre del solicitante</th>
-              <th scope="col">Fecha de solicitud</th>
-              <th scope="col">Opciones</th>
-          </tr>
-          </thead><!--FIN ENCABEZADO DE TABLA-->
+    <div th:include="~{fragments/solicitud/solicitudes-por-firmar :: solicitudes-por-firmar}"
+         hx-swap="innerHTML"
+         hx-get="solicitud/por-firmar"
+         hx-trigger="refreshSolicitudes from:body"
+    >
 
-          <tbody><!--CUERPO DE LA TABLA-->
-          <tr th:each="sol, iter : ${solicitudes_pendientes}">
+    </div>
 
-              <td th:text="${sol.nombreEvento}"></td>
-              <td th:text="${usuarios_firmar[iter.index].username} + ' ' + ${usuarios_firmar[iter.index].apPaterno} + ' ' + ${usuarios_firmar[iter.index].apMaterno}"></td>
-              <td th:text="${usuarios_firmar[iter.index].numEmpleado}"></td>
-              <td>
-                  <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo"
-                          th:hx-get="'/solicitud?id=' + ${sol.getIdSolicitud}"
-                          hx-target="#solicitud-info-body"
-                  >
-                      ver +
-                  </button>
-<!--                  <button class="btn btn-primary" id="btn_Firmar">Firmar</button>-->
-<!--                  <button class="btn btn-warning" id="btn_Firmar">Rechazar</button>-->
-              </td>
+  <!--FIN CONTENEDOR SOLICITUDES POR FIRMAR-->
 
-          </tr>
-          </tbody><!--FIN CUERPO TABLA-->
-      </table>
-  </div><!--FIN CONTENEDOR SOLICITUDES POR FIRMAR-->
+    <div class="modal fade" id="confirmar-firma" tabindex="-1" aria-labelledby="Confirmar Firma" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Confirmar firma</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Desea firmar <span id="confirmar-firma-evento"></span>
+                    <input type="hidden" id="firmar-solicitud-id" name="solicitudid" value="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="confirmar-firma-aceptar"
+                            hx-post="/solicitud/firmar"
+                            hx-include="[name='solicitudid']"
+                            hx-target="#firmar-result"
+                            hx-swap="innerHTML"
+                    >
+                        Aceptar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <div class="separadordetablas" id="opc3"></div><!--NO QUITAR LO USO PARA QUE SE ACOMODEN BIEN LAS VISTAS AL USAR LA BARRA DE NAVEGACION-->
+
+
+    <div class="separadordetablas" id="opc3"></div><!--NO QUITAR LO USO PARA QUE SE ACOMODEN BIEN LAS VISTAS AL USAR LA BARRA DE NAVEGACION-->
 
   <div class="reporteSalida" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR', 'ROLE_DIRECTOR')">
       <h4>Reportes de salida pendientes</h4>
@@ -344,8 +349,26 @@
       </table>
   </div>
 
+
+
   <div class="piedepagina">
   </div>
-    <script type="text/javascript" src="/js/Inicio.js"></script>
+    <script>
+        const firmarResult = document.getElementById('firmar-result')
+
+        // Crea una instancia de MutationObserver
+        const firmarObserver = new MutationObserver((mutationsList, observer) => {
+            // Se ejecutará cada vez que haya un cambio en el div
+            setTimeout(function() {
+                // Elimina el elemento
+                firmarResult.innerHTML = "";
+            }, 3000); // 3000 milisegundos = 3 segundos
+        });
+        // Configura las opciones para observar cambios en el contenido del div
+        let firmarConfig = { childList: true };
+
+        // Inicia la observación del div con las opciones configuradas
+        firmarObserver.observe(firmarResult, firmarConfig);
+    </script>
 </body>
 </html>

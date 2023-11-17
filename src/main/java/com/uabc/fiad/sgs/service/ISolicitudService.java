@@ -89,6 +89,14 @@ public interface ISolicitudService {
     void saveFirmas(Integer idSolicitud,List<Integer> firmas);
 
     /**
+     * Firma una solicitud con un usuario.
+     * @param idSolicitud   la id de la solicitud a firmar
+     * @param idUsuario     id del usuario a firmar
+     * @param idRol         id del rol con el cual va a firmar
+     */
+    boolean firmarSolicitud(Integer idSolicitud, Integer idUsuario, Integer idRol);
+
+    /**
      * Cambia el estado de una solicitud a cancelado
      * @param idSolicitud	id de la solcitud a cancelar
      * @return				si se registró o no la solicitud
