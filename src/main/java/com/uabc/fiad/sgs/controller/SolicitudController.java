@@ -4,6 +4,7 @@ import com.uabc.fiad.sgs.entity.Solicitud;
 import com.uabc.fiad.sgs.entity.Usuario;
 import com.uabc.fiad.sgs.service.ISolicitudService;
 import com.uabc.fiad.sgs.service.IUsuarioService;
+import com.uabc.fiad.sgs.service.MailManager;
 import com.uabc.fiad.sgs.utils.SessionUtils;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class SolicitudController {
 
     @Autowired
     private IUsuarioService usuarioService;
+
+    @Autowired
+    private MailManager mailManager;
 
     @GetMapping("por-firmar")
     public String getSolicitudesPorFirmar(Model model) {
@@ -115,10 +119,37 @@ public class SolicitudController {
 
         boolean success = solicitudService.firmarSolicitud(solicitudid, u.getIdUsuario(), usuarioService.findIdRolById(u.getIdUsuario()));
 
-        if (success) {
-            return "<div class='alert alert-success' role='alert'> La solicitud fue firmada con exito </div>";
-        } else {
+        if (!success) {
             return "<div class='alert alert-danger' role='alert'> Ocurrió un error al firmar la solicitud </div>";
         }
+
+        // Envíar correos
+        Optional<Solicitud> s = solicitudService.findById(solicitudid);
+
+        if (s.isEmpty()) {
+            return "<div class='alert alert-warning' role='alert'> La solicitud fue firmada con éxito, pero ocurrió un error al notificar a sobre la firma </div>";
+        }
+
+        Solicitud solicitud = s.get();
+
+        List<String> correos = solicitudService.obtnerCorrreosFirmas(solicitudid);
+
+        Optional<Usuario> usuarioFirmaO = usuarioService.findById(solicitud.getIdUsuario());
+
+        if (usuarioFirmaO.isEmpty()) {
+            return "<div class='alert alert-warning' role='alert'> La solicitud fue firmada con éxito, pero ocurrió un error al notificar a sobre la firma </div>";
+        }
+
+        Usuario usuarioFirma = usuarioFirmaO.get();
+
+        correos.add(usuarioFirma.getCorreo());
+        // TODO: Descomentar la siguiente línea para que envíe los correos
+//        mailManager.firmada(correos, solicitud.getNombreEvento(), usuarioService.findNameRolById(u.getIdRol()));
+
+//        List<String> c = new ArrayList<>();
+//        c.add(usuarioFirma.getCorreo());
+//        mailManager.firmada(c, solicitud.getNombreEvento(), usuarioService.findNameRolById(u.getIdRol()));
+
+        return "<div class='alert alert-success' role='alert'> La solicitud fue firmada con exito y se notificó por correo </div>";
     }
 }

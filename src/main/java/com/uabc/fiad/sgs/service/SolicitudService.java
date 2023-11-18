@@ -1,9 +1,6 @@
 package com.uabc.fiad.sgs.service;
 
-import java.time.LocalDateTime;
-import java.util.*;
-
-import com.uabc.fiad.sgs.DTO.UsuarioDTO;
+import com.uabc.fiad.sgs.entity.Solicitud;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -11,7 +8,8 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Service;
 
-import com.uabc.fiad.sgs.entity.Solicitud;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 public class SolicitudService implements ISolicitudService {
@@ -161,7 +159,8 @@ public class SolicitudService implements ISolicitudService {
 				on s.idSolicitud = fs.idSolicitud
 				left join estado_solicitud es
 				on s.idEstado_Solicitud = es.idEstado_Solicitud
-				where fs.idRol = ? and fs.idUsuario is null;
+				where fs.idRol = ? and fs.idUsuario is null
+                and (s.idEstado_Solicitud = 1 or s.idEstado_Solicitud = 2);
 				""",
 				(rs, rowNum) ->
 						new Solicitud(
@@ -273,12 +272,31 @@ public class SolicitudService implements ISolicitudService {
 	 */
 	@Override
 	public boolean firmarSolicitud(Integer idSolicitud, Integer idUsuario, Integer idRol) {
+//
+//		String sql = "update firmas_solicitud set idUsuario = ? where idRol = ? and idSolicitud = ?;";
+//
+//		int filasAfectadas = template.update(sql, idUsuario, idRol, idSolicitud);
+//
+//		return filasAfectadas > 0;
 
-		String sql = "update firmas_solicitud set idUsuario = ? where idRol = ? and idSolicitud = ?;";
+		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(template).withProcedureName("firmar_solicitud");
+		Map<String, Object> inParamMap = new HashMap<>();
+		inParamMap.put("id_solicitud", idSolicitud);
+		inParamMap.put("id_usuario", idUsuario);
+		inParamMap.put("id_rol", idRol);
 
-		int filasAfectadas = template.update(sql, idUsuario, idRol, idSolicitud);
+		SqlParameterSource in = new MapSqlParameterSource(inParamMap);
 
-		return filasAfectadas > 0;
+		Map<String, Object> resMap = simpleJdbcCall.execute(in);
+
+		Object resObj = resMap.get("res");
+		if (resObj == null) {
+			return false;
+		} else if (!(resObj instanceof Integer)) {
+			return false;
+		}
+
+		return (Integer) resObj == 1;
 	}
 
 	/**

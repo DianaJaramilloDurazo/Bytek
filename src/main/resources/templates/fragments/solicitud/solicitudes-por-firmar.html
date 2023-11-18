@@ -1,5 +1,5 @@
 <div th:fragment="solicitudes-por-firmar">
-    <div class="solicitudContenedor" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR', 'ROLE_DIRECTOR')">
+    <div class="solicitudContenedor" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_COORDINACION')">
         <h4>Solicitudes pendientes por firmar</h4>
         <table class="table">
             <thead class="table-bordered"><!--ENCABEZADO DE LA TABLA-->
