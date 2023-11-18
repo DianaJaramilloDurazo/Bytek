@@ -34,6 +34,7 @@ function activarInput(checkboxid, inputid) {
 	} else {
 		// Desactivar el input
 		input.disabled = true;
+		input.value = '';
 	}
 }
 
@@ -146,47 +147,93 @@ const config = { childList: true };
 observer.observe(myDiv, config);
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Tu código JavaScript aquí
+	// Tu código JavaScript aquí
 
 });
 
-function validarFechas(idFechaSalida, idFechaRegreso){
-//Validar fechas
-var fechaSalida = document.getElementById(idFechaSalida);
-console.log(fechaSalida);
-var fechaRegreso = document.getElementById(idFechaRegreso);
-// Obtener referencias a los elementos de fecha
-var fechaActual = new Date().toISOString().split('T')[0];
+function validarFechas(idFechaSalida, idFechaRegreso) {
+	//Validar fechas
+	var fechaSalida = document.getElementById(idFechaSalida);
+	console.log(fechaSalida);
+	var fechaRegreso = document.getElementById(idFechaRegreso);
+	// Obtener referencias a los elementos de fecha
+	var fechaActual = new Date().toISOString().split('T')[0];
 
-// Añadir un event listener al input de fecha de inicio
-fechaSalida.addEventListener('change', function() {
-	console.log("CAMBIO DE FECHA");
-	// Obtener la fecha seleccionada en el input de inicio
-	var fechaInicio = new Date(fechaSalida.value);
-	// Verificar si la fecha de inicio es anterior a la fecha actual
-	if (fechaInicio < new Date()) {
-		// Restaurar la fecha actual
-		//fechaSalida.value = fechaActual;
-	}
-	// Verificar si la fecha de fin es anterior a la fecha de inicio
-	var fechaFin = new Date(fechaRegreso.value);
-	if (fechaFin < fechaInicio) {
-		// Asignar la fecha de inicio + 1 día al input de fecha de fin
-		fechaRegreso.value = new Date(fechaInicio.getTime() + 86400000).toISOString().split('T')[0];
-	}
-});
+	// Añadir un event listener al input de fecha de inicio
+	fechaSalida.addEventListener('change', function() {
+		console.log("CAMBIO DE FECHA");
+		// Obtener la fecha seleccionada en el input de inicio
+		var fechaInicio = new Date(fechaSalida.value);
+		// Verificar si la fecha de inicio es anterior a la fecha actual
+		if (fechaInicio < new Date()) {
+			// Restaurar la fecha actual
+			//fechaSalida.value = fechaActual;
+		}
+		// Verificar si la fecha de fin es anterior a la fecha de inicio
+		var fechaFin = new Date(fechaRegreso.value);
+		if (fechaFin < fechaInicio) {
+			// Asignar la fecha de inicio + 1 día al input de fecha de fin
+			fechaRegreso.value = new Date(fechaInicio.getTime() + 86400000).toISOString().split('T')[0];
+		}
+	});
 
-// Añadir un event listener al input de fecha de fin
-fechaRegreso.addEventListener('change', function() {
-	// Verificar si la fecha de fin es anterior a la fecha de inicio
-	var fechaInicio = new Date(fechaSalida.value);
-	var fechaFin = new Date(fechaRegreso.value);
-	if (fechaFin < fechaInicio) {
-		// Asignar la fecha de inicio + 1 día al input de fecha de fin
-		fechaRegreso.value = new Date(fechaInicio.getTime() + 86400000).toISOString().split('T')[0];
-	}
-});
+	// Añadir un event listener al input de fecha de fin
+	fechaRegreso.addEventListener('change', function() {
+		// Verificar si la fecha de fin es anterior a la fecha de inicio
+		var fechaInicio = new Date(fechaSalida.value);
+		var fechaFin = new Date(fechaRegreso.value);
+		if (fechaFin < fechaInicio) {
+			// Asignar la fecha de inicio + 1 día al input de fecha de fin
+			fechaRegreso.value = new Date(fechaInicio.getTime() + 86400000).toISOString().split('T')[0];
+		}
+	});
 
+}
+
+function validarEditarRecursos(idCheckbox) {
+	if (idCheckbox == '2') {
+		var checkbox2 = document.getElementById('Transporte');
+		var input2 = document.getElementById('ITransporte');
+
+		// Verificar si el checkbox está seleccionado
+		if (checkbox2.checked) {
+			// Activar el input
+			input2.disabled = false;
+		} else {
+			// Desactivar el input
+			input2.disabled = true;
+			input2.value = '';
+		}
+	}
+		if (idCheckbox == '5') {
+		var checkbox5 = document.getElementById('Otro');
+		var input5 = document.getElementById('IOtro');
+
+		// Verificar si el checkbox está seleccionado
+		if (checkbox5.checked) {
+			// Activar el input
+			input5.disabled = false;
+		} else {
+			// Desactivar el input
+			input5.disabled = true;
+			input5.value = '';
+		}
+	}
+}
+
+function validarEditarActividad(){
+			var checkbox2 = document.getElementById('Otra');
+		var input2 = document.getElementById('IOtra');
+
+		// Verificar si el checkbox está seleccionado
+		if (checkbox2.checked) {
+			// Activar el input
+			input2.disabled = false;
+		} else {
+			// Desactivar el input
+			input2.disabled = true;
+			input2.value = '';
+		}
 }
 
 

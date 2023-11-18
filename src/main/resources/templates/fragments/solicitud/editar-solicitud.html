@@ -42,9 +42,12 @@
 		<label>Recurso a solicitar:</label><br>
 
         <div th:each="recurso : ${recursos}">
-             <input name="recursosEditar" th:value="${recurso.idRecurso}" type="checkbox" th:attr="checked=${recurso.registrado}?'checked':null" checked>
+             <input th:if="${recurso.idRecurso != 2 and recurso.idRecurso !=5}" name="recursosEditar" th:value="${recurso.idRecurso}" type="checkbox" th:attr="checked=${recurso.registrado}?'checked':null" checked>
+             <input th:if="${recurso.idRecurso == 2 or recurso.idRecurso ==5}" name="recursosEditar" th:value="${recurso.idRecurso}" th:id="@{|${recurso.desc}|}" 
+             		type="checkbox" th:attr="checked=${recurso.registrado}?'checked':null" 
+             		th:onclick="'validarEditarRecursos(\'' + ${recurso.idRecurso} + '\')'" checked>
              	<span th:text="${recurso.desc}"></span>
-             	<input type="text" th:if="${recurso.desc == 'Transporte' or recurso.desc == 'Otro'}" th:name="${recurso.desc}" th:value="${recurso.detalles}">
+             	<input type="text" th:if="${recurso.desc == 'Transporte' or recurso.desc == 'Otro'}" th:name="${recurso.desc}" th:value="${recurso.detalles}" th:id="@{|I${recurso.desc}|}" >
              </div>
 		<br>
 	</div>
@@ -53,9 +56,13 @@
 	<div class="checkbox actividades">
 		<label>Actividad asociada a:</label>
 		<div th:each="act : ${actividades}">
-             <input name="actividadesEditar" th:value="${act.idActividad}" type="checkbox" th:attr="checked=${act.registrado}?'checked':null" checked>
+             <input th:if="${act.idActividad != 6}"  name="actividadesEditar" th:value="${act.idActividad}" type="checkbox" th:attr="checked=${act.registrado}?'checked':null" checked>
+             <input th:if="${act.idActividad == 6}"  name="actividadesEditar" th:value="${act.idActividad}" 
+             		type="checkbox" th:attr="checked=${act.registrado}?'checked':null" th:id="@{|${act.nombre}|}" 
+             		th:onclick="'validarEditarActividad()'"
+             		checked>
              <span th:text="${act.nombre}"></span>
-             <input type="text" th:if="${act.nombre == 'Otra'}" th:value="${act.desc}" th:name="${act.nombre}">
+             <input th:id="@{|I${act.nombre}|}" type="text" th:if="${act.nombre == 'Otra'}" th:value="${act.desc}" th:name="${act.nombre}">
         </div>
 		
 	</div>
