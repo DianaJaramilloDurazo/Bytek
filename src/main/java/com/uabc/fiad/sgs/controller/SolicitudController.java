@@ -23,133 +23,159 @@ import java.util.Optional;
 @RequestMapping("solicitud")
 public class SolicitudController {
 
-    @Autowired
-    private ISolicitudService solicitudService;
+	@Autowired
+	private ISolicitudService solicitudService;
 
-    @Autowired
-    private IUsuarioService usuarioService;
+	@Autowired
+	private IUsuarioService usuarioService;
 
-    @Autowired
-    private MailManager mailManager;
+	@Autowired
+	private MailManager mailManager;
 
-    @GetMapping("por-firmar")
-    public String getSolicitudesPorFirmar(Model model) {
-        Usuario u = SessionUtils.getUsuario(usuarioService);
-        if (u == null) {
-            return "redirect:/login";
-        }
+	@GetMapping("por-firmar")
+	public String getSolicitudesPorFirmar(Model model) {
+		Usuario u = SessionUtils.getUsuario(usuarioService);
+		if (u == null) {
+			return "redirect:/login";
+		}
 
-        // Si tiene rol
-        // Lista de solicitudes para firmar
-        List<Solicitud> solicitudesPendientes = solicitudService.listarSolicitudesPendientes(usuarioService.findIdRolById(u.getIdUsuario()));
+		// Si tiene rol
+		// Lista de solicitudes para firmar
+		List<Solicitud> solicitudesPendientes = solicitudService
+				.listarSolicitudesPendientes(usuarioService.findIdRolById(u.getIdUsuario()));
 
-        // También los usuarios registrados
-        // todo: Monitorear por problemas de rendimiento cargando la página de inicio, simplemente es la solución más
-        //  sencilla que se me ocurrió
-        List<Usuario> usuarios = new ArrayList<>();
-        for (Solicitud s : solicitudesPendientes) {
-            usuarios.add(usuarioService.findById(s.getIdUsuario()).get());
-        }
+		// También los usuarios registrados
+		// todo: Monitorear por problemas de rendimiento cargando la página de inicio,
+		// simplemente es la solución más
+		// sencilla que se me ocurrió
+		List<Usuario> usuarios = new ArrayList<>();
+		for (Solicitud s : solicitudesPendientes) {
+			usuarios.add(usuarioService.findById(s.getIdUsuario()).get());
+		}
 
-        model.addAttribute("solicitudes_pendientes", solicitudesPendientes);
-        model.addAttribute("usuarios_firmar", usuarios);
+		model.addAttribute("solicitudes_pendientes", solicitudesPendientes);
+		model.addAttribute("usuarios_firmar", usuarios);
 
-        return "fragments/solicitud/solicitudes-por-firmar :: solicitudes-por-firmar";
-    }
+		return "fragments/solicitud/solicitudes-por-firmar :: solicitudes-por-firmar";
+	}
 
-    @GetMapping("")
-    public String getSolicitud(Model model, @RequestParam("id") Integer id) {
+	@GetMapping("")
+	public String getSolicitud(Model model, @RequestParam("id") Integer id) {
 
-        Optional<Solicitud> so = solicitudService.findById(id);
+		Optional<Solicitud> so = solicitudService.findById(id);
 
-        if (so.isEmpty()) {
-            return "";
-        }
+		if (so.isEmpty()) {
+			return "";
+		}
 
-        Solicitud s = so.get();
+		Solicitud s = so.get();
 
-        model.addAttribute("solicitud", s);
+		model.addAttribute("solicitud", s);
 
-        Usuario u = usuarioService.findById(s.getIdUsuario()).get();
-        model.addAttribute("usuario", u);
+		Usuario u = usuarioService.findById(s.getIdUsuario()).get();
+		model.addAttribute("usuario", u);
 
-        List<Map<String, Object>> categorias = usuarioService.listarCategorias();
+		List<Map<String, Object>> categorias = usuarioService.listarCategorias();
 
-        String categoria = "";
-        for (Map<String, Object> c : categorias) {
-            if (c.get("idCategoria").equals(u.getIdCategoria())) {
-                categoria = (String) c.get("Cat_Descripcion");
-            }
-        }
+		String categoria = "";
+		for (Map<String, Object> c : categorias) {
+			if (c.get("idCategoria").equals(u.getIdCategoria())) {
+				categoria = (String) c.get("Cat_Descripcion");
+			}
+		}
 
-        model.addAttribute("categoria", categoria);
+		model.addAttribute("categoria", categoria);
 
-        List<Map<String, Object>> carreras = usuarioService.listarCarreras();
+		List<Map<String, Object>> carreras = usuarioService.listarCarreras();
 
-        String carrera = "";
-        for (Map<String, Object> c : carreras) {
-            if (c.get("idCarrera").equals(s.getIdCarrera())) {
-                carrera = (String) c.get("Carrera_Nombre");
-            }
-        }
+		String carrera = "";
+		for (Map<String, Object> c : carreras) {
+			if (c.get("idCarrera").equals(s.getIdCarrera())) {
+				carrera = (String) c.get("Carrera_Nombre");
+			}
+		}
 
-        model.addAttribute("carrera", carrera);
+		model.addAttribute("carrera", carrera);
 
-        model.addAttribute("recursos", solicitudService.listarRecursos(id));
+		model.addAttribute("recursos", solicitudService.listarRecursos(id));
 
-        model.addAttribute("actividades", solicitudService.listarActividadesAsociadas(id));
+		model.addAttribute("actividades", solicitudService.listarActividadesAsociadas(id));
 
-        model.addAttribute("firmas", solicitudService.listarFirmas(id));
+		model.addAttribute("firmas", solicitudService.listarFirmas(id));
 
-        return "fragments/solicitud/solicitud-detalles :: solicitud-detalles";
-    }
+		return "fragments/solicitud/solicitud-detalles :: solicitud-detalles";
+	}
 
-    @PostMapping(value = "firmar",
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
-            produces = MediaType.TEXT_HTML_VALUE)
-    @HxTrigger("refreshSolicitudes")
-    @ResponseBody
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public String firmarSolicitud(@RequestParam Integer solicitudid) {
+	@PostMapping(value = "firmar", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
+	@HxTrigger("refreshSolicitudes")
+	@ResponseBody
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public String firmarSolicitud(@RequestParam Integer solicitudid) {
 
-        Usuario u = SessionUtils.getUsuario(usuarioService);
-        if (u == null) {
-            return "redirect:/login";
-        }
+		Usuario u = SessionUtils.getUsuario(usuarioService);
+		if (u == null) {
+			return "redirect:/login";
+		}
 
-        boolean success = solicitudService.firmarSolicitud(solicitudid, u.getIdUsuario(), usuarioService.findIdRolById(u.getIdUsuario()));
+		boolean success = solicitudService.firmarSolicitud(solicitudid, u.getIdUsuario(),
+				usuarioService.findIdRolById(u.getIdUsuario()));
 
-        if (!success) {
-            return "<div class='alert alert-danger' role='alert'> Ocurrió un error al firmar la solicitud </div>";
-        }
+		if (!success) {
+			return "<div class='alert alert-danger' role='alert'> Ocurrió un error al firmar la solicitud </div>";
+		}
 
-        // Envíar correos
-        Optional<Solicitud> s = solicitudService.findById(solicitudid);
+		// Envíar correos
+		Optional<Solicitud> s = solicitudService.findById(solicitudid);
 
-        if (s.isEmpty()) {
-            return "<div class='alert alert-warning' role='alert'> La solicitud fue firmada con éxito, pero ocurrió un error al notificar a sobre la firma </div>";
-        }
+		if (s.isEmpty()) {
+			return "<div class='alert alert-warning' role='alert'> La solicitud fue firmada con éxito, pero ocurrió un error al notificar a sobre la firma </div>";
+		}
 
-        Solicitud solicitud = s.get();
+		Solicitud solicitud = s.get();
 
-        List<String> correos = solicitudService.obtnerCorrreosFirmas(solicitudid);
+		List<String> correos = solicitudService.obtnerCorrreosFirmas(solicitudid);
 
-        Optional<Usuario> usuarioFirmaO = usuarioService.findById(solicitud.getIdUsuario());
+		Optional<Usuario> usuarioFirmaO = usuarioService.findById(solicitud.getIdUsuario());
 
-        if (usuarioFirmaO.isEmpty()) {
-            return "<div class='alert alert-warning' role='alert'> La solicitud fue firmada con éxito, pero ocurrió un error al notificar a sobre la firma </div>";
-        }
+		if (usuarioFirmaO.isEmpty()) {
+			return "<div class='alert alert-warning' role='alert'> La solicitud fue firmada con éxito, pero ocurrió un error al notificar a sobre la firma </div>";
+		}
 
-        Usuario usuarioFirma = usuarioFirmaO.get();
+		Usuario usuarioFirma = usuarioFirmaO.get();
 
-        correos.add(usuarioFirma.getCorreo());
-        // TODO: Descomentar la siguiente línea para que envíe los correos
+		correos.add(usuarioFirma.getCorreo());
+		// TODO: Descomentar la siguiente línea para que envíe los correos
 //        mailManager.firmada(correos, solicitud.getNombreEvento(), usuarioService.findNameRolById(u.getIdRol()));
 
 //        List<String> c = new ArrayList<>();
 //        c.add(usuarioFirma.getCorreo());
 //        mailManager.firmada(c, solicitud.getNombreEvento(), usuarioService.findNameRolById(u.getIdRol()));
 
-        return "<div class='alert alert-success' role='alert'> La solicitud fue firmada con exito y se notificó por correo </div>";
-    }
+		return "<div class='alert alert-success' role='alert'> La solicitud fue firmada con exito y se notificó por correo </div>";
+	}
+
+	@PostMapping(value = "rechazar", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
+	@HxTrigger("refreshSolicitudes")
+	@ResponseBody
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public String RechazarSolicitud(@RequestParam Integer rechazarId) {
+
+		System.out.println(rechazarId);
+		Usuario u = SessionUtils.getUsuario(usuarioService);
+		if (u == null) {
+			return "redirect:/login";
+		}
+		
+		boolean rechazado = solicitudService.rechzarSolicitud(rechazarId);
+		if(rechazado) {
+			solicitudService.reiniciarFirmas(rechazarId);
+			
+			
+			return "<div class='alert alert-success' role='alert'> La solicitud fue rechazada </div>";
+			
+		}else {
+			return "<div class='alert alert-danger' role='alert'> Ha ocurrido un error al intentar rechzar la solcitud </div>";
+		}
+
+	}
 }

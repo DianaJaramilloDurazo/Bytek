@@ -116,4 +116,6 @@ public interface ISolicitudService {
     void reiniciarFirmas(Integer idSolicitud);
     
     List<String> obtnerCorrreosFirmas(Integer idSolicitud);
+    
+    boolean rechzarSolicitud(Integer idSolicitud);
 }

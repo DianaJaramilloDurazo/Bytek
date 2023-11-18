@@ -78,5 +78,27 @@ public class MailManager {
 			}
 		}
 	}
+	
+	public void rechazada(String correo,String nombreSolicitante,  String evento) {
+		MimeMessage message = javaMailSender.createMimeMessage();
+
+		try {
+			message.setSubject("Correción de solicitud");
+			MimeMessageHelper helper = new MimeMessageHelper(message,true);
+			helper.setTo(correo);
+			helper.setText("Estimado/a "+nombreSolicitante+".\r\n"
+					+ "\r\n"
+					+ "Espero que se encuentre bien. Me dirijo a usted para informarle que, tras revisar cuidadosamente su solicitud de participación en el evento "+evento+", lamentamos informarle que no podemos aprobar su solicitud en esta ocasión .\r\n"
+					+ "\r\n"
+					+ "Razones del Rechazo:\r\n"
+					+ "Proporciona de manera respetuosa y clara las razones específicas del rechazo.]\r\n"
+					+ "");
+			
+			helper.setFrom(sender);
+			javaMailSender.send(message);
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 }

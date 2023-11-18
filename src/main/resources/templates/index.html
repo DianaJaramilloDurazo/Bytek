@@ -286,6 +286,35 @@
 
 <!--FIN CONTENEDOR SOLICITUDES POR FIRMAR-->
 
+
+<!-- MODAL RECHAZAR SOLICITUD -->
+<div class="modal fade" id="rechazarSolicitud" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Rechazar Solicitud</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Seguro que desea rechazar la solicitud '<span id="confirmar-rechazo-evento"></span>'?
+      </div>
+      <input hidden id="rechazar-solicitud-id" name="rechazarId">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button 
+              hx-post="/solicitud/rechazar"
+              hx-include="[name='rechazarId']"
+              hx-target="#firmar-result"
+              hx-swap="innerHTML"
+        type="button" data-bs-dismiss="modal" class="btn btn-primary">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIN MODAL RECHAZAR SOLICITUD -->
+
+
+<!-- MODAL FIRMAR SOLICITUD -->
 <div class="modal fade" id="confirmar-firma" tabindex="-1" aria-labelledby="Confirmar Firma" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

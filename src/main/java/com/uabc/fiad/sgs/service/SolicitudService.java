@@ -405,4 +405,11 @@ public class SolicitudService implements ISolicitudService {
 		return correos;
 	}
 
+	@Override
+	public boolean rechzarSolicitud(Integer idSolicitud) {
+	    String sql = "UPDATE solicitud SET idEstado_solicitud = 7 WHERE idSolicitud = ?;";
+	    int rowsAffected = template.update(sql, idSolicitud);
+	    return rowsAffected > 0;
+	}
+
 }
