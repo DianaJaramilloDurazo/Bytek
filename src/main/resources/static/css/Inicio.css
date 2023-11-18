@@ -244,6 +244,8 @@
 	transition: opacity 1s linear;
 }
 
+.motivos{
+	margin: 1rem}
 /*Codigo css para las cards de navegacion segun el numero de cards que se muestren*/
 
 /*grid-column: 1 / span 3;*/

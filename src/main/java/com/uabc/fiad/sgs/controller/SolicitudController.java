@@ -158,7 +158,8 @@ public class SolicitudController {
 	@HxTrigger("refreshSolicitudes")
 	@ResponseBody
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public String RechazarSolicitud(@RequestParam Integer rechazarId) {
+	public String RechazarSolicitud(@RequestParam Integer rechazarId,@RequestParam String motivo) {
+
 
 		System.out.println(rechazarId);
 		Usuario u = SessionUtils.getUsuario(usuarioService);
@@ -166,9 +167,15 @@ public class SolicitudController {
 			return "redirect:/login";
 		}
 		
+		System.out.print(motivo);
 		boolean rechazado = solicitudService.rechzarSolicitud(rechazarId);
 		if(rechazado) {
 			solicitudService.reiniciarFirmas(rechazarId);
+			Solicitud solicitud = solicitudService.findById(rechazarId).get();
+			Usuario user = usuarioService.findById(solicitud.getIdUsuario()).get();
+			String nombreUsuario = user.getUsername()+" " + user.getApPaterno() + " " + user.getApMaterno();
+			// Comentado para no enviar correos a otros usuarios
+			//mailManager.rechazada(user.getCorreo(), nombreUsuario, solicitud.getNombreEvento(),motivo);
 			
 			
 			return "<div class='alert alert-success' role='alert'> La solicitud fue rechazada </div>";
@@ -176,6 +183,5 @@ public class SolicitudController {
 		}else {
 			return "<div class='alert alert-danger' role='alert'> Ha ocurrido un error al intentar rechzar la solcitud </div>";
 		}
-
 	}
 }

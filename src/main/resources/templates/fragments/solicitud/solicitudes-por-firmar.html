@@ -35,6 +35,8 @@
                     th:attr="data-evento=${sol.nombreEvento}, data-solicitudid=${sol.getIdSolicitud}"
                     onclick="document.getElementById('rechazar-solicitud-id').value = this.dataset.solicitudid;
                     document.getElementById('confirmar-rechazo-evento').innerHTML = this.dataset.evento;"
+                    th:disabled="${sol.idEstadoSolicitud != 1 and sol.idEstadoSolicitud != 2}"
+                   
                     >
 					  Rechazar
 					</button>

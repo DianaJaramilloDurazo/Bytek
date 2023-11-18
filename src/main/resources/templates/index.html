@@ -299,11 +299,16 @@
         ¿Seguro que desea rechazar la solicitud '<span id="confirmar-rechazo-evento"></span>'?
       </div>
       <input hidden id="rechazar-solicitud-id" name="rechazarId">
+      
+	    <div class="mb-3 mt-3 motivos">
+			  <label for="exampleFormControlTextarea1" class="form-label">Motivos:</label>
+			  <textarea name="motivo" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+		</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
         <button 
               hx-post="/solicitud/rechazar"
-              hx-include="[name='rechazarId']"
+              hx-include="[name='rechazarId'],[name='motivo']"
               hx-target="#firmar-result"
               hx-swap="innerHTML"
         type="button" data-bs-dismiss="modal" class="btn btn-primary">Confirmar</button>
