@@ -301,7 +301,6 @@ public class SolicitudService implements ISolicitudService {
 
 	/**
 	 * Cambia el estado de una solicitud a cancelado
-	 * 
 	 * @param idSolicitud id de la solcitud a cancelar
 	 * @return si se registró o no la solicitud
 	 */
@@ -319,7 +318,11 @@ public class SolicitudService implements ISolicitudService {
 			return false;
 		}
 	}
-
+	/**
+	 * Actualiza la información de una solicitud
+	 * @param solicitud     solicitud a editar su información
+	 * @return              resultado sobre si se logró actualizar la solicitud
+	 */
 	@Override
 	public Boolean updateSolicitud(Solicitud solicitud) {
 		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(template).withProcedureName("update_solicitud");
@@ -345,7 +348,11 @@ public class SolicitudService implements ISolicitudService {
 
 		return (Integer) resObj == 1;
 	}
-
+	/**
+	 * Borra los recursos que se quitaron de una solicitud al editarla
+	 * @param idSolicitud   id de la solicitud a editar
+	 * @param recursos      lista con los id de los recursos a borrar
+	 */
 	@Override
 	public void deleteRecursos(Integer idSolicitud, Set<Integer> recursos) {
 		String sql = "DELETE FROM solicitud_recursos WHERE idSolicitud = ? AND idRecursos = ?";
@@ -355,7 +362,11 @@ public class SolicitudService implements ISolicitudService {
 		}
 
 	}
-
+	/**
+	 * Borra las actividades quitaron de una solicitud de salida
+	 * @param idSolicitud   id de la solicitud a editar
+	 * @param actividades      lista con los id de las actividades a borrar
+	 */
 	@Override
 	public void deleteActividades(Integer idSolicitud, Set<Integer> actividades) {
 		String sql = "DELETE FROM act_asociada_solicitud WHERE Solicitud_idSolicitud = ? AND Act_Asociada_idAct_Asociada = ?";
@@ -365,28 +376,45 @@ public class SolicitudService implements ISolicitudService {
 		}
 
 	}
-
+	/**
+	 * Actuliza los detalles de los recursos que lo requieran
+	 * @param idSolicitud   id de la solicitud a editar
+	 * @param idRecurso     id del recurso a editar su detalle
+	 * @param detalle       detalle a asignar al recurso
+	 */
 	@Override
 	public void updateDetalleRecurso(Integer idSolicitud,Integer idRecurso, String detalle) {
 		String sql = "UPDATE solicitud_recursos SET Detalles=? WHERE idSolicitud=? AND idRecursos=?;";
 		template.update(sql,detalle, idSolicitud, idRecurso);
 
 	}
-
+	/**
+	 * Actualiza los detalles de los recursos que lo requieran
+	 * @param idSolicitud   id de la solicitud a editar
+	 * @param idActividad   id de la actividad a actulizar su detalle (Otra: )
+	 * @param detalle       detalle a actualizar
+	 */
 	@Override
 	public void updateDetalleActividad(Integer idSolicitud, Integer idActividad, String detalle) {
 		String sql = "UPDATE sgs_db.act_asociada_solicitud SET Descripcion=? WHERE Act_Asociada_idAct_Asociada=? AND Solicitud_idSolicitud=?;";
 		template.update(sql,detalle,idActividad,idSolicitud);
 		
 	}
-
+	/**
+	 * borra las todas las firmas de una solicitud de salida
+	 * @param idSolicitud   id de la solicitud a borrar sus firmas
+	 */
 	@Override
 	public void reiniciarFirmas(Integer idSolicitud) {
 		// TODO Auto-generated method stub
 		String sql = "UPDATE firmas_solicitud SET idUsuario= NULL WHERE idSolicitud  = ?;";
 		template.update(sql,idSolicitud);			
 	}
-
+	/**
+	 * Obtiene una lista de correos de los responsables a firmar una solicitud
+	 * @param idSolicitud   id de la solicitud
+	 * @return              lista con correos de los responsables a firmar la solicitud
+	 */
 	@Override
 	public List<String> obtnerCorrreosFirmas(Integer idSolicitud) {
 		String sql = "select fs.idRol from firmas_solicitud fs where idSolicitud = ?;";
@@ -404,7 +432,11 @@ public class SolicitudService implements ISolicitudService {
 		System.out.println(firmas);
 		return correos;
 	}
-
+	/**
+	 * Cambia el estado de una solicitud a "En correción"
+	 * @param idSolicitud   id de la solicitud a cambiar su estado
+	 * @return               resultado sobre si se logró cambiar el esatdo de la solicitud
+	 */
 	@Override
 	public boolean rechzarSolicitud(Integer idSolicitud) {
 	    String sql = "UPDATE solicitud SET idEstado_solicitud = 7 WHERE idSolicitud = ?;";

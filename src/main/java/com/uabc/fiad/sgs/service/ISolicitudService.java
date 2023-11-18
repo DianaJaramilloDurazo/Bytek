@@ -102,20 +102,61 @@ public interface ISolicitudService {
      * @return				si se registró o no la solicitud
      */
     Boolean cancelarSolicitud(Integer idSolicitud);
-    
+
+    /**
+     * Actualiza la información de una solicitud
+     * @param solicitud     solicitud a editar su información
+     * @return              resultado sobre si se logró actualizar la solicitud
+     */
     Boolean updateSolicitud(Solicitud solicitud);
-    
+
+    /**
+     * Borra los recursos que se quitaron de una solicitud al editarla
+     * @param idSolicitud   id de la solicitud a editar
+     * @param recursos      lista con los id de los recursos a borrar
+     */
     void deleteRecursos(Integer idSolicitud, Set<Integer> recursos);
-    
+
+    /**
+     * Borra las actividades quitaron de una solicitud de salida
+     * @param idSolicitud   id de la solicitud a editar
+     * @param actividades      lista con los id de las actividades a borrar
+     */
     void deleteActividades(Integer idSolicitud, Set<Integer> actividades);
-    
+
+    /**
+     * Actuliza los detalles de los recursos que lo requieran
+     * @param idSolicitud   id de la solicitud a editar
+     * @param idRecurso     id del recurso a editar su detalle
+     * @param detalle       detalle a asignar al recurso
+     */
     void updateDetalleRecurso(Integer idSolicitud,Integer idRecurso, String detalle);
-    
+
+    /**
+     * Actualiza los detalles de los recursos que lo requieran
+     * @param idSolicitud   id de la solicitud a editar
+     * @param idActividad   id de la actividad a actulizar su detalle (Otra: )
+     * @param detalle       detalle a actualizar
+     */
     void updateDetalleActividad(Integer idSolicitud,Integer idActividad, String detalle);
-    
+
+    /**
+     * borra las todas las firmas de una solicitud de salida
+     * @param idSolicitud   id de la solicitud a borrar sus firmas
+     */
     void reiniciarFirmas(Integer idSolicitud);
-    
+
+    /**
+     * Obtiene una lista de correos de los responsables a firmar una solicitud
+     * @param idSolicitud   id de la solicitud
+     * @return              lista con correos de los responsables a firmar la solicitud
+     */
     List<String> obtnerCorrreosFirmas(Integer idSolicitud);
-    
+
+    /**
+     * Cambia el estado de una solicitud a "En correción"
+     * @param idSolicitud   id de la solicitud a cambiar su estado
+     * @return               resultado sobre si se logró cambiar el esatdo de la solicitud
+     */
     boolean rechzarSolicitud(Integer idSolicitud);
 }

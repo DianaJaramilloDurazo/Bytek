@@ -197,6 +197,12 @@ public class DocenteController {
 		return "<div class='alert alert-danger' role='alert'> Ha ocurrido un error al intentar cancelar la solcitud </div>";
 	}
 
+	/**
+	 *
+	 * @param idSolicitud	id de la solicitud a mostrar su información a editar
+	 * @param model			modelo utilizado para pasar datos a la vista
+	 * @return				fragmento para mostrar la información de la solicitud a editar
+	 */
 	@GetMapping("/get-editar-form")
 	public String editarSolicitud(@RequestParam(value = "id") Integer idSolicitud, Model model) {
 
@@ -220,6 +226,21 @@ public class DocenteController {
 		return "fragments/solicitud/editar-solicitud :: editar-solicitud";
 	}
 
+
+	/**
+	 * Método POST para editar una solicitud de salida
+	 * @param solicitud			solicitud de salida a editar
+	 * @param fechaSalida		fecha de salida al evento
+	 * @param fechaRegreso		fecha de regreso del evento
+	 * @param horaSalida		hora de salida al evento
+	 * @param horaRegreso		hora de regreso del evento
+	 * @param recursos			lista con los id de los recursos a solicitar
+	 * @param actividades		lista con los id de la actividad o actividades relacionadas
+	 * @param numPasajeros		número de pasajeros si es que se solicita transporte
+	 * @param otroRecurso		especificación de otro recurso si es que se solicita
+	 * @param otroActividad		especificación de otra actividad si es que se soliciat
+	 * @return					notificación sobre el resulatdo de la edición de la solicitud
+	 */
 	@PostMapping(value = "/editar", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
 	@ResponseBody
 	@ResponseStatus(code = HttpStatus.CREATED)
@@ -232,8 +253,7 @@ public class DocenteController {
 			@RequestParam(value = "actividadesEditar") List<Integer> actividades,
 			@RequestParam(value = "Transporte", required = false) String numPasajeros,
 			@RequestParam(value = "Otro", required = false) String otroRecurso,
-			@RequestParam(value = "Otra", required = false) String otroActividad,
-			@RequestParam(value = "carreraAnterior", required = false) Integer carreraAnterior) {
+			@RequestParam(value = "Otra", required = false) String otroActividad){
 		
 		Usuario u = SessionUtils.getUsuario(usuarioService);
 		// Guarda id y fechas dentro de la solciitud a editar
