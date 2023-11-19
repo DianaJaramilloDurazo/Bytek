@@ -209,7 +209,8 @@
             </div>
             <div class="modal-body">
                 <form hx-post="/docente/registrar"
-                      hx-target="#result-msg"
+                      hx-target="#result-accion"
+                      hx-swap="innerHTML"
                       id="crearSolictud"
                 >
                     <div id="result-msg"></div>
@@ -221,11 +222,11 @@
                         <div class="modalConfirmar-content">
                             <p>¿Todos los datos son correctos?</p>
                             <button type="button"  class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
-                            <button class="btn btn-primary" onclick="cerrarModal()" type="submit" >Confirmar</button>
+                            <button class="btn btn-primary" onclick="cerrarModal();quitarModal(ModalCrearSolicitud);" type="submit" >Confirmar</button>
                         </div>
                     </div>
                 </form>
-                <div class="modal-footer">
+                <div class="modal-footer"> 
                     <button type="button"  class="btn btn-secondary" onclick="quitarModal(ModalCrearSolicitud)">Cerrar</button>
                     <button onclick="validarForm()"  id="buttonCrearSolicitud" class="btn btn-primary">Crear solicitud</button>
                 </div>

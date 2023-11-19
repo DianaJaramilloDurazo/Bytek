@@ -71,7 +71,7 @@ public interface ISolicitudService {
      * @param idRecurso		id de los recursos solicitidos
      * @param detalle		detalle del recurso solo si es necesario especificarlo
      */
-    void saveRecurso(Integer idSolicitud, Integer idRecurso, String detalle);
+    Boolean saveRecurso(Integer idSolicitud, Integer idRecurso, String detalle);
 
     /**
      * Guarda las actividades relacionadas a la actividad
@@ -79,7 +79,7 @@ public interface ISolicitudService {
      * @param idAtividad	id de las actividades a realizar
      * @param detalle		detalle de la actividad solo si es necesario especificarlo (otro)
      */
-    void saveActividad(Integer idSolicitud, Integer idAtividad, String detalle);
+    Boolean saveActividad(Integer idSolicitud, Integer idAtividad, String detalle);
 
     /**
      * Registra las firmas requeridas en la solicitud, de acuerdo al usuario

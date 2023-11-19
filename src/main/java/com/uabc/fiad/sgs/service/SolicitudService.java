@@ -213,17 +213,19 @@ public class SolicitudService implements ISolicitudService {
 	 * @param idSolicitud id de la solicitud
 	 * @param idRecurso   id de los recursos solicitidos
 	 * @param detalle     detalle del recurso solo si es necesario especificarlo
+	 * @return 			  resultado sobre si se registro el recurso solicitado
 	 */
 	@Override
-	public void saveRecurso(Integer idSolicitud, Integer idRecurso, String detalle) {
+	public Boolean saveRecurso(Integer idSolicitud, Integer idRecurso, String detalle) {	
+		int filasAfectadas;
 		if (detalle == null) {
 			String sql = "INSERT INTO solicitud_recursos (idSolicitud, idRecursos) VALUES(?, ?);";
-			template.update(sql, idSolicitud, idRecurso);
+			filasAfectadas = template.update(sql, idSolicitud, idRecurso);
 		} else {
 			String sql = "INSERT INTO solicitud_recursos (idSolicitud, idRecursos, Detalles) VALUES(?, ?, ?);";
-			template.update(sql, idSolicitud, idRecurso, detalle);
+			filasAfectadas = template.update(sql, idSolicitud, idRecurso, detalle);
 		}
-
+		return filasAfectadas > 0;
 	}
 
 	/**
@@ -235,16 +237,18 @@ public class SolicitudService implements ISolicitudService {
 	 *                    (otro)
 	 */
 	@Override
-	public void saveActividad(Integer idSolicitud, Integer idAtividad, String detalle) {
+	public Boolean saveActividad(Integer idSolicitud, Integer idAtividad, String detalle) {
+		int filasAfectadas;
 		if (detalle == null) {
 			String sql = "INSERT INTO act_asociada_solicitud(Act_Asociada_idAct_Asociada, Solicitud_idSolicitud)"
 					+ "VALUES(?, ?);";
-			template.update(sql, idAtividad, idSolicitud);
+			filasAfectadas = template.update(sql, idAtividad, idSolicitud);
 		} else {
 			String sql = "INSERT INTO act_asociada_solicitud(Act_Asociada_idAct_Asociada, Solicitud_idSolicitud, Descripcion)"
 					+ "VALUES(?, ?, ?);";
-			template.update(sql, idAtividad, idSolicitud, detalle);
+			filasAfectadas = template.update(sql, idAtividad, idSolicitud, detalle);
 		}
+		return filasAfectadas > 0;
 	}
 
 	/**

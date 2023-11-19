@@ -108,30 +108,41 @@ public class DocenteController {
 		if (idSolicitud != 0) {
 			// Registrar Recursos
 			// Se intera sobre los recursos que fueron seleccionados
+			Boolean recursoRegistrado;
+			Boolean resultRecurso = true;
 			for (Integer recurso : recursos) {
-
+				
 				// En caso de que se haya selccionado Transporte se registra su detalle
 				if (recurso == 2) {
-					solicitudService.saveRecurso(idSolicitud, recurso, numPasajeros);
+					recursoRegistrado = solicitudService.saveRecurso(idSolicitud, recurso, numPasajeros);
 
 					// En caso de que se haya selccionado Otro se registra su detalle
 				} else if (recurso == 5) {
-					solicitudService.saveRecurso(idSolicitud, recurso, otroRecurso);
+					recursoRegistrado = solicitudService.saveRecurso(idSolicitud, recurso, otroRecurso);
 
 					// Coso contrario se registra solo el recurso
 				} else {
-					solicitudService.saveRecurso(idSolicitud, recurso, null);
+					recursoRegistrado = solicitudService.saveRecurso(idSolicitud, recurso, null);
+				}
+				if(!recursoRegistrado) {
+					resultRecurso = false;
 				}
 			}
 			// Se intera sobre las actividades que fueron seleccionadas
+			Boolean actividadRegistrada;
+			Boolean resultActividad = true;
 			for (Integer actividad : actividades) {
 
 				// En caso de que se haya selccionado Otra se registra su detalle
 				if (actividad == 6) {
-					solicitudService.saveActividad(idSolicitud, actividad, otroActividad);
+					actividadRegistrada = solicitudService.saveActividad(idSolicitud, actividad, otroActividad);
 				} else {
 					// Coso contrario se registra solo la actividad
-					solicitudService.saveActividad(idSolicitud, actividad, null);
+					actividadRegistrada = solicitudService.saveActividad(idSolicitud, actividad, null);
+				}
+				
+				if(!actividadRegistrada) {
+					resultActividad = false;
 				}
 			}
 
@@ -168,10 +179,21 @@ public class DocenteController {
 				firmas.add(usuarioService.findIdRolByIdCarrera(solicitud.getIdCarrera()));
 			}
 			solicitudService.saveFirmas(idSolicitud, firmas);
-			System.out.println("Firmas necesarias");
-			System.out.println(firmas);
+			
+			String resultadoFinal="";
+			if(resultActividad && resultRecurso) {
+				resultadoFinal = "<div class='alert alert-success' role='alert'> La solicitud fue creada </div>";
+			}else {
+				if(!resultActividad) {
+					resultadoFinal += "<div class='alert alert-danger' role='alert'>La solictud fue creada, pero ha ocurrido un error al registrar las actividades</div>";
+				}
+				if(!resultRecurso) {
+					resultadoFinal += "<div class='alert alert-danger' role='alert'>La solictud fue creada, pero, ha ocurrido un error al registrar los recursos </div>";
+				}
+			}
 
-			return "<div class='alert alert-success' role='alert'> La solicitud fue creada </div>";
+
+			return  resultadoFinal;
 		}
 		return "<div class='alert alert-danger' role='alert'>Ha ocurrido un error al crear la solicitud </div>";
 	}
@@ -290,21 +312,26 @@ public class DocenteController {
 			borrarRecursos.removeAll(setRecursos2);
 			// Se obtienen los nuevos recursos seleccionados
 			agregarRecursos.removeAll(setRecursos1);
-
+			
+			Boolean recursoRegistrado;
+			Boolean resultRecurso = true;
 			// Se intera sobre los nuevos recursos que fueron seleccionados
 			for (Integer recurso : agregarRecursos) {
 
 				// En caso de que se haya selccionado Transporte se registra su detalle
 				if (recurso == 2) {
-					solicitudService.saveRecurso(idSolicitud, recurso, numPasajeros);
+					recursoRegistrado = solicitudService.saveRecurso(idSolicitud, recurso, numPasajeros);
 
 					// En caso de que se haya selccionado Otro se registra su detalle
 				} else if (recurso == 5) {
-					solicitudService.saveRecurso(idSolicitud, recurso, otroRecurso);
+					recursoRegistrado = solicitudService.saveRecurso(idSolicitud, recurso, otroRecurso);
 
 					// Coso contrario se registra solo el recurso
 				} else {
-					solicitudService.saveRecurso(idSolicitud, recurso, null);
+					recursoRegistrado = solicitudService.saveRecurso(idSolicitud, recurso, null);
+				}
+				if(!recursoRegistrado) {
+					resultRecurso = false;
 				}
 			}
 			// Se actualizan los detalles de los recursos si es que hubo un cambio
@@ -344,16 +371,21 @@ public class DocenteController {
 
 			// Se obtienen las nuevas actividades fueron seleccionadas
 			agregarActividades.removeAll(setActividades1);
-
+			
+			Boolean actividadRegistrada;
+			Boolean resultActividad = true;
 			// Se intera sobre las nuevas actividades que fueron seleccionadas
 			for (Integer actividad : agregarActividades) {
 
 				// En caso de que se haya selccionado Otra se registra su detalle
 				if (actividad == 6) {
-					solicitudService.saveActividad(idSolicitud, actividad, otroActividad);
+					actividadRegistrada = solicitudService.saveActividad(idSolicitud, actividad, otroActividad);
 				} else {
 					// Coso contrario se registra solo la actividad
-					solicitudService.saveActividad(idSolicitud, actividad, null);
+					actividadRegistrada = solicitudService.saveActividad(idSolicitud, actividad, null);
+				}
+				if(!actividadRegistrada) {
+					resultActividad = false;
 				}
 			}
 
@@ -376,7 +408,20 @@ public class DocenteController {
 				//mailManager.Correcion(correos, nombreUsuario);
 			}
 
-			return "<div class='alert alert-success' role='alert'> La solicitud fue actualizada </div>";
+			String resultadoFinal="";
+			if(resultActividad && resultRecurso) {
+				resultadoFinal = "<div class='alert alert-success' role='alert'> La solicitud fue actualizada </div>";
+			}else {
+				if(!resultActividad) {
+					resultadoFinal += "<div class='alert alert-danger' role='alert'>Ha ocurrido un error al editar las actividades</div>";
+				}
+				if(!resultRecurso) {
+					resultadoFinal += "<div class='alert alert-danger' role='alert'>Ha ocurrido un error al editar los recursos </div>";
+				}
+			}
+
+
+			return  resultadoFinal;
 		} else {
 			return "<div class='alert alert-danger' role='alert'> Ha ocurrido un error al intentar de editar la solcitud </div>";
 		}
