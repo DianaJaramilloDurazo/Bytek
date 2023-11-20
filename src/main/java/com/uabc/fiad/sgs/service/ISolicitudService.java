@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import com.uabc.fiad.sgs.entity.Rol;
 import com.uabc.fiad.sgs.entity.Solicitud;
 import com.uabc.fiad.sgs.entity.Usuario;
 
@@ -71,7 +72,7 @@ public interface ISolicitudService {
      * @param idRecurso		id de los recursos solicitidos
      * @param detalle		detalle del recurso solo si es necesario especificarlo
      */
-    void saveRecurso(Integer idSolicitud, Integer idRecurso, String detalle);
+    Boolean saveRecurso(Integer idSolicitud, Integer idRecurso, String detalle);
 
     /**
      * Guarda las actividades relacionadas a la actividad
@@ -79,7 +80,7 @@ public interface ISolicitudService {
      * @param idAtividad	id de las actividades a realizar
      * @param detalle		detalle de la actividad solo si es necesario especificarlo (otro)
      */
-    void saveActividad(Integer idSolicitud, Integer idAtividad, String detalle);
+    Boolean saveActividad(Integer idSolicitud, Integer idAtividad, String detalle);
 
     /**
      * Registra las firmas requeridas en la solicitud, de acuerdo al usuario
@@ -102,23 +103,71 @@ public interface ISolicitudService {
      * @return				si se registró o no la solicitud
      */
     Boolean cancelarSolicitud(Integer idSolicitud);
-    
+
+    /**
+     * Actualiza la información de una solicitud
+     * @param solicitud     solicitud a editar su información
+     * @return              resultado sobre si se logró actualizar la solicitud
+     */
     Boolean updateSolicitud(Solicitud solicitud);
-    
+
+    /**
+     * Borra los recursos que se quitaron de una solicitud al editarla
+     * @param idSolicitud   id de la solicitud a editar
+     * @param recursos      lista con los id de los recursos a borrar
+     */
     void deleteRecursos(Integer idSolicitud, Set<Integer> recursos);
-    
+
+    /**
+     * Borra las actividades quitaron de una solicitud de salida
+     * @param idSolicitud   id de la solicitud a editar
+     * @param actividades      lista con los id de las actividades a borrar
+     */
     void deleteActividades(Integer idSolicitud, Set<Integer> actividades);
-    
+
+    /**
+     * Actuliza los detalles de los recursos que lo requieran
+     * @param idSolicitud   id de la solicitud a editar
+     * @param idRecurso     id del recurso a editar su detalle
+     * @param detalle       detalle a asignar al recurso
+     */
     void updateDetalleRecurso(Integer idSolicitud,Integer idRecurso, String detalle);
-    
+
+    /**
+     * Actualiza los detalles de los recursos que lo requieran
+     * @param idSolicitud   id de la solicitud a editar
+     * @param idActividad   id de la actividad a actulizar su detalle (Otra: )
+     * @param detalle       detalle a actualizar
+     */
     void updateDetalleActividad(Integer idSolicitud,Integer idActividad, String detalle);
-    
+
+    /**
+     * borra las todas las firmas de una solicitud de salida
+     * @param idSolicitud   id de la solicitud a borrar sus firmas
+     */
     void reiniciarFirmas(Integer idSolicitud);
-    
+
+    /**
+     * Obtiene una lista de correos de los responsables a firmar una solicitud
+     * @param idSolicitud   id de la solicitud
+     * @return              lista con correos de los responsables a firmar la solicitud
+     */
     List<String> obtnerCorrreosFirmas(Integer idSolicitud);
-    
+
+    /**
+     * Cambia el estado de una solicitud a "En correción"
+     * @param idSolicitud   id de la solicitud a cambiar su estado
+     * @return               resultado sobre si se logró cambiar el esatdo de la solicitud
+     */
     boolean rechzarSolicitud(Integer idSolicitud);
 
     public boolean guardarReferenciaReporteFinal(String idReporteDrive,Integer idSolicitud);
 	
+    
+	/**
+	 * Obtiene los datos de los encargados de firmar una determinada solcitud
+	 * @param idSolicitud   id de la solicitud a cambiar su estado
+	 * @return              Lista con datos de los enecatgados a firmar (Nombre del rol y correo)
+	 */
+    List<Map<String, Object>> DatosRolesFirma(Integer idSolicitud);
 }

@@ -169,6 +169,13 @@ public class SolicitudController {
 		return "<div class='alert alert-success' role='alert'> La solicitud fue firmada con exito y se notificó por correo </div>";
 	}
 
+
+	/**
+	 * Método POST para rechazar una solicitud de salida.
+	 * @param rechazarId	id de la solicitud a rechazar
+	 * @param motivo		mensaje con el motivo del rechazo de la solicitud
+	 * @return				notificación con resultado del proceos del rechazo de la solicitud
+	 */
 	@PostMapping(value = "rechazar", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
 	@HxTrigger("refreshSolicitudes")
 	@ResponseBody

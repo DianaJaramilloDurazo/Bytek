@@ -235,7 +235,27 @@ function validarEditarActividad(){
 			input2.value = '';
 		}
 }
-
+function validarMotivo() {
+	// Obtener el valor del textarea
+	var texto = document.getElementById("motivoDescripcion").value;
+	var botonRechazar = document.getElementById("botonRechazar");
+	var alertaMotivos = document.getElementById('motivo-alert');
+	// Verificar si el textarea está vacío
+	if (texto.trim() === "") {
+		alertaMotivos.style.display = 'block';
+	} else {
+		alertaMotivos.style.display = 'none';
+		texto.value = '';
+		botonRechazar.click();
+	}
+}
+function limpiarModalRechazar(){
+	// Obtener el valor del textarea
+	var texto = document.getElementById("motivoDescripcion")
+	var alertaMotivos = document.getElementById('motivo-alert');
+	alertaMotivos.style.display = 'none';
+	texto.value = '';
+}
 
 
 
