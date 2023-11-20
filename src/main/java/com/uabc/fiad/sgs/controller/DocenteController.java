@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -191,7 +192,12 @@ public class DocenteController {
 					resultadoFinal += "<div class='alert alert-danger' role='alert'>La solictud fue creada, pero, ha ocurrido un error al registrar los recursos </div>";
 				}
 			}
-
+			String nombreUsuario = u.getUsername()+" " + u.getApPaterno() + " " + u.getApMaterno();
+			List<Map<String, Object>> rolesFirmas = solicitudService.DatosRolesFirma(idSolicitud);
+			System.out.println(nombreUsuario);
+			System.out.println(rolesFirmas);
+			// Se comento el envio de correos, para no mandar correos a usuarios reales
+			//mailManager.solicitarFirmas(rolesFirmas, nombreUsuario, solicitud.getNombreEvento());
 
 			return  resultadoFinal;
 		}
@@ -402,10 +408,11 @@ public class DocenteController {
 				solicitudService.reiniciarFirmas(idSolicitud);
 				// Enviar correos 
 				String nombreUsuario = u.getUsername()+" " + u.getApPaterno() + " " + u.getApMaterno();
-				List<String> correos = solicitudService.obtnerCorrreosFirmas(idSolicitud);
+				List<Map<String, Object>> rolesFirmas = solicitudService.DatosRolesFirma(idSolicitud);
 				System.out.println(nombreUsuario);
-				System.out.println(correos);
-				//mailManager.Correcion(correos, nombreUsuario);
+				System.out.println(rolesFirmas);
+				// Se comento el envio de correos, para no mandar correos a usuarios reales
+				//mailManager.Correcion(rolesFirmas, nombreUsuario, solicitud.getNombreEvento());
 			}
 
 			String resultadoFinal="";

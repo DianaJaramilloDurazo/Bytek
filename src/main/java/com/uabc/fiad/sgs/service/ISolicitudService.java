@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import com.uabc.fiad.sgs.entity.Rol;
 import com.uabc.fiad.sgs.entity.Solicitud;
 import com.uabc.fiad.sgs.entity.Usuario;
 
@@ -159,4 +160,11 @@ public interface ISolicitudService {
      * @return               resultado sobre si se logró cambiar el esatdo de la solicitud
      */
     boolean rechzarSolicitud(Integer idSolicitud);
+    
+	/**
+	 * Obtiene los datos de los encargados de firmar una determinada solcitud
+	 * @param idSolicitud   id de la solicitud a cambiar su estado
+	 * @return              Lista con datos de los enecatgados a firmar (Nombre del rol y correo)
+	 */
+    List<Map<String, Object>> DatosRolesFirma(Integer idSolicitud);
 }

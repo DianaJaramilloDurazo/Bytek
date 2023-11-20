@@ -1,6 +1,9 @@
 package com.uabc.fiad.sgs.service;
 
+import com.uabc.fiad.sgs.entity.Rol;
 import com.uabc.fiad.sgs.entity.Solicitud;
+import com.uabc.fiad.sgs.entity.Usuario;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -446,6 +449,17 @@ public class SolicitudService implements ISolicitudService {
 	    String sql = "UPDATE solicitud SET idEstado_solicitud = 7 WHERE idSolicitud = ?;";
 	    int rowsAffected = template.update(sql, idSolicitud);
 	    return rowsAffected > 0;
+	}
+	
+	/**
+	 * Obtiene los datos de los encargados de firmar una determinada solcitud
+	 * @param idSolicitud   id de la solicitud a cambiar su estado
+	 * @return              Lista con datos de los enecatgados a firmar (Nombre del rol y correo)
+	 */
+	@Override
+	public List<Map<String, Object>> DatosRolesFirma(Integer idSolicitud) {
+		String sql = "select r.Rol_Descripcion, r.Correo_rol from firmas_solicitud fs  LEFT join rol r on fs.idRol = r.idRol  where idSolicitud  = ?;";
+		return template.queryForList(sql,idSolicitud);
 	}
 
 }
