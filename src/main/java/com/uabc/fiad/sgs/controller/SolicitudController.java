@@ -1,19 +1,29 @@
 package com.uabc.fiad.sgs.controller;
 
+import com.google.api.client.http.FileContent;
 import com.uabc.fiad.sgs.entity.Solicitud;
 import com.uabc.fiad.sgs.entity.Usuario;
+import com.uabc.fiad.sgs.service.DriveQuickstart;
 import com.uabc.fiad.sgs.service.ISolicitudService;
 import com.uabc.fiad.sgs.service.IUsuarioService;
 import com.uabc.fiad.sgs.service.MailManager;
 import com.uabc.fiad.sgs.utils.SessionUtils;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.security.GeneralSecurityException;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +41,11 @@ public class SolicitudController {
 
 	@Autowired
 	private MailManager mailManager;
+
+
+	@Autowired
+	private DriveQuickstart driveService;
+	
 
 	@GetMapping("por-firmar")
 	public String getSolicitudesPorFirmar(Model model) {
@@ -184,4 +199,58 @@ public class SolicitudController {
 			return "<div class='alert alert-danger' role='alert'> Ha ocurrido un error al intentar rechzar la solcitud </div>";
 		}
 	}
+
+	@PostMapping(value = "subirReporte", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "multipart/form-data"  }, produces = MediaType.TEXT_HTML_VALUE)
+	@ResponseBody
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public String subirReporte(@RequestParam Integer solicitud_id, @RequestParam MultipartFile reporte_archivo)
+	throws IOException, GeneralSecurityException {
+		System.out.println(solicitud_id);
+		System.out.println(reporte_archivo.getSize());
+			
+		Usuario u = SessionUtils.getUsuario(usuarioService);
+		if (u == null) {
+			return "redirect:/login";
+		}
+
+
+
+		// getSize() regresa valor en bytes 
+		// tamanio de archivo es mayor a 2.19MB
+		if(reporte_archivo.getSize() >2200000){
+			return "<div id='alertaResultadoReporte' class='alert alert-danger' role='alert'><b>El archivo no fue subido<br>El archivo es mayor a 2MB </b></div>";
+		}  
+
+		System.out.println(reporte_archivo.getOriginalFilename());
+		String pathFileOS = "./" + reporte_archivo.getOriginalFilename();
+		System.out.println(pathFileOS);
+		 
+		File driveFile = new File(pathFileOS);
+		try(OutputStream os = new FileOutputStream(driveFile)){
+			os.write(reporte_archivo.getBytes());
+		}
+		reporte_archivo.transferTo(driveFile);
+		String idDrive = DriveQuickstart.uploadPDF(  driveFile) ;
+
+		if(	idDrive == null)
+		{
+			return "<div id='alertaResultadoReporte' class='alert alert-danger' role='alert'><b>El archivo no fue subido<br>El servidor falló </b></div>";
+		
+		}
+		
+
+
+		System.out.println(idDrive);
+		
+		if(!solicitudService.guardarReferenciaReporteFinal(idDrive, solicitud_id)){
+			return "<div id='alertaResultadoReporte' class='alert alert-danger' role='alert'><b>El archivo no fue subido<br>El servidor falló </b></div>";
+		
+		}
+
+
+
+		return "<div id='alertaResultadoReporte' class='alert alert-success' role='alert'><b> El archivo fue subido con éxito </b></div>";
+	
+	}
+
 }

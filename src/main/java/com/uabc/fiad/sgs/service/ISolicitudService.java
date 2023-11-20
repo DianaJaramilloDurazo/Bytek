@@ -118,4 +118,7 @@ public interface ISolicitudService {
     List<String> obtnerCorrreosFirmas(Integer idSolicitud);
     
     boolean rechzarSolicitud(Integer idSolicitud);
+
+    public boolean guardarReferenciaReporteFinal(String idReporteDrive,Integer idSolicitud);
+	
 }

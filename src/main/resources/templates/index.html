@@ -61,7 +61,7 @@
     <div class="item3" id="item3" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR', 'ROLE_DIRECTOR')">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title card-header">Firmar reportes</h5>
+                <h5 class="card-title card-header">Firmar solicitudes</h5>
                 <ul class="list-group list-group-flush">
 
                     <li class="list-group-item">
@@ -110,15 +110,25 @@
                     ver +
                 </button>
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalEditarSolicitud"
+                        th:hidden = "${sol.idEstadoSolicitud == 5}"
                         th:disabled="${sol.idEstadoSolicitud != 1 and sol.idEstadoSolicitud != 7}"
                         th:hx-get="'/docente/get-editar-form?id=' + ${sol.getIdSolicitud}"
                         hx-target="#modal-editar-solicitud-body"
                 >Editar</button>
                 <button  id="btn_eliminarslc"
+                        th:hidden = "${sol.idEstadoSolicitud == 5}"
                          th:disabled="${sol.idEstadoSolicitud == 5 or sol.idEstadoSolicitud == 6 or sol.idEstadoSolicitud == 8}"
                          th:onclick="'document.getElementById(\'solicitudCancelar\').value = ' + ${sol.getIdSolicitud}"
                          type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalCancelar">x</button>
-
+                
+                <button  id="btn_reporte"
+                        th:hidden="${sol.idEstadoSolicitud != 5}"
+                        th:disabled="${sol.idEstadoSolicitud != 5}"
+                        th:onclick="'document.getElementById(\'subirReporte_Solicitud_Id\').value = ' + ${sol.getIdSolicitud}"
+                        type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#subirReporteModal">
+                Subir Reporte
+                </button>
+                
                 <!--                  <button class="btn btn-warning" id="btn_eliminarslc">x</button>-->
             </td>
 
@@ -285,6 +295,64 @@
 </div>
 
 <!--FIN CONTENEDOR SOLICITUDES POR FIRMAR-->
+
+
+
+
+
+
+    <!-- MODAL SUBIR REPORTE -->
+    <div class="modal fade" id="subirReporteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <form
+            hx-post="/solicitud/subirReporte"
+            hx-target="#resultadoReporteDiv"
+            hx-swap="innerHTML"
+            hx-encoding='multipart/form-data'
+            hx-indicator="#indicadorReporte"           
+            onsubmit="document.getElementById('botonSubirReporte').classList.add('disabled')
+                        //document.getElementById('divCargandoReporte').style.display = 'flex'
+                        //document.getElementById('figCargandoReporte').style.display = 'block'
+                        "
+        >
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="subirReporteModalLabel">Subir Reporte</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                Elige un archivo PDF(Máximo de tamaño son 2MB):
+                </div>
+                <input hidden id="subirReporte_Solicitud_Id" name="solicitud_id">
+                <input required type="file" accept=".pdf" id="PDF_ReporteSalida" name="reporte_archivo" class="form-control " 
+                    onchange="document.getElementById('botonSubirReporte').classList.remove('disabled') 
+                                document.getElementById('alertaResultadoReporte').remove()
+                                "
+                > 
+                <!-- clase bootstrap para error en input es is-invalid -->
+                
+                <div id="resultadoReporteDiv" class="modal-body d-flex justify-content-center">
+                </div>
+                <img  id="indicadorReporte" class="htmx-indicator" style="height: 5rem; width: 5rem;"  src="https://i.imgur.com/8THYvPQ.gif">
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button id="botonSubirReporte"
+                        
+                    type="submit"  class="btn btn-primary">Subir</button>
+                
+                </div>
+
+
+            </div>
+        </form>
+            
+        </div>
+    </div>
+    <!-- FIN MODAL SUBIR REPORTE -->
+    
+
+
 
 
 <!-- MODAL RECHAZAR SOLICITUD -->

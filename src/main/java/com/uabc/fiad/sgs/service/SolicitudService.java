@@ -412,4 +412,12 @@ public class SolicitudService implements ISolicitudService {
 	    return rowsAffected > 0;
 	}
 
+	@Override
+	public boolean guardarReferenciaReporteFinal(String idReporteDrive,Integer idSolicitud){
+		String sql = "UPDATE solicitud SET Reporte_Final = ? WHERE idSolicitud = ?;";
+	    int rowsAffected = template.update(sql, idReporteDrive, idSolicitud);
+	    return rowsAffected > 0;
+		
+	}
+	
 }
