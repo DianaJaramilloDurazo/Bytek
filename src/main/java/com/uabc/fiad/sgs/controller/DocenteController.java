@@ -78,7 +78,7 @@ public class DocenteController {
 	 */
 	@PostMapping(value = "/registrar", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
 	@ResponseBody
-	@HxTrigger("resetForm")
+	@HxTrigger("refreshSolicitudes")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public String registrarSolicitud(Solicitud solicitud,
 			@RequestParam(value = "fSalida") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaSalida,
