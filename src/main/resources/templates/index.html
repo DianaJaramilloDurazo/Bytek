@@ -88,6 +88,14 @@
     <div id="result-accion"></div>
     <div id="result-cancelar"></div>
     <h4>Mis solicitudes de salida</h4>
+    
+    
+   <div hx-get="/listaSolicitudes"
+   		hx-target="#listaSolicitudes"
+        hx-swap="outerHTML"
+        hx-trigger="refreshSolicitudes from:body">
+   </div>
+   <div th:fragment="listaSolicitudes" class="listaSolicitudes" id="listaSolicitudes">  
     <table class="table">
         <thead class="table-bordered"><!--ENCABEZADO DE LA TABLA-->
         <tr>
@@ -148,6 +156,7 @@
 
         </tbody><!--FIN CUERPO TABLA-->
     </table>
+   </div>
 </div><!--FIN CONTENEDOR SOLICITUDES-->
 
 <div class="separadordetablas" id="opc2"></div><!--NO QUITAR LO USO PARA QUE SE ACOMODEN BIEN LAS VISTAS AL USAR LA BARRA DE NAVEGACION-->
@@ -187,7 +196,7 @@
             </div>
             <form
                     hx-post="/docente/cancelar"
-                    hx-target="#result-cancelar"
+                    hx-target="#result-accion"
                     hx-swap="innerHTML"
             >
                 <div class="modal-footer">

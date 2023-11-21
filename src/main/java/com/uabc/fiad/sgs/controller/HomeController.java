@@ -66,4 +66,37 @@ public class HomeController {
 
         return "index.html";
     }
+    
+    @GetMapping("/listaSolicitudes")
+    public String listaSolictudes(Model model) {
+    	 // Obtener lista de solicitudes
+        Usuario u = SessionUtils.getUsuario(usuarioService);
+        if (u == null) {
+            return "redirect:/login";
+        }
+        if (SessionUtils.getUserDetails().getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_DOCENTE"))) {
+
+            List<Solicitud> solicitudes = solicitudService.findByUserId(u.getIdUsuario());
+
+            model.addAttribute("solicitudes", solicitudes);
+        } else {
+
+            // Si tiene rol
+            // Lista de solicitudes para firmar
+            List<Solicitud> solicitudesPendientes = solicitudService.listarSolicitudesPendientes(usuarioService.findIdRolById(u.getIdUsuario()));
+
+            // También los usuarios registrados
+            // todo: Monitorear por problemas de rendimiento cargando la página de inicio, simplemente es la solución más
+            //  sencilla que se me ocurrió
+            List<Usuario> usuarios = new ArrayList<>();
+            for (Solicitud s : solicitudesPendientes) {
+                usuarios.add(usuarioService.findById(s.getIdUsuario()).get());
+            }
+
+            model.addAttribute("solicitudes_pendientes", solicitudesPendientes);
+            model.addAttribute("usuarios_firmar", usuarios);
+        }
+
+    	return "index :: listaSolicitudes";
+    }
 }

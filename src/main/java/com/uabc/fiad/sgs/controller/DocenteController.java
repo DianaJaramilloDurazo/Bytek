@@ -212,6 +212,7 @@ public class DocenteController {
 	 */
 	@PostMapping(value = "/cancelar", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
 	@ResponseBody
+	@HxTrigger("refreshSolicitudes")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public String CancelarSolicitud(@RequestParam(value = "solicitudCancelar", required = false) Integer idSolicitud) {
 
@@ -271,6 +272,7 @@ public class DocenteController {
 	 */
 	@PostMapping(value = "/editar", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
 	@ResponseBody
+    @HxTrigger("refreshSolicitudes")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public String editarSolicitud(Solicitud solicitud,
 			@RequestParam(value = "fSalida") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaSalida,
