@@ -233,14 +233,19 @@ public class SolicitudController {
 		System.out.println(pathFileOS);
 		 
 		File driveFile = new File(pathFileOS);
-		try(OutputStream os = new FileOutputStream(driveFile)){
-			os.write(reporte_archivo.getBytes());
-		}
+		OutputStream os = new FileOutputStream(driveFile);
+		os.write(reporte_archivo.getBytes());
+		
 		reporte_archivo.transferTo(driveFile);
 		String idDrive = DriveQuickstart.uploadPDF(  driveFile) ;
-
+		
+		os.close();
+		driveFile.delete();
+		
+		
 		if(	idDrive == null)
 		{
+			
 			return "<div id='alertaResultadoReporte' class='alert alert-danger' role='alert'><b>El archivo no fue subido<br>El servidor falló </b></div>";
 		
 		}
