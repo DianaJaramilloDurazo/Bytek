@@ -34,7 +34,7 @@
             <option th:each="carrera : ${carreras}"
             		th:value="${carrera.idCarrera}"
                     th:text="${carrera.Carrera_Nombre}"
-                    th:selected="${carrera.idCarrera == solicitud.idCarrera}"></option>
+                    th:if="${carrera.idCarrera == solicitud.idCarrera}"></option>
        	</select>
     <br>
     <p id="recursoEditar-alert" style="color: red; display: none;">Seleccione los recursos a solicitar</p>

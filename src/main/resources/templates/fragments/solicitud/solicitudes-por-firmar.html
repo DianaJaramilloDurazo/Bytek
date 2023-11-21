@@ -34,7 +34,7 @@
                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#rechazarSolicitud"
                     th:attr="data-evento=${sol.nombreEvento}, data-solicitudid=${sol.getIdSolicitud}"
                     onclick="document.getElementById('rechazar-solicitud-id').value = this.dataset.solicitudid;
-                    document.getElementById('confirmar-rechazo-evento').innerHTML = this.dataset.evento;"
+                    document.getElementById('confirmar-rechazo-evento').innerHTML = this.dataset.evento;limpiarModalRechazar();"
                     th:disabled="${sol.idEstadoSolicitud != 1 and sol.idEstadoSolicitud != 2}"
                    
                     >

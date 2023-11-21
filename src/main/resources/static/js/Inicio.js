@@ -245,9 +245,9 @@ function validarMotivo() {
 		alertaMotivos.style.display = 'block';
 	} else {
 		alertaMotivos.style.display = 'none';
-		texto.value = '';
 		botonRechazar.click();
 	}
+	limpiarModalRechazar()
 }
 function limpiarModalRechazar(){
 	// Obtener el valor del textarea
