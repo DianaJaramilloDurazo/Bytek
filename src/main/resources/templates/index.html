@@ -146,6 +146,7 @@
             <td>
                 <button
                         hx-get="/docente/get-registrar-solicitud-form"
+                        hx-swap="innerHTML"
                         hx-target="#modal-crear-solicitud-body"
                         class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalCrearSolicitud">
                     Crear nueva solicitud
@@ -241,7 +242,7 @@
                         <div class="modalConfirmar-content">
                             <p>¿Todos los datos son correctos?</p>
                             <button type="button"  class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
-                            <button class="btn btn-primary" onclick="cerrarModal();quitarModal(ModalCrearSolicitud);" type="submit" >Confirmar</button>
+                            <button class="btn btn-primary" onclick="cerrarModal();" type="submit" >Confirmar</button>
                         </div>
                     </div>
                 </form>

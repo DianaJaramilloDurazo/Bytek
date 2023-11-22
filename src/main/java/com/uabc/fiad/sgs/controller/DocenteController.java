@@ -232,6 +232,7 @@ public class DocenteController {
 	 * @param model			modelo utilizado para pasar datos a la vista
 	 * @return				fragmento para mostrar la información de la solicitud a editar
 	 */
+	@HxTrigger("resetForm")
 	@GetMapping("/get-editar-form")
 	public String editarSolicitud(@RequestParam(value = "id") Integer idSolicitud, Model model) {
 
@@ -272,7 +273,7 @@ public class DocenteController {
 	 */
 	@PostMapping(value = "/editar", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
 	@ResponseBody
-    @HxTrigger("refreshSolicitudes")
+	@HxTrigger("refreshSolicitudes")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public String editarSolicitud(Solicitud solicitud,
 			@RequestParam(value = "fSalida") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaSalida,

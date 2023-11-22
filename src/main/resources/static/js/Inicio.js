@@ -5,7 +5,8 @@ function quitarModal(modalId) {
 	var btn_Guardar = document.getElementById("btn_Guardar");
 	btn_Guardar.style.display = "none";
 	var btn_editar = document.getElementById("btn_editar");
-	btn_editar.style.display = "block";
+	btn_editar.style.display = "block";	
+	
 }
 
 window.addEventListener('scroll', function() {
@@ -139,6 +140,7 @@ const observer = new MutationObserver((mutationsList, observer) => {
 		// Elimina el elemento
 		myDiv.innerHTML = "";
 	}, 3000); // 3000 milisegundos = 3 segundos
+	quitarModal(ModalCrearSolicitud);
 });
 // Configura las opciones para observar cambios en el contenido del div
 const config = { childList: true };
