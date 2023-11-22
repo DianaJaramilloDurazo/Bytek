@@ -1,17 +1,20 @@
 <div th:fragment="registrar-solicitud-form">
 	<div>
+		<span id="nombreEvento-alert" style="color: red; display: none;">Ingrese el nombre del evento</span>
 		<div>
 			<label>Nombre de la actividad o evento:</label>
 			<input type="text" id="nombreEvento" name="nombreEvento" class="form-control" required>
 			
 		</div>
 	</div>
-
+	<span id="costo-alert" style="color: red; display: none;">Ingrese el costo del evento</span>
+	<span id="lugar-alert" style="color: red; display: none;">Ingrese el lugar del evento</span>
+	<span id="fechas-alert" style="color: red; display: none;">Ingrese los horarios y fechas del evento</span>
 	<div class="modalEditar">
 		<div class="izquierda">
 			<div>
 				<label>Costo del evento: $</label>
-				<input type="number" step="0.01" id="costo" name="costo" class="form-control" required>
+				<input type="number" step="0.001" id="costo" name="costo" class="form-control" required>
 				<label>Fecha de salida:</label>
 				<input type="date" id="fSalida" name="fSalida" class="form-control" onchange="validarFechas('fSalida','fRegreso');" required>
 				<label>Fecha de regreso:</label>
@@ -28,6 +31,7 @@
 		</div>
 
 	</div>
+	<span id="idCarrera-alert" style="color: red; display: none;">Seleccione una carrera</span>
 	<label for="idCarrera">Carrera</label>
 	<select class="form-control " id="idCarrera" name="idCarrera" required>
 		<option value="0" selected>Selecciona una carrera</option>
@@ -36,7 +40,7 @@
 	</select>
 	<div class="checkbox">
 		<br>
-		<p id="recurso-alert" style="color: red; display: none;">Seleccione los recursos a solicitar</p>
+		<span id="recurso-alert" style="color: red; display: none;">Seleccione los recursos a solicitar</span>
 		<label>Recurso a solicitar:</label><br>
 
 		<input name="recursos" type="checkbox" id="Hospedaje_c" value="1"><span>Hospedaje</span>
@@ -59,7 +63,7 @@
 		<br>
 	</div>
 	<div class="checkbox">
-		<p id="actividad-alert" style="color: red; display: none;">Seleccione las actividades asociadas</p>
+		<span id="actividad-alert" style="color: red; display: none;">Seleccione las actividades asociadas</span>
 		<label>Actividad asociada a:</label>
 		<input name="actividades" value="1" type="checkbox" id="CACEI"><span>CACEI</span>
 		<input name="actividades"  value="2" type="checkbox" id="Licenciatura"><span>Licenciatura</span>

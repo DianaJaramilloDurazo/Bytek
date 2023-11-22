@@ -1,19 +1,23 @@
 <div th:fragment="editar-solicitud">
 	<div>
+		<span id="EnombreEvento-alert" style="color: red; display: none;">Ingrese el nombre del evento</span>
 		<input type="number" th:value="${solicitud.idSolicitud}" name="idSolicitud" hidden>
 		<input type="text" th:value="${solicitud.estadoSolicitud}" name="estadoSolicitud" hidden>
 		<input type="number" th:value="${solicitud.idCarrera}" name="carreraAnterior" hidden>
 		<div>
 			<label>Nombre de la actividad o evento:</label>
-			<input th:value="${solicitud.nombreEvento}" type="text" id="nombreEvento" name="nombreEvento" class="form-control">
+			<input th:value="${solicitud.nombreEvento}" type="text" id="EnombreEvento" name="nombreEvento" class="form-control">
 		</div>
 	</div>
-
+	<span id="Ecosto-alert" style="color: red; display: none;">Ingrese el costo del evento</span>
+	<span id="Elugar-alert" style="color: red; display: none;">Ingrese el lugar del evento</span>
+	<span id="Efechas-alert" style="color: red; display: none;">Ingrese los horarios y fechas del evento</span>
+	
 	<div class="modalEditar">
 		<div class="izquierda">
 			<div>
 				<label>Costo del evento: $</label>
-				<input th:value="${solicitud.costo}" step="0.01" type="number" id="costo" name="costo" class="form-control">
+				<input th:value="${solicitud.costo}" step="0.01" type="number" id="Ecosto" name="costo" class="form-control">
 				<label>Fecha de salida:</label>
 				<input th:value="${fechaSalida}" type="date" id="fSalidaE" onchange="validarFechas('fSalidaE','fRegresoE');"  name="fSalida" class="form-control">
 				<label>Fecha de regreso:</label>
@@ -22,11 +26,11 @@
 		</div>
 		<div class="derecha">
 			<label>Lugar: </label>
-			<input th:value="${solicitud.lugar}"  type="text" id="lugar" name="lugar" class="form-control">
+			<input th:value="${solicitud.lugar}"  type="text" id="Elugar" name="lugar" class="form-control">
 			<label>Hora de salida:</label>
-			<input th:value="${horaSalida}" type="time"  id="horaSalida" name="horaSalida" class="form-control">
+			<input th:value="${horaSalida}" type="time"  id="EhoraSalida" name="horaSalida" class="form-control">
 			<label>Hora de regreso:</label>
-			<input th:value="${horaRegreso}" type="time" id="horaRegreso" name="horaRegreso" class="form-control">
+			<input th:value="${horaRegreso}" type="time" id="EhoraRegreso" name="horaRegreso" class="form-control">
 		</div>
 	</div>
 	<label for="idCarrera">Carrera</label>
