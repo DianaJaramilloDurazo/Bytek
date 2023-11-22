@@ -81,11 +81,11 @@ function validarForm() {
 		var alertaCosto = document.getElementById('costo-alert');
 		alertaCosto.style.display = 'none';
 	}
-	
-	if(lugar.value === ''){
+
+	if (lugar.value === '') {
 		var alertaLugar = document.getElementById('lugar-alert');
 		alertaLugar.style.display = 'block';
-	}else{
+	} else {
 		var alertaLugar = document.getElementById('lugar-alert');
 		alertaLugar.style.display = 'none';
 	}
@@ -93,41 +93,31 @@ function validarForm() {
 		var fSalidaAlerta = document.getElementById('fechas-alert');
 		fSalidaAlerta.style.display = 'block';
 		formListo = false;
-	} else {
-		var fSalidaAlerta = document.getElementById('fechas-alert');
-		fSalidaAlerta.style.display = 'none';
 	}
 	if (fRegreso.value === '') {
 		var alertafRegreso = document.getElementById('fechas-alert');
 		alertafRegreso.style.display = 'block';
 		formListo = false;
-	} else {
-		var alertafRegreso = document.getElementById('fechas-alert');
-		alertafRegreso.style.display = 'none';
-	}
+	} 
 
 	if (lugar.value === '') {
 		var alertaLugar = document.getElementById('fechas-alert');
 		alertaLugar.style.display = 'block';
 		formListo = false;
-	} else {
-		var alertaLugar = document.getElementById('fechas-alert');
-		alertaLugar.style.display = 'none';
-	}
+	} 
 
 	if (horaSalida.value === '') {
 		var alertahoraSalida = document.getElementById('fechas-alert');
 		alertahoraSalida.style.display = 'block';
 		formListo = false;
-	} else {
-		var alertahoraSalida = document.getElementById('fechas-alert');
-		alertahoraSalida.style.display = 'none';
-	}
+	} 
 	if (horaRegreso.value === '') {
 		var alertahoraRegreso = document.getElementById('fechas-alert');
 		alertahoraRegreso.style.display = 'block'
 		formListo = false;
-	} else {
+	} 
+	
+	if(fSalida.value !== '' && fRegreso.value !== '' && horaSalida.value !== '' && horaRegreso.value !== ''){
 		var alertahoraRegreso = document.getElementById('fechas-alert');
 		alertahoraRegreso.style.display = 'none'
 	}
@@ -137,7 +127,7 @@ function validarForm() {
 		alertaidCarrera.style.display = 'block';
 		formListo = false;
 	}
-	else{
+	else {
 		var alertaidCarrera = document.getElementById('idCarrera-alert');
 		alertaidCarrera.style.display = 'none';
 	}
@@ -195,6 +185,65 @@ function validarFormEditar() {
 	var checkboxes = document.getElementsByName('actividadesEditar');
 	var actvidadSeleccionada = false;
 	var recursoSeleccionado = false;
+	
+	var formListo = true;
+	var nombreEvento = document.getElementById('EnombreEvento');
+	var costo = document.getElementById('Ecosto');
+	var fSalida = document.getElementById('fSalidaE');
+	var fRegreso = document.getElementById('fRegresoE');
+	var lugar = document.getElementById('Elugar');
+	var horaSalida = document.getElementById('EhoraSalida');
+	var horaRegreso = document.getElementById('EhoraRegreso');
+	console.log(fRegreso.value);
+	if (nombreEvento.value === '') {
+		var alertaEvento = document.getElementById('EnombreEvento-alert');
+		alertaEvento.style.display = 'block';
+		formListo = false;
+	} else {
+		var alertaEvento = document.getElementById('EnombreEvento-alert');
+		alertaEvento.style.display = 'none';
+	}
+	if (costo.value === '') {
+		var alertaCosto = document.getElementById('Ecosto-alert');
+		alertaCosto.style.display = 'block';
+		formListo = false;
+	} else {
+		var alertaCosto = document.getElementById('Ecosto-alert');
+		alertaCosto.style.display = 'none';
+	}
+	if(lugar.value === ''){
+		var alertaLugar = document.getElementById('Elugar-alert');
+		alertaLugar.style.display = 'block';
+	}else{
+		var alertaLugar = document.getElementById('Elugar-alert');
+		alertaLugar.style.display = 'none';
+	}	
+	if (fSalida.value === '') {
+		var fSalidaAlerta = document.getElementById('Efechas-alert');
+		fSalidaAlerta.style.display = 'block';
+		formListo = false;
+	} 
+
+	if (fRegreso.value == '') {
+		var alertafRegreso = document.getElementById('Efechas-alert');
+		alertafRegreso.style.display = 'block';
+		formListo = false;
+	} 
+	if (horaSalida.value === '') {
+		var alertahoraSalida = document.getElementById('Efechas-alert');
+		alertahoraSalida.style.display = 'block';
+		formListo = false;
+	} 
+	if (horaRegreso.value === '') {
+		var alertahoraRegreso = document.getElementById('Efechas-alert');
+		alertahoraRegreso.style.display = 'block'
+		formListo = false;
+	}
+		if(fSalida.value !== '' && fRegreso.value !== '' && horaSalida.value !== '' && horaRegreso.value !== ''){
+		var alertahoraRegreso = document.getElementById('Efechas-alert');
+		alertahoraRegreso.style.display = 'none'
+	}	
+
 	// Verifica si al menos uno de los checkboxes está seleccionado
 	for (var i = 0; i < checkboxes.length; i++) {
 		if (checkboxes[i].checked) {
@@ -213,12 +262,18 @@ function validarFormEditar() {
 	if (!recursoSeleccionado) {
 		var alertaRecurso = document.getElementById('recursoEditar-alert');
 		alertaRecurso.style.display = 'block';
+	} else {
+		var alertaRecurso = document.getElementById('recursoEditar-alert');
+		alertaRecurso.style.display = 'none';
 	}
 	if (!actvidadSeleccionada) {
 		var alertaActividad = document.getElementById('actividadEditar-alert');
 		alertaActividad.style.display = 'block';
+	} else {
+		var alertaActividad = document.getElementById('actividadEditar-alert');
+		alertaActividad.style.display = 'none';
 	}
-	if (actvidadSeleccionada && recursoSeleccionado) {
+	if (actvidadSeleccionada && recursoSeleccionado && formListo) {
 		mostrarModalEditar();
 	}
 
