@@ -397,8 +397,9 @@ function validarMotivo() {
 	} else {
 		alertaMotivos.style.display = 'none';
 		botonRechazar.click();
+		limpiarModalRechazar();
 	}
-	limpiarModalRechazar()
+	
 }
 function limpiarModalRechazar() {
 	// Obtener el valor del textarea
