@@ -1,6 +1,47 @@
 <div th:fragment="solicitudes-por-firmar">
-    <div class="solicitudContenedor" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_COORDINACION')">
-        <h4>Solicitudes pendientes por firmar</h4>
+    <div class="solicitudContenedor" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_COORDINACION')">		
+         
+         <div hx-target=".solicitudes-por-firmar"
+             hx-trigger="refreshSolicitudesFirmar from:body"
+             hx-include="[name='filtros-form']"
+             th:attr="hx-get=@{'/solicitud/solicitudPagination?page=' + ${current}}">
+         </div>
+         
+         <h4>Solicitudes pendientes por firmar</h4>
+            <div class="container-fluid">
+        <!-- Formulario con los filtros -->
+        <form class="row row-cols-lg-auto align-items-center g-3"
+              name="filtros-form"
+              hx-get="/solicitud/solicitudPagination"
+              hx-indicator=".htmx-indicator"
+              hx-target=".solicitudes-por-firmar"
+              th:object="${filtros}"
+        >
+            <input type="hidden" id="page" name="page" th:value="*{page}">
+            <!-- La página a mostrar -->
+            <div class="col-12">
+                <label for="search-box" class="visually-hidden">Nombre</label>
+                <div class="input-group">
+                    <input id="search-box" name="nombre"
+                           class="form-control" type="text"
+                           placeholder="Nombre"
+                           th:value="*{nombre}"
+                    >
+                </div>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary"
+                        onclick="document.getElementById('page').value = 1">
+                    Buscar
+                </button>
+            </div>
+
+        </form>
+        <span class="htmx-indicator">
+            Buscando...
+        </span>
+    </div>
         <table class="table">
             <thead class="table-bordered"><!--ENCABEZADO DE LA TABLA-->
             <tr>
@@ -44,5 +85,64 @@
             </tr>
             </tbody><!--FIN CUERPO TABLA-->
         </table>
+            <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <nav aria-label="Pagination" th:object="${filtros}">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${prev == 0 ? 'disabled': ''}">
+                        <a class="page-link"
+                           hx-include="[name='filtros-form']"
+                           hx-get="/solicitudPagination"
+                           hx-target=".solicitudes-por-firmar"
+                           th:onclick="'document.getElementById(\'page\').value = ' + ${prev}">
+                            Anterior
+                        </a>
+                    </li>
+                    <li class="page-item" th:if="${first > 1}">
+                        <a class="page-link"
+                           hx-include="[name='filtros-form']"
+                           hx-get="/solicitudPagination"
+                           hx-target=".solicitudes-por-firmar"
+                           onclick="document.getElementById('page').value = 1"
+                           >1</a>
+                    </li>
+                    <li class="page-item" th:if="${first > 1}">
+                        <a class="page-link">...</a>
+                    </li>
+                    <li class="page-item" th:each="page : ${pages}" th:classappend="${current == page ? 'active': ''}">
+                        <a class="page-link"
+                           hx-include="[name='filtros-form']"
+                           hx-get="/solicitud/solicitudPagination"
+                           hx-target=".solicitudes-por-firmar"
+                           th:onclick="'document.getElementById(\'page\').value=' + ${page}"
+                           th:text="${page}"></a>
+                    </li>
+                    <li class="page-item" th:if="${end < last }">
+                        <a class="page-link">...</a>
+                    </li>
+                    <li class="page-item" th:if="${end < last }">
+                        <a class="page-link"
+                           hx-include="[name='filtros-form']"
+                           hx-get="/solicitudPagination"
+                           hx-target=".solicitudes-por-firmar"
+                           th:onclick="'document.getElementById(\'page\').value=' + ${last}"
+                           th:text="${last}"
+                        >...</a>
+                    </li>
+                    <li class="page-item" th:classappend="${current == last ? 'disabled': ''}">
+                        <a class="page-link"
+                           hx-include="[name='filtros-form']"
+                           hx-get="/solicitudPagination"
+                           hx-target=".solicitudes-por-firmar"
+                           th:onclick="'document.getElementById(\'page\').value=' + ${next}">
+                            Siguiente
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </ul>
+    </nav>
     </div>
+    
+    <div class="prueba"></div>
 </div>

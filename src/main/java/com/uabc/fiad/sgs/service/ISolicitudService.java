@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import com.uabc.fiad.sgs.entity.Filtros;
 import com.uabc.fiad.sgs.entity.Rol;
 import com.uabc.fiad.sgs.entity.Solicitud;
 import com.uabc.fiad.sgs.entity.Usuario;
@@ -170,4 +171,8 @@ public interface ISolicitudService {
 	 * @return              Lista con datos de los enecatgados a firmar (Nombre del rol y correo)
 	 */
     List<Map<String, Object>> DatosRolesFirma(Integer idSolicitud);
+    
+    List<Solicitud> PaginacionSolicitudesPendientes(Integer limit, Integer offset, Filtros filtros, Integer rolId);
+    
+    Integer totalSolicitudesPendientes(Integer id);
 }
