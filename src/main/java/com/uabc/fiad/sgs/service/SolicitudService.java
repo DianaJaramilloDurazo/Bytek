@@ -29,14 +29,21 @@ public class SolicitudService implements ISolicitudService {
 	 */
 	@Override
 	public List<Solicitud> findByUserId(Integer userId) {
+		// Actualizacion del estado de las solicitudes que esten en estado Firmado cambiar a estado En Curso
+		String sqlUpdate1 = "update solicitud set idEstado_Solicitud = 4 where idUsuario = ? and idEstado_Solicitud = 3 and NOW() > Fecha_Salida;";
+		// update,no es necesario saber si afecto alguna fila
+		template.update(sqlUpdate1, userId);		
+		
+
+
 		// Actualizacion del estado de las solicitudes del usuario cada vez que se consultan
 		// set 5 al estado porque significa que es el estado de Reporte_Pendiente
 		// where idUsuario es ? porque se va leer el parametro de la funcion userId
 		// where idEstado_Solicitud = 4 porque solamente cuando se esta en curso puede pasar a pedir reporte automaticamente
 		// where Now > fecha_regreso porque significa porque el tiempo actual real ya paso al tiempo de la fecha de regreso
-		String sql = "update solicitud set idEstado_Solicitud = 5 where idUsuario = ? and idEstado_Solicitud = 4 and NOW() > Fecha_Regreso;";
+		String sqlUpdate2 = "update solicitud set idEstado_Solicitud = 5 where idUsuario = ? and idEstado_Solicitud = 4 and NOW() > Fecha_Regreso;";
 		// update,no es necesario saber si afecto alguna fila
-		template.update(sql, userId);		
+		template.update(sqlUpdate2, userId);		
 		
 		return template.query("""
 				select *

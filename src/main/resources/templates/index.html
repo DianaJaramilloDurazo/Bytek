@@ -37,14 +37,14 @@
     </div>
 
 
-    <div class="item2" id="item2" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR', 'ROLE_DIRECTOR')">
+    <div class="item2" id="item2" sec:authorize="hasAnyRole('ROLE_DOCENTE')">
         <div class="card">
             <div class="card-body ">
                 <h5 class="card-title card-header">Subir reporte</h5>
                 <ul class="list-group list-group-flush">
 
                     <li class="list-group-item">
-                        Lista de mis reportes de salida que aun se encuentran pendientes por subir
+                        Lista de mis solicitudes que aun se encuentran pendientes de un reporte de salida.
                     </li>
                 </ul>
                 <ul class="list-group list-group-flush">
@@ -53,7 +53,7 @@
                 </ul>
             </div>
             <div class="card-footer">
-                <a href="#opc3" class="btn btn-primary">Conoce mas...</a>
+                <a href="#opc2" class="btn btn-primary">Conoce mas...</a>
             </div>
         </div>
     </div>
@@ -75,7 +75,7 @@
                 </ul>
             </div>
             <div class="card-footer">
-                <a href="#opc2" class="btn btn-primary">Conoce mas...</a>
+                <a href="#opc3" class="btn btn-primary">Conoce mas...</a>
             </div>
         </div>
     </div>
@@ -161,6 +161,90 @@
 </div><!--FIN CONTENEDOR SOLICITUDES-->
 
 <div class="separadordetablas" id="opc2"></div><!--NO QUITAR LO USO PARA QUE SE ACOMODEN BIEN LAS VISTAS AL USAR LA BARRA DE NAVEGACION-->
+
+
+
+<!--INICIO CONTENEDOR SUBIR REPORTES EN SOLICITUDES CON ESTADO DE REPORTE PENDIENTE-->
+<div class="solicitudContenedor" sec:authorize="hasAnyRole('ROLE_DOCENTE')">
+    <img class="htmx-indicator" src="https://i.imgur.com/8THYvPQ.gif">
+    <div id="result-accion"></div>
+    <div id="result-cancelar"></div>
+    <h4>Mis solicitudes con reporte de salida pendiente</h4>
+    
+    
+   <div hx-get="/listaSolicitudesSinReporte"
+   		hx-target="#listaSolicitudes"
+        hx-swap="outerHTML"
+        hx-trigger="refreshSolicitudes from:body">
+   </div>
+   <div th:fragment="listaSolicitudes" class="listaSolicitudes" id="listaSolicitudes">  
+    <table class="table">
+        <thead class="table-bordered"><!--ENCABEZADO DE LA TABLA-->
+        <tr>
+            <th scope="col">Nombre del evento</th>
+            <th scope="col">Fecha de Regreso</th>
+            <th scope="col">Subir archivo</th>
+            <th scope="col">Opciones</th>
+        </tr>
+        </thead><!--FIN ENCABEZADO DE TABLA-->
+
+        <tbody><!--CUERPO DE LA TABLA-->
+        <tr th:each="sol : ${solicitudes}">
+            <td th:text="${sol.nombreEvento}"></td>
+            <td th:text="${#temporals.format(sol.fechaRegreso,'MM-dd-yyyy')}"></td>
+            <td> 
+                <input type="file" accept=".pdf"  class="form-control">
+            </td>
+            <td>
+                <!--                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalEditarSolicitud">Editar</button>-->
+                <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo"
+                        th:hx-get="'/solicitud?id=' + ${sol.getIdSolicitud}"
+                        hx-target="#solicitud-info-body"
+                >
+                    ver +
+                </button>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalEditarSolicitud"
+                        th:hidden = "${sol.idEstadoSolicitud == 5}"
+                        th:disabled="${sol.idEstadoSolicitud != 1 and sol.idEstadoSolicitud != 7}"
+                        th:hx-get="'/docente/get-editar-form?id=' + ${sol.getIdSolicitud}"
+                        hx-target="#modal-editar-solicitud-body"
+                >Editar</button>
+                <button  id="btn_eliminarslc"
+                        th:hidden = "${sol.idEstadoSolicitud == 5}"
+                         th:disabled="${sol.idEstadoSolicitud == 5 or sol.idEstadoSolicitud == 6 or sol.idEstadoSolicitud == 8}"
+                         th:onclick="'document.getElementById(\'solicitudCancelar\').value = ' + ${sol.getIdSolicitud}"
+                         type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalCancelar">x</button>
+                
+                <button  id="btn_reporte"
+                        th:hidden="${sol.idEstadoSolicitud != 5}"
+                        th:disabled="${sol.idEstadoSolicitud != 5}"
+                        th:onclick="'document.getElementById(\'subirReporte_Solicitud_Id\').value = ' + ${sol.getIdSolicitud}"
+                        type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#subirReporteModal">
+                Subir Reporte
+                </button>
+                
+                <!--                  <button class="btn btn-warning" id="btn_eliminarslc">x</button>-->
+            </td>
+
+        </tr>
+        <tr>
+            <td colspan="4">
+                <b>IMPORTANTE: *Cuentas con 5 dias habiles para entregar el reporte de salida despues de la fecha de regreso*</b>
+            </td>
+            
+        </tr>
+
+        </tbody><!--FIN CUERPO TABLA-->
+    </table>
+   </div>
+</div>
+<!--FIN CONTENEDOR SUBIR REPORTES EN SOLICITUDES CON ESTADO DE REPORTE PENDIENTE-->
+
+
+<div class="separadordetablas" id="opc2"></div><!--NO QUITAR LO USO PARA QUE SE ACOMODEN BIEN LAS VISTAS AL USAR LA BARRA DE NAVEGACION-->
+
+
+
 
 <!--MODAL PARA VER INFORMACION DE SOLICITUD-->
 <div class="modal fade m1" id="ModalSolicitudInfo" tabindex="-1" role="dialog" aria-labelledby="ModalSolicitudInfoLabel" aria-hidden="false">
