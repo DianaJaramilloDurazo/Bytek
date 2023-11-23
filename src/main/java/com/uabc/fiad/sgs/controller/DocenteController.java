@@ -56,6 +56,17 @@ public class DocenteController {
 	 */
 	@GetMapping("/get-registrar-solicitud-form")
 	public String getForm(Model model) {
+		Usuario u= SessionUtils.getUsuario(usuarioService);
+		List<Map<String, Object>> categorias = usuarioService.listarCategorias();
+		String categoria = "";
+		for (Map<String, Object> c : categorias) {
+			if (c.get("idCategoria").equals(u.getIdCategoria())) {
+				categoria = (String) c.get("Cat_Descripcion");
+			}
+		}
+		model.addAttribute("categoria", categoria);
+
+		model.addAttribute("usuario", u);
 		model.addAttribute("carreras", usuarioService.listarCarreras());
 		return "fragments/solicitud/registrar-solicitud-form :: registrar-solicitud-form";
 	}
@@ -235,6 +246,19 @@ public class DocenteController {
 	@HxTrigger("resetForm")
 	@GetMapping("/get-editar-form")
 	public String editarSolicitud(@RequestParam(value = "id") Integer idSolicitud, Model model) {
+
+		Usuario u= SessionUtils.getUsuario(usuarioService);
+		List<Map<String, Object>> categorias = usuarioService.listarCategorias();
+		String categoria = "";
+		for (Map<String, Object> c : categorias) {
+			if (c.get("idCategoria").equals(u.getIdCategoria())) {
+				categoria = (String) c.get("Cat_Descripcion");
+			}
+		}
+		model.addAttribute("categoria", categoria);
+
+		model.addAttribute("usuario", u);
+		
 
 		System.out.println(solicitudService.findById(idSolicitud));
 		Solicitud solicitud = solicitudService.findById(idSolicitud).get();

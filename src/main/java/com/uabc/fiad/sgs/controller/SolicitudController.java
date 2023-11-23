@@ -220,12 +220,15 @@ public class SolicitudController {
 			return "redirect:/login";
 		}
 
-
+		
+		if(!reporte_archivo.getContentType().equals("application/pdf")){
+			return "<div id='alertaResultadoReporte' class='alert alert-danger' role='alert'><b>El archivo no es un PDF </b></div>";
+		}
 
 		// getSize() regresa valor en bytes 
 		// tamanio de archivo es mayor a 2.19MB
 		if(reporte_archivo.getSize() >2200000){
-			return "<div id='alertaResultadoReporte' class='alert alert-danger' role='alert'><b>El archivo no fue subido<br>El archivo es mayor a 2MB </b></div>";
+			return "<div id='alertaResultadoReporte' class='alert alert-danger' role='alert'><b>El archivo es mayor a 2MB </b></div>";
 		}  
 
 		System.out.println(reporte_archivo.getOriginalFilename());

@@ -89,7 +89,7 @@
     <div id="result-cancelar"></div>
     <h4>Mis solicitudes de salida</h4>
     <p>
-        Crear y gestionar solicitudes de salida.
+        Gestionar solicitudes de salida.
     </p>
 
 
@@ -133,6 +133,7 @@
                          type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalCancelar">x</button>
 
                 <button  id="btn_reporte"
+                        
                         th:hidden="${sol.idEstadoSolicitud != 5}"
                         th:disabled="${sol.idEstadoSolicitud != 5}"
                         th:onclick="'document.getElementById(\'subirReporte_Solicitud_Id\').value = ' + ${sol.getIdSolicitud}"
@@ -145,7 +146,11 @@
 
         </tr>
         <tr>
-            <td colspan="2">IMPORTANTE: *Cuentas con 5 dias habiles para entregar el reporte de salida despues de la fecha de regreso*</td>
+            <td colspan="2" style="color:red; font-size:medium;"> 
+                <b>
+                    IMPORTANTE: *Cuentas con 5 dias habiles para entregar el reporte de salida despues de la fecha de regreso*
+                </b>
+            </td>
             <td>
                 <button
                         hx-get="/docente/get-registrar-solicitud-form"
@@ -173,7 +178,9 @@
     <div id="result-accion"></div>
     <div id="result-cancelar"></div>
     <h4>Mis solicitudes con reporte de salida pendiente</h4>
-    
+    <p>
+        Subir reportes de salida.
+    </p>
     
    <div hx-get="/listaSolicitudesSinReporte"
    		hx-target="#listaSolicitudes"
@@ -231,7 +238,7 @@
 
         </tr>
         <tr>
-            <td colspan="4">
+            <td colspan="4" style="color:red; font-size:larger;">
                 <b>IMPORTANTE: *Cuentas con 5 dias habiles para entregar el reporte de salida despues de la fecha de regreso*</b>
             </td>
             
@@ -257,7 +264,7 @@
                 <h5 class="modal-title" id="ModalSolicitudInfoLabel">
                     <span id="slc_Evento">Nombre del evento</span>
                 </h5>
-
+            
             </div>
             <div class="modal-body" id="solicitud-info-body">
 

@@ -1,4 +1,21 @@
 <div th:fragment="editar-solicitud">
+
+	<div >
+		<label class="txt_Nombre">Nombre Docente: </label>
+		<input disabled th:value="${usuario.username} + ' ' + ${usuario.apPaterno} + ' ' + ${usuario.apMaterno}">
+	</div>
+
+	<div >
+		<label class="txt_NumEmpleado">No Empleado: </label>
+		<input disabled th:value="${usuario.numEmpleado}">
+	</div>
+
+	<div >
+		<label class="txt_Categoria">Categoria: </label>
+		<input disabled th:value="${categoria}">
+	</div>
+
+
 	<div>
 		<span id="EnombreEvento-alert" style="color: red; display: none;">Ingrese el nombre del evento</span>
 		<input type="number" th:value="${solicitud.idSolicitud}" name="idSolicitud" hidden>
