@@ -1,10 +1,26 @@
 <div th:fragment="registrar-solicitud-form">
 	<div>
+
+		<div >
+			<label class="txt_Nombre">Nombre Docente: </label>
+			<input disabled th:value="${usuario.username} + ' ' + ${usuario.apPaterno} + ' ' + ${usuario.apMaterno}">
+		</div>
+
+		<div >
+			<label class="txt_NumEmpleado">No Empleado: </label>
+			<input disabled th:value="${usuario.numEmpleado}">
+		</div>
+
+		<div >
+			<label class="txt_Categoria">Categoria: </label>
+			<input disabled th:value="${categoria}">
+		</div>
+
 		<span id="nombreEvento-alert" style="color: red; display: none;">Ingrese el nombre del evento</span>
 		<div>
 			<label>Nombre de la actividad o evento:</label>
 			<input type="text" id="nombreEvento" name="nombreEvento" class="form-control" required>
-			
+				
 		</div>
 	</div>
 	<span id="costo-alert" style="color: red; display: none;">Ingrese el costo del evento</span>
