@@ -1,5 +1,6 @@
 package com.uabc.fiad.sgs.service;
 
+import com.uabc.fiad.sgs.entity.Filtros;
 import com.uabc.fiad.sgs.entity.Rol;
 import com.uabc.fiad.sgs.entity.Solicitud;
 import com.uabc.fiad.sgs.entity.Usuario;
@@ -29,22 +30,24 @@ public class SolicitudService implements ISolicitudService {
 	 */
 	@Override
 	public List<Solicitud> findByUserId(Integer userId) {
-		// Actualizacion del estado de las solicitudes que esten en estado Firmado cambiar a estado En Curso
+		// Actualizacion del estado de las solicitudes que esten en estado Firmado
+		// cambiar a estado En Curso
 		String sqlUpdate1 = "update solicitud set idEstado_Solicitud = 4 where idUsuario = ? and idEstado_Solicitud = 3 and NOW() > Fecha_Salida;";
 		// update,no es necesario saber si afecto alguna fila
-		template.update(sqlUpdate1, userId);		
-		
+		template.update(sqlUpdate1, userId);
 
-
-		// Actualizacion del estado de las solicitudes del usuario cada vez que se consultan
+		// Actualizacion del estado de las solicitudes del usuario cada vez que se
+		// consultan
 		// set 5 al estado porque significa que es el estado de Reporte_Pendiente
 		// where idUsuario es ? porque se va leer el parametro de la funcion userId
-		// where idEstado_Solicitud = 4 porque solamente cuando se esta en curso puede pasar a pedir reporte automaticamente
-		// where Now > fecha_regreso porque significa porque el tiempo actual real ya paso al tiempo de la fecha de regreso
+		// where idEstado_Solicitud = 4 porque solamente cuando se esta en curso puede
+		// pasar a pedir reporte automaticamente
+		// where Now > fecha_regreso porque significa porque el tiempo actual real ya
+		// paso al tiempo de la fecha de regreso
 		String sqlUpdate2 = "update solicitud set idEstado_Solicitud = 5 where idUsuario = ? and idEstado_Solicitud = 4 and NOW() > Fecha_Regreso;";
 		// update,no es necesario saber si afecto alguna fila
-		template.update(sqlUpdate2, userId);		
-		
+		template.update(sqlUpdate2, userId);
+
 		return template.query("""
 				select *
 				from solicitud s
@@ -159,19 +162,19 @@ public class SolicitudService implements ISolicitudService {
 				join rol r\s
 				on fs.idRol = r.idRol
 				where fs.idSolicitud = ?;
-				""",
-				id);
+				""", id);
 	}
 
 	/**
-	 * Lista todas las solicitudes que requieren la firma del usuario con la id indicada.
-	 * @param rolId		la id del rol a consultar sus firmas
-	 * @return          lista solicitudes pendientes por firmar por el usuario
+	 * Lista todas las solicitudes que requieren la firma del usuario con la id
+	 * indicada.
+	 * 
+	 * @param rolId la id del rol a consultar sus firmas
+	 * @return lista solicitudes pendientes por firmar por el usuario
 	 */
 	@Override
 	public List<Solicitud> listarSolicitudesPendientes(Integer rolId) {
-		return template.query(
-				"""
+		return template.query("""
 				select s.*, es.DescripcionEstado
 				from solicitud s
 				right join firmas_solicitud fs
@@ -179,24 +182,11 @@ public class SolicitudService implements ISolicitudService {
 				left join estado_solicitud es
 				on s.idEstado_Solicitud = es.idEstado_Solicitud
 				where fs.idRol = ? and fs.idUsuario is null
-                and (s.idEstado_Solicitud = 1 or s.idEstado_Solicitud = 2);
-				""",
-				(rs, rowNum) ->
-						new Solicitud(
-								rs.getInt("idSolicitud"),
-								rs.getString("Nombre_Evento"),
-								rs.getObject("Fecha_Salida", LocalDateTime.class),
-								rs.getObject("Fecha_Regreso", LocalDateTime.class),
-								rs.getFloat("Costo"),
-								rs.getString("Lugar"),
-								rs.getString("Reporte_Final"),
-								rs.getInt("idUsuario"),
-								rs.getInt("idCarrera"),
-								rs.getString("DescripcionEstado"),
-								rs.getInt("idEstado_Solicitud")
-						),
-				rolId
-		);
+				            and (s.idEstado_Solicitud = 1 or s.idEstado_Solicitud = 2);
+				""", (rs, rowNum) -> new Solicitud(rs.getInt("idSolicitud"), rs.getString("Nombre_Evento"),
+				rs.getObject("Fecha_Salida", LocalDateTime.class), rs.getObject("Fecha_Regreso", LocalDateTime.class),
+				rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getInt("idUsuario"),
+				rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")), rolId);
 	}
 
 	/**
@@ -232,10 +222,10 @@ public class SolicitudService implements ISolicitudService {
 	 * @param idSolicitud id de la solicitud
 	 * @param idRecurso   id de los recursos solicitidos
 	 * @param detalle     detalle del recurso solo si es necesario especificarlo
-	 * @return 			  resultado sobre si se registro el recurso solicitado
+	 * @return resultado sobre si se registro el recurso solicitado
 	 */
 	@Override
-	public Boolean saveRecurso(Integer idSolicitud, Integer idRecurso, String detalle) {	
+	public Boolean saveRecurso(Integer idSolicitud, Integer idRecurso, String detalle) {
 		int filasAfectadas;
 		if (detalle == null) {
 			String sql = "INSERT INTO solicitud_recursos (idSolicitud, idRecursos) VALUES(?, ?);";
@@ -324,6 +314,7 @@ public class SolicitudService implements ISolicitudService {
 
 	/**
 	 * Cambia el estado de una solicitud a cancelado
+	 * 
 	 * @param idSolicitud id de la solcitud a cancelar
 	 * @return si se registró o no la solicitud
 	 */
@@ -341,10 +332,12 @@ public class SolicitudService implements ISolicitudService {
 			return false;
 		}
 	}
+
 	/**
 	 * Actualiza la información de una solicitud
-	 * @param solicitud     solicitud a editar su información
-	 * @return              resultado sobre si se logró actualizar la solicitud
+	 * 
+	 * @param solicitud solicitud a editar su información
+	 * @return resultado sobre si se logró actualizar la solicitud
 	 */
 	@Override
 	public Boolean updateSolicitud(Solicitud solicitud) {
@@ -371,10 +364,12 @@ public class SolicitudService implements ISolicitudService {
 
 		return (Integer) resObj == 1;
 	}
+
 	/**
 	 * Borra los recursos que se quitaron de una solicitud al editarla
-	 * @param idSolicitud   id de la solicitud a editar
-	 * @param recursos      lista con los id de los recursos a borrar
+	 * 
+	 * @param idSolicitud id de la solicitud a editar
+	 * @param recursos    lista con los id de los recursos a borrar
 	 */
 	@Override
 	public void deleteRecursos(Integer idSolicitud, Set<Integer> recursos) {
@@ -385,10 +380,12 @@ public class SolicitudService implements ISolicitudService {
 		}
 
 	}
+
 	/**
 	 * Borra las actividades quitaron de una solicitud de salida
-	 * @param idSolicitud   id de la solicitud a editar
-	 * @param actividades      lista con los id de las actividades a borrar
+	 * 
+	 * @param idSolicitud id de la solicitud a editar
+	 * @param actividades lista con los id de las actividades a borrar
 	 */
 	@Override
 	public void deleteActividades(Integer idSolicitud, Set<Integer> actividades) {
@@ -399,54 +396,62 @@ public class SolicitudService implements ISolicitudService {
 		}
 
 	}
+
 	/**
 	 * Actuliza los detalles de los recursos que lo requieran
-	 * @param idSolicitud   id de la solicitud a editar
-	 * @param idRecurso     id del recurso a editar su detalle
-	 * @param detalle       detalle a asignar al recurso
+	 * 
+	 * @param idSolicitud id de la solicitud a editar
+	 * @param idRecurso   id del recurso a editar su detalle
+	 * @param detalle     detalle a asignar al recurso
 	 */
 	@Override
-	public void updateDetalleRecurso(Integer idSolicitud,Integer idRecurso, String detalle) {
+	public void updateDetalleRecurso(Integer idSolicitud, Integer idRecurso, String detalle) {
 		String sql = "UPDATE solicitud_recursos SET Detalles=? WHERE idSolicitud=? AND idRecursos=?;";
-		template.update(sql,detalle, idSolicitud, idRecurso);
+		template.update(sql, detalle, idSolicitud, idRecurso);
 
 	}
+
 	/**
 	 * Actualiza los detalles de los recursos que lo requieran
-	 * @param idSolicitud   id de la solicitud a editar
-	 * @param idActividad   id de la actividad a actulizar su detalle (Otra: )
-	 * @param detalle       detalle a actualizar
+	 * 
+	 * @param idSolicitud id de la solicitud a editar
+	 * @param idActividad id de la actividad a actulizar su detalle (Otra: )
+	 * @param detalle     detalle a actualizar
 	 */
 	@Override
 	public void updateDetalleActividad(Integer idSolicitud, Integer idActividad, String detalle) {
 		String sql = "UPDATE sgs_db.act_asociada_solicitud SET Descripcion=? WHERE Act_Asociada_idAct_Asociada=? AND Solicitud_idSolicitud=?;";
-		template.update(sql,detalle,idActividad,idSolicitud);
-		
+		template.update(sql, detalle, idActividad, idSolicitud);
+
 	}
+
 	/**
 	 * borra las todas las firmas de una solicitud de salida
-	 * @param idSolicitud   id de la solicitud a borrar sus firmas
+	 * 
+	 * @param idSolicitud id de la solicitud a borrar sus firmas
 	 */
 	@Override
 	public void reiniciarFirmas(Integer idSolicitud) {
 		// TODO Auto-generated method stub
 		String sql = "UPDATE firmas_solicitud SET idUsuario= NULL WHERE idSolicitud  = ?;";
-		template.update(sql,idSolicitud);			
+		template.update(sql, idSolicitud);
 	}
+
 	/**
 	 * Obtiene una lista de correos de los responsables a firmar una solicitud
-	 * @param idSolicitud   id de la solicitud
-	 * @return              lista con correos de los responsables a firmar la solicitud
+	 * 
+	 * @param idSolicitud id de la solicitud
+	 * @return lista con correos de los responsables a firmar la solicitud
 	 */
 	@Override
 	public List<String> obtnerCorrreosFirmas(Integer idSolicitud) {
 		String sql = "select fs.idRol from firmas_solicitud fs where idSolicitud = ?;";
-		List<Integer> firmas = template.queryForList(sql, new Object[] {idSolicitud}, Integer.class);	
+		List<Integer> firmas = template.queryForList(sql, new Object[] { idSolicitud }, Integer.class);
 		String correo;
 		List<String> correos = new ArrayList<String>();
-		for (Integer id:firmas ) {
+		for (Integer id : firmas) {
 			String sql2 = "select r.Correo_rol from rol r where idRol=?;";
-			correo = template.queryForObject(sql2, new Object[] {id}, String.class);
+			correo = template.queryForObject(sql2, new Object[] { id }, String.class);
 			correos.add(correo);
 			System.out.println(correo);
 		}
@@ -455,35 +460,71 @@ public class SolicitudService implements ISolicitudService {
 		System.out.println(firmas);
 		return correos;
 	}
+
 	/**
 	 * Cambia el estado de una solicitud a "En correción"
-	 * @param idSolicitud   id de la solicitud a cambiar su estado
-	 * @return               resultado sobre si se logró cambiar el esatdo de la solicitud
+	 * 
+	 * @param idSolicitud id de la solicitud a cambiar su estado
+	 * @return resultado sobre si se logró cambiar el esatdo de la solicitud
 	 */
 	@Override
 	public boolean rechzarSolicitud(Integer idSolicitud) {
-	    String sql = "UPDATE solicitud SET idEstado_solicitud = 7 WHERE idSolicitud = ?;";
-	    int rowsAffected = template.update(sql, idSolicitud);
-	    return rowsAffected > 0;
+		String sql = "UPDATE solicitud SET idEstado_solicitud = 7 WHERE idSolicitud = ?;";
+		int rowsAffected = template.update(sql, idSolicitud);
+		return rowsAffected > 0;
 	}
-	
+
 	/**
 	 * Obtiene los datos de los encargados de firmar una determinada solcitud
-	 * @param idSolicitud   id de la solicitud a cambiar su estado
-	 * @return              Lista con datos de los enecatgados a firmar (Nombre del rol y correo)
+	 * 
+	 * @param idSolicitud id de la solicitud a cambiar su estado
+	 * @return Lista con datos de los enecatgados a firmar (Nombre del rol y correo)
 	 */
 	@Override
 	public List<Map<String, Object>> DatosRolesFirma(Integer idSolicitud) {
 		String sql = "select r.Rol_Descripcion, r.Correo_rol from firmas_solicitud fs  LEFT join rol r on fs.idRol = r.idRol  where idSolicitud  = ?;";
-		return template.queryForList(sql,idSolicitud);
+		return template.queryForList(sql, idSolicitud);
 	}
 
 	@Override
-	public boolean guardarReferenciaReporteFinal(String idReporteDrive,Integer idSolicitud){
+	public boolean guardarReferenciaReporteFinal(String idReporteDrive, Integer idSolicitud) {
 		String sql = "UPDATE solicitud SET Reporte_Final = ?, idEstado_Solicitud = 6 WHERE idSolicitud = ?;";
-	    int rowsAffected = template.update(sql, idReporteDrive, idSolicitud);
-	    return rowsAffected > 0;
-		
+		int rowsAffected = template.update(sql, idReporteDrive, idSolicitud);
+		return rowsAffected > 0;
+
 	}
-	
+
+	@Override
+	public List<Solicitud> PaginacionSolicitudesPendientes(Integer limit, Integer offset, Filtros filtros,
+			Integer rolId) {
+		return template.query("""
+					SELECT s.*, es.DescripcionEstado
+					FROM solicitud s
+					RIGHT JOIN firmas_solicitud fs ON s.idSolicitud = fs.idSolicitud
+					LEFT JOIN estado_solicitud es ON s.idEstado_Solicitud = es.idEstado_Solicitud
+					WHERE fs.idRol = ? AND fs.idUsuario IS NULL
+					AND (s.idEstado_Solicitud = 1 OR s.idEstado_Solicitud = 2)
+					LIMIT ? OFFSET ?;
+				""", (rs, rowNum) -> new Solicitud(rs.getInt("idSolicitud"), rs.getString("Nombre_Evento"),
+				rs.getObject("Fecha_Salida", LocalDateTime.class), rs.getObject("Fecha_Regreso", LocalDateTime.class),
+				rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getInt("idUsuario"),
+				rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")), rolId,
+				limit, offset);
+	}
+
+	@Override
+	public Integer totalSolicitudesPendientes(Integer id) {
+		String sql = """
+					select COUNT(*)
+					from solicitud s
+					right join firmas_solicitud fs
+					on s.idSolicitud = fs.idSolicitud
+					left join estado_solicitud es
+					on s.idEstado_Solicitud = es.idEstado_Solicitud
+					where fs.idRol = ? and fs.idUsuario is null
+					and (s.idEstado_Solicitud = 1 or s.idEstado_Solicitud = 2);
+				""";
+		return template.queryForObject(sql, new Object[] { id }, Integer.class);
+	}
+
 }
