@@ -4,9 +4,71 @@
 	text-align: center;
 	
 }
+.txt_Nombre
+{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_info{
+	color: #514F4F;
+}
+.firmasdiv{
+	width: 100%;
+}
+.txt_Categoria
+{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_NumEmpleado{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_Carrera{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_Costo{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_FechaSalida{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_Lugar{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_FechaRegreso{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.col{
+	margin-bottom: 10px !important;
+}
+.seccionModalTxt{
+	text-align: center !important;
+	margin-bottom: 10px !important;
 
+}
+.seccionModalTxtI{
+	text-align: center !important;
+	margin-bottom: 10px !important;
+}
+.seccionModalTxtD{
+	text-align: center !important;
+	margin-bottom: 10px !important;
+	
+}
+.check_firma{
+	right: 0px !important;
+}
 .Descripcion_tabla{
 	color: #514F4F;
+}
+.ModalSLC{
+	max-width: 1100px;
 }
 .reporte_btn{
 	background-color: #50B848 !important;
