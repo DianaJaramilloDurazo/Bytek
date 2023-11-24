@@ -269,7 +269,13 @@ public class SolicitudController {
 		return "<div id='alertaResultadoReporte' class='alert alert-success' role='alert'><b> El archivo fue subido con éxito </b></div>";
 	
 	}
-	
+
+	/**
+	 * Obtiene una página de solicitudes paginada.
+	 * @param filtros	los filstros aplicados, número de página, nombre, etc.
+	 * @param model		el modelo utilizado para pasar datos a la vista
+	 * @return			fragmento para mostrar la lista de solicitudes pendientes por firmar
+	 */
 	@GetMapping("/solicitudPagination")
 	public String paginacion(@ModelAttribute Filtros filtros, Model model) {
 		// Obtener lista de solicitudes
@@ -287,7 +293,24 @@ public class SolicitudController {
 		// Calcular el desplazamiento (offset) para determinar desde qué registro se
 		// debe iniciar en la base de datos
 		int offset = (filtros.getPage() - 1) * pageSize;
-
+		
+		
+		// Esto se hace para que no ocuura un erro al el firmar o rechazar una unica solicitud
+		// que se encuentra en una sola, ya que al no hacer esto no se muestra ninguna solicitud
+		List<Solicitud> solicitudesPendientes = solicitudService.PaginacionSolicitudesPendientes(pageSize, offset,
+				filtros, usuarioService.findIdRolById(u.getIdUsuario()));
+		
+		// Si era la unica solicitud de la pagina, se verifica que pagina era 
+		if(solicitudesPendientes.isEmpty()) {
+			// Si es una página mayor a 1, se regresa a una página anterior
+			if(filtros.getPage() - 1 > 0) {
+				filtros.setPage(filtros.getPage() - 1);
+			}else {
+				filtros.setPage(1);
+			}
+			offset = (filtros.getPage() - 1) * pageSize;
+		}
+		
 		// Obtener total de registros
 		Integer totalRecords = solicitudService.totalSolicitudesPendientes(2);
 
@@ -309,8 +332,11 @@ public class SolicitudController {
 		model.addAttribute("prev", filtros.getPage() - 1);
 		model.addAttribute("end", endPage);
 		model.addAttribute("last", totalPages);
-		List<Solicitud> solicitudesPendientes = solicitudService.PaginacionSolicitudesPendientes(pageSize, offset,
+		solicitudesPendientes = solicitudService.PaginacionSolicitudesPendientes(pageSize, offset,
 				filtros, usuarioService.findIdRolById(u.getIdUsuario()));
+		
+		
+		
 		model.addAttribute("solicitudes_pendientes", solicitudesPendientes);
 		// También los usuarios registrados
 		// todo: Monitorear por problemas de rendimiento cargando la página de inicio,
