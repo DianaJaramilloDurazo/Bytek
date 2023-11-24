@@ -5,7 +5,34 @@
 	
 }
 .solicitudContenedor h4{
-	padding-bottom: 100px;
+	font-weight: bold;
+}
+.Descripcion_tabla{
+	color: #514F4F;
+}
+.reporte_btn{
+	background-color: #50B848 !important;
+	border: none;
+}
+.reporte_btn:hover{
+	background-color: #93E77D !important;
+	border: none;
+}
+
+.editar_btn{
+	background-color: #FEBE10 !important;
+	border: none;
+}
+.editar_btn:hover{
+	background-color: #EAB75D !important;
+	border: none;
+}
+.Importante{
+	color: #FF1700;
+}
+.custom-container{
+     width: 100%;
+     margin: 0 auto;
 }
 #tituloModal{
 	text-align: center;
@@ -200,7 +227,7 @@
 	padding-bottom: 40px;
 }
 .solicitudContenedor h4{
-	padding-bottom: 40px;
+	padding-bottom: 20px;
 }
 
 
