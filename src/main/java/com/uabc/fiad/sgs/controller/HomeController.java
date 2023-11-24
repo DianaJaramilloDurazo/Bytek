@@ -31,8 +31,9 @@ public class HomeController {
 
     /**
      * Muestra la pantalla inicial del sistema
-     * @param model el modelo de spring
-     * @return      la vista de la pantalla inicial, con sus respectivos atributos de modelo
+	 * @param filtros 	filtros que se usarán para buscar solicitudes
+     * @param model 	el modelo de spring
+     * @return      	la vista de la pantalla inicial, con sus respectivos atributos de modelo
      */
     @GetMapping("")
     public String home(@ModelAttribute Filtros filtros,Model model) {
