@@ -34,7 +34,7 @@
 		<div class="izquierda">
 			<div>
 				<label>Costo del evento: $</label>
-				<input th:value="${solicitud.costo}" step="0.01" type="number" id="Ecosto" name="costo" class="form-control">
+				<input th:value="${solicitud.costo}" min="0" step="0.01" type="number" id="Ecosto" name="costo" class="form-control">
 				<label>Fecha de salida:</label>
 				<input th:value="${fechaSalida}" type="date" id="fSalidaE" onchange="validarFechas('fSalidaE','fRegresoE');"  name="fSalida" class="form-control">
 				<label>Fecha de regreso:</label>

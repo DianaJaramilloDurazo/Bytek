@@ -73,7 +73,7 @@ function validarForm() {
 		alertaEvento.style.display = 'none';
 	}
 
-	if (costo.value === '') {
+	if (costo.value === '' || costo.value.toString().charAt(0) === '-') {
 		var alertaCosto = document.getElementById('costo-alert');
 		alertaCosto.style.display = 'block';
 		formListo = false;
@@ -203,7 +203,7 @@ function validarFormEditar() {
 		var alertaEvento = document.getElementById('EnombreEvento-alert');
 		alertaEvento.style.display = 'none';
 	}
-	if (costo.value === '') {
+	if (costo.value === '' || costo.value.toString().charAt(0) === '-') {
 		var alertaCosto = document.getElementById('Ecosto-alert');
 		alertaCosto.style.display = 'block';
 		formListo = false;
@@ -214,6 +214,7 @@ function validarFormEditar() {
 	if(lugar.value === ''){
 		var alertaLugar = document.getElementById('Elugar-alert');
 		alertaLugar.style.display = 'block';
+		formListo = false;
 	}else{
 		var alertaLugar = document.getElementById('Elugar-alert');
 		alertaLugar.style.display = 'none';
