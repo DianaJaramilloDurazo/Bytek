@@ -54,6 +54,9 @@ body{
 	color: var(--text-color-verde);
 	font-weight: bold;
 }
+#btn-perfil:hover{
+	color: var(--text-color-amarillo);
+}
 .nombre{
 	font-family: sans-serif;
 }
@@ -80,6 +83,7 @@ body{
 .navbar-nav> li{
     background: none;
     border: none;
+    
 }
 
 .cont{
