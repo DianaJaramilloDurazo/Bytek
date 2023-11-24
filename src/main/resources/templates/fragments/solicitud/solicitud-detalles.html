@@ -18,14 +18,14 @@
             </div>
 
             <div >
-                <label class="txt_Categoria">Categoria: </label>
+                <label class="txt_Categoria">Categoría: </label>
                 <span id="slc_Categoria" class="txt_info" th:text="${categoria}"></span>
             </div>
 
         </div>
         <div class="col">
             <div >
-                <label class="txt_NumEmpleado">No Empleado: </label>
+                <label class="txt_NumEmpleado">No. Empleado: </label>
                 <span id="slcNumEmpleado" class="txt_info" th:text="${usuario.numEmpleado}"></span>
             </div>
 
@@ -56,7 +56,7 @@
             </div>
 
             <div >
-                <label class="txt_FechaRegreso">Fecha y hora de Regreso: </label>
+                <label class="txt_FechaRegreso">Fecha y hora de regreso: </label>
                 <span id="slc_FechaRegreso" class="txt_info" th:text="${#temporals.format(solicitud.fechaRegreso, 'dd/MM/yyyy HH:mm')}"></span>
             </div>
 		</div>

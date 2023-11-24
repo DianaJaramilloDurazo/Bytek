@@ -68,7 +68,7 @@
             <td th:text="${sol.nombreEvento}"></td>
             <td th:text="${sol.estadoSolicitud}"></td>
             <td>
-                <!--                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalEditarSolicitud">Editar</button>-->
+                <!--<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalEditarSolicitud">Editar</button>-->
                 
                 <button class="btn btn-secondary mb-2 me-2 " data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo"
                         th:hx-get="'/solicitud?id=' + ${sol.getIdSolicitud}"
@@ -393,43 +393,6 @@
         </div>
     </div>
 </div>
-
-<div class="separadordetablas" id="opc3"></div><!--NO QUITAR LO USO PARA QUE SE ACOMODEN BIEN LAS VISTAS AL USAR LA BARRA DE NAVEGACION-->
-
-<div class="reporteSalida" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR', 'ROLE_DIRECTOR')">
-    <h4>Reportes de salida pendientes</h4>
-    <table class="table">
-        <thead class="table-bordered"><!--ENCABEZADO DE LA TABLA-->
-        <tr>
-            <th scope="col">Nombre del evento</th>
-            <th scope="col">Archivo PDF</th>
-            <th scope="col">Opciones</th>
-        </tr>
-        </thead>
-        <tbody>
-
-        <tr>
-            <td>Evento 4</td>
-            <td><input type="file" accept=".pdf" id="PDF_ReporteSalida" class="form-control"></td>
-            <td><button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo">ver +</button></td>
-        </tr>
-        <tr>
-            <td>Evento 5</td>
-            <td><input type="file" accept=".pdf" id="PDF_ReporteSalida" class="form-control"></td>
-            <td><button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo">ver +</button></td>
-        </tr>
-        <tr>
-            <td>Evento 6</td>
-            <td><input type="file" accept=".pdf" id="PDF_ReporteSalida" class="form-control"></td>
-            <td><button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo">ver +</button></td>
-        </tr>
-
-        </tbody>
-    </table>
-</div>
-
-
-
 <div class="piedepagina">
     <script src="/js/Inicio.js"></script>
 </div>

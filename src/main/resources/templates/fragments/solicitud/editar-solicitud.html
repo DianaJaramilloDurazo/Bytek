@@ -30,8 +30,8 @@
 	<span id="Elugar-alert" style="color: red; display: none;">Ingrese el lugar del evento</span>
 	<span id="Efechas-alert" style="color: red; display: none;">Ingrese los horarios y fechas del evento</span>
 	
-	<div class="modalEditar">
-		<div class="izquierda">
+	<div class="row row-cols-2">
+		<div class="col">
 			<div>
 				<label>Costo del evento: $</label>
 				<input th:value="${solicitud.costo}" min="0" step="0.01" type="number" id="Ecosto" name="costo" class="form-control">
@@ -41,7 +41,7 @@
 				<input th:value="${fechaRegreso}" type="date" id="fRegresoE" onchange="validarFechas('fSalidaE','fRegresoE');" name="fRegreso" class="form-control">
 			</div>
 		</div>
-		<div class="derecha">
+		<div class="col">
 			<label>Lugar: </label>
 			<input th:value="${solicitud.lugar}"  type="text" id="Elugar" name="lugar" class="form-control">
 			<label>Hora de salida:</label>

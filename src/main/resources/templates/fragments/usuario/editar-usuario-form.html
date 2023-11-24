@@ -6,14 +6,14 @@
            th:attr="onchange='validarCampos(\'' + ${usuario.username} + '\', \'username\')'"
            class="form-control " type="text" id="username" name="username" required>
 
-    <div class="container contM">
-        <div class="cont-1">
+    <div class="row row-cols-2">
+        <div class="col">
             <label for="apPaterno">Apellido paterno</label>
             <input
                     th:attr="onchange='validarCampos(\'' + ${usuario.apPaterno} + '\', \'apPaterno\')'"
                     th:value="${usuario.apPaterno}" class="form-control " type="text" id="apPaterno" name="apPaterno" required>
         </div>
-        <div class="cont-2">
+        <div class="col">
             <label for="apMaterno">Apellido materno</label>
             <input th:value="${usuario.apMaterno}" class="form-control" type="text" id="apMaterno" name="apMaterno">
         </div>
@@ -27,15 +27,15 @@
 <!--               th:value="${value} ?: ''"-->
     </div>
 
-    <div class="container contM">
+    <div class="row row-cols-2">
 
 
-        <div class="cont-2">
-            <label for="numEmpleado">Numero de empleado</label>
+        <div class="col">
+            <label for="numEmpleado">Número de empleado</label>
             <input th:value="${usuario.numEmpleado}" class="form-control" type="number" id="numEmpleado" name="numEmpleado" required disabled
                    min="10000" max="999999" step="1" pattern="^[0-9]*$" onkeydown="if([69,187,188,189,190].includes(event.keyCode))event.preventDefault()">
         </div>
-        <div class="cont-2">
+        <div class="col">
             <label for="idCarrera">Carrera</label>
             <select class="form-control " id="idCarrera" name="idCarrera" required>
                 <option value="0" selected>Selecciona una carrera</option>
@@ -48,9 +48,9 @@
 
     </div>
 
-    <div class="container contM">
-        <div class="cont-2">
-            <label for="idCategoria">Categoria</label>
+    <div class="row row-cols-2">
+        <div class="col">
+            <label for="idCategoria">Categoría</label>
             <select class="form-control" id="idCategoria" name="idCategoria" required>
                 <option th:each="categoria : ${categorias}"
                         th:value="${categoria.idCategoria}"
@@ -60,7 +60,7 @@
         </div>
 
         <!-- Si la bandera del perfil es verdadera, no mostrar el campo de estado, si es falsa o nula mostrarlo -->
-        <div th:if="${perfil == null || !perfil}" class="cont-2" >
+        <div th:if="${perfil == null || !perfil}" class="col" >
             <label for="idCategoria">Estado</label>
             <select class="form-control" id="idEstado" name="idEstado" th:disabled="${usuario.idRol != 0}" required>
                 <option th:each="estado : ${estados}"
@@ -73,8 +73,8 @@
 
     </div>
     <!-- Si la bandera del perfil es verdadera, no mostrar el campo de rol, si es falsa o nula mostrarlo -->
-    <div th:if="${perfil == null || !perfil}" class="container contM">
-        <div class="cont-2">
+    <div th:if="${perfil == null || !perfil}" class="row row-cols-2">
+        <div class="col">
             <label for="idRol">Rol</label>
             <select onchange="mostrarModal()" class="form-control" id="idRol" name="idRol"  required>
                 <!-- Agrega la opción predeterminada si user.idRol es 0 -->
