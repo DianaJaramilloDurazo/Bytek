@@ -51,7 +51,8 @@
 		</div>
 	</div>
 	<label for="idCarrera">Carrera</label>
-    	<select class="form-control " id="idCarrera" name="idCarrera" required disabled>
+	<input type="hidden" th:value="${solicitud.idCarrera}" name="idCarrera">
+    	<select class="form-control " id="idCarrera" required disabled>
             <option th:each="carrera : ${carreras}"
             		th:value="${carrera.idCarrera}"
                     th:text="${carrera.Carrera_Nombre}"
