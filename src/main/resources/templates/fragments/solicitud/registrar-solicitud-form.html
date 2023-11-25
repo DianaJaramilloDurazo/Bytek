@@ -1,95 +1,147 @@
 <div th:fragment="registrar-solicitud-form">
-	<div>
 
-		<div >
-			<label class="txt_Nombre">Nombre Docente: </label>
-			<input disabled th:value="${usuario.username} + ' ' + ${usuario.apPaterno} + ' ' + ${usuario.apMaterno}">
+		<div class="col-12 bg-light seccionModalTxt">
+			<h5>Información del docente</h5>
 		</div>
-
-		<div >
-			<label class="txt_NumEmpleado">No Empleado: </label>
-			<input disabled th:value="${usuario.numEmpleado}">
-		</div>
-
-		<div >
-			<label class="txt_Categoria">Categoria: </label>
-			<input disabled th:value="${categoria}">
-		</div>
-
-		<span id="nombreEvento-alert" style="color: red; display: none;">Ingrese el nombre del evento</span>
-		<div>
-			<label>Nombre de la actividad o evento:</label>
-			<input type="text" id="nombreEvento" name="nombreEvento" class="form-control" required>
-				
-		</div>
-	</div>
-	<span id="costo-alert" style="color: red; display: none;">Ingrese el costo del evento</span>
-	<span id="lugar-alert" style="color: red; display: none;">Ingrese el lugar del evento</span>
-	<span id="fechas-alert" style="color: red; display: none;">Ingrese los horarios y fechas del evento</span>
-	<div class="modalEditar">
-		<div class="izquierda">
-			<div>
-				<label>Costo del evento: $</label>
-				<input type="number" step="0.001" min="0" id="costo" name="costo" class="form-control" required>
-				<label>Fecha de salida:</label>
-				<input type="date" id="fSalida" name="fSalida" class="form-control" onchange="validarFechas('fSalida','fRegreso');" required>
-				<label>Fecha de regreso:</label>
-				<input type="date" id="fRegreso" name="fRegreso" class="form-control" onchange="validarFechas('fSalida','fRegreso');"   required>
+		
+		<div class="row row-cols-3">
+			<div class="col form-group">
+				<label class="txt_Nombre form-label">Nombre: </label>
+				<span id="usr_name" th:text="${usuario.username} + ' ' + ${usuario.apPaterno} + ' ' + ${usuario.apMaterno}"></span>
+			</div>
+	
+			<div class="col form-group">
+				<label class="txt_NumEmpleado">No. Empleado:</label>
+				<span id="usr_num" th:text="${usuario.numEmpleado}"></span>
+			</div>
+	
+			<div class="col form-group">
+				<label class="txt_Categoria">Categoría: </label>
+				<span th:text="${categoria}">
 			</div>
 		</div>
-		<div class="derecha">
-			<label>Lugar: </label>
-			<input type="text" id="lugar" name="lugar" class="form-control" required>
-			<label>Hora de salida:</label>
-			<input type="time" id="horaSalida" name="horaSalida" class="form-control" required>
-			<label>Hora de regreso:</label>
-			<input type="time" id="horaRegreso" name="horaRegreso" class="form-control" required>
+
+		<div class="col-12 bg-light seccionModalTxt">
+			<h5>Detalles del evento</h5>
 		</div>
-
+	<div class="row row-cols-2">
+		<div class="col">
+			<span id="nombreEvento-alert" style="color: red; display: none;">Ingrese el nombre del evento</span>
+			<span id="costo-alert" style="color: red; display: none;">Ingrese el costo del evento</span>
+			<div class="form-group">
+				<label class="txtCrear">Nombre del evento:</label>
+				<input type="text" id="nombreEvento" name="nombreEvento" class="form-control" required>	
+			</div>
+			<div class="form-group">
+				<label class="txtCrear">Costo del evento: $</label>
+				<input type="number" step="0.001" min="0" id="costo" name="costo" class="form-control" required>
+			</div>
+		</div>
+		<div class="col">
+			<span id="lugar-alert" style="color: red; display: none;">Ingrese el lugar del evento</span>
+			<span id="idCarrera-alert" style="color: red; display: none;">Seleccione una carrera</span>
+			<div class="form-group">
+				<label class="txtCrear">Lugar: </label>
+				<input type="text" id="lugar" name="lugar" class="form-control" required>
+			</div>
+			<div class="form-group">
+				<label for="idCarrera" class="txtCrear">Carrera</label>
+				<select class="form-control " id="idCarrera" name="idCarrera" required>
+					<option value="0" selected>Selecciona una carrera</option>
+					<option th:each="carrera : ${carreras}" th:value="${carrera.idCarrera}" th:text="${carrera.Carrera_Nombre}">
+					</option>
+				</select>
+			</div>
+		</div>
 	</div>
-	<span id="idCarrera-alert" style="color: red; display: none;">Seleccione una carrera</span>
-	<label for="idCarrera">Carrera</label>
-	<select class="form-control " id="idCarrera" name="idCarrera" required>
-		<option value="0" selected>Selecciona una carrera</option>
-		<option th:each="carrera : ${carreras}" th:value="${carrera.idCarrera}" th:text="${carrera.Carrera_Nombre}">
-		</option>
-	</select>
-	<div class="checkbox">
-		<br>
-		<span id="recurso-alert" style="color: red; display: none;">Seleccione los recursos a solicitar</span>
-		<label>Recurso a solicitar:</label><br>
-
-		<input name="recursos" type="checkbox" id="Hospedaje_c" value="1"><span>Hospedaje</span>
-		<input name="recursos" type="checkbox" id="Transporte_c" value="2" onclick="activarInput('Transporte_c','Transporte_v')">
-		<span>Transporte: </span>
-		<input name="transporte" min="0" type="number" id="Transporte_v" value="0" disabled>
-
-		<input name="recursos" type="checkbox" id="Combustible_c" value="3"
-			onclick="activarInput('Combustible_c','Combustible_v')">
-		<span>Combustible: </span>
-		<!-- <input type="text" id="Combustible_v" value="0">-->
-
-		<input name="recursos" type="checkbox" id="Viatico_c" value="4">
-		<span>Viáticos</span><br>
+	<span id="fechas-alert" style="color: red; display: none;">Ingrese los horarios y fechas del evento</span>
+	<div class="row row-cols-2">
+		<div class="col form-group">
+			<label class="txt_editar">Fecha y hora de salida:</label>
+			<input type="date" id="fSalida" name="fSalida" class="form-control" onchange="validarFechas('fSalida','fRegreso');" required>
+			<input type="time" id="horaSalida" name="horaSalida" class="form-control" required>
+		</div>
 		
-		<input name="recursos" type="checkbox" id="Otro_recurso_c" value="5"
-			onclick="activarInput('Otro_recurso_c','Otro_recurso_v')">
-		<span>Otro:</span>
-		<input name="otroRecurso" type="text" id="Otro_recurso_v"  disabled>
-		<br>
+		<div class="col form-group">
+			<label class="txt_editar">Fecha y hora de regreso:</label>
+			<input type="date" id="fRegreso" name="fRegreso" class="form-control" onchange="validarFechas('fSalida','fRegreso');"   required>
+			<input type="time" id="horaRegreso" name="horaRegreso" class="form-control" required>
+		</div>	
 	</div>
-	<div class="checkbox">
+	
+	<div class="row row-cols-2">
+		
+		<div class="col-5 bg-light seccionModalTxt">
+			<h5>Recurso a solicitar:</h5>
+		</div>
+		
+		<div class="col-5 offset-1 bg-light seccionModalTxt">
+			<h5>Actividad asociada a:</h5>
+		</div>
+		
+		<span id="recurso-alert" style="color: red; display: none;">Seleccione los recursos a solicitar</span>
 		<span id="actividad-alert" style="color: red; display: none;">Seleccione las actividades asociadas</span>
-		<label>Actividad asociada a:</label>
-		<input name="actividades" value="1" type="checkbox" id="CACEI"><span>CACEI</span>
-		<input name="actividades"  value="2" type="checkbox" id="Licenciatura"><span>Licenciatura</span>
-		<input name="actividades"  value="3" type="checkbox" id="Personal"><span>Personal</span>
-		<input name="actividades"  value="4" type="checkbox" id="ISO"><span>Sistema de Gestión de Calidad</span>
-		<input name="actividades"  value="5" type="checkbox" id="Posgrado"><span>Posgrado</span><br>
-		<input name="actividades"  value="6" type="checkbox" id="Otra_actividadCheck"
-			onclick="activarInput('Otra_actividadCheck','Otra_actividadDesc')">
-		<label for="Otra_actividad" id="normText">Otra</label>
-		<input name="otroActividad" type="text" id="Otra_actividadDesc" disabled>
+		
+		<div class="col-6 checkbox">
+			
+			<div class="form-check">
+				<input class="form-check-input" name="recursos" type="checkbox" id="Hospedaje_c" value="1"><span>Hospedaje</span>
+			</div>
+			
+			<div class="form-check">
+				<input class="form-check-input" name="recursos" type="checkbox" id="Transporte_c" value="2" onclick="activarInput('Transporte_c','Transporte_v')">
+				<span>Transporte: </span>
+				<input name="transporte" min="0" type="number" id="Transporte_v" value="0" disabled>
+			</div>
+			
+			<div class="form-check">
+				<input class="form-check-input" name="recursos" type="checkbox" id="Combustible_c" value="3">
+				<span>Combustible</span>
+				<!-- <input type="text" id="Combustible_v" value="0">-->
+			</div>
+			
+			<div class="form-check">
+				<input class="form-check-input" name="recursos" type="checkbox" id="Viatico_c" value="4">
+				<span>Viáticos</span><br>
+			</div>
+			
+			<div class="form-check">
+				<input class="form-check-input" name="recursos" type="checkbox" id="Otro_recurso_c" value="5"
+				onclick="activarInput('Otro_recurso_c','Otro_recurso_v')">
+				<span>Otro:</span>
+				<input name="otroRecurso" type="text" id="Otro_recurso_v"  disabled>
+			</div>
+		</div>
+		
+		<div class="col-6 checkbox">
+			<div class="form-check">
+				<input class="form-check-input" name="actividades" value="1" type="checkbox" id="CACEI"><span>CACEI</span>
+			</div>
+			
+			<div class="form-check">
+				<input class="form-check-input" name="actividades"  value="2" type="checkbox" id="Licenciatura"><span>Licenciatura</span>
+			</div>
+			
+			<div class="form-check">
+				<input class="form-check-input" name="actividades"  value="3" type="checkbox" id="Personal"><span>Personal</span>
+			</div>
+			
+			<div class="form-check">
+				<input class="form-check-input" name="actividades"  value="4" type="checkbox" id="ISO"><span>Sistema de Gestión de Calidad</span>
+			</div>
+			
+			<div class="form-check">
+				<input class="form-check-input" name="actividades"  value="5" type="checkbox" id="Posgrado"><span>Posgrado</span>
+			</div>
+			
+			<div class="form-check">
+				<input class="form-check-input" name="actividades"  value="6" type="checkbox" id="Otra_actividadCheck"
+				onclick="activarInput('Otra_actividadCheck','Otra_actividadDesc')">
+				<label for="Otra_actividad" id="normText">Otra</label>
+				<input name="otroActividad" type="text" id="Otra_actividadDesc" disabled>
+			</div>
+			
+		</div>
 	</div>
-	<br>
+
 </div>
