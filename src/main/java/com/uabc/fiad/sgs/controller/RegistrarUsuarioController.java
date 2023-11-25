@@ -47,6 +47,10 @@ public class RegistrarUsuarioController {
             return "<span class='text-danger'>El número de empleado ya está registrado.</span>";
         }
 
+        if (!usuario.getCorreo().endsWith("@uabc.edu.mx")) {
+            return "<span class='text-danger'>El correo debe ser institucional.</span>";
+        }
+
         // Si no están registrados esos datos en otros usuarios se puede proceder a registrar el usuario
 
         // Obtener la contraseña plana

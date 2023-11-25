@@ -1,4 +1,8 @@
 <div th:fragment="registrar-usuario-form" class="container-fluid">
+    <div id="result-msg"
+         hx-swap-oob="true"
+    ></div>
+
     <label for="username">Nombre(s)</label>
     <input class="form-control " type="text" id="username" name="username" maxlength="100" required>
 
@@ -43,7 +47,7 @@
         <div class="col">
             <label for="idCategoria">Categoria</label>
             <select class="form-control" id="idCategoria" name="idCategoria" required>
-                <option value="0" selected>Selecciona una categoria</option>
+                <option value="" selected>Selecciona una categoria</option>
                 <option th:each="categoria : ${categorias}"
                         th:value="${categoria.idCategoria}"
                         th:text="${categoria.Cat_Descripcion}"></option>
@@ -53,7 +57,7 @@
         <div class="col">
             <label for="idCarrera">Carrera</label>
             <select class="form-control " id="idCarrera" name="idCarrera" required>
-                <option value="0" selected>Selecciona una carrera</option>
+                <option value="" selected>Selecciona una carrera</option>
                 <option th:each="carrera : ${carreras}"
                            th:value="${carrera.idCarrera}"
                            th:text="${carrera.Carrera_Nombre}"></option>
