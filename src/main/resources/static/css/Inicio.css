@@ -205,7 +205,7 @@
 }
 .modalEditar input[type="text"]{
 	max-height: 35px !important;
-	max-width: 200px;
+	max-width: 300px;
 }
 .modalEditar{
 	max-width: 1100px;
@@ -217,22 +217,26 @@
 .form-group
 {
 	display: flex;
+	margin-bottom: 10px;
 }
 .form-group label{
 	margin-right: 15px;
 }
 .modalEditar input[type="number"]{
 	max-height: 35px !important;
-	
+	max-width: 300px;
 }
 .modalEditar input[type="date"]{
 	max-height: 35px !important;
+	max-width: 140px;
 }
 .modalEditar input[type="time"]{
 	max-height: 35px !important;
+	max-width: 140px;
 }
 .modalEditar select{
 	max-height: 35px !important;
+	max-width: 300px;
 }
 .completo1{
 	position: relative;
@@ -266,7 +270,9 @@
 	display: flex;
 }
 
-
+.checkbox input[type="text"]{
+	max-width: 100px !important;
+}
 .actividades, .recursos{
 	display: flex;
 	flex-wrap: wrap;

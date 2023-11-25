@@ -17,7 +17,7 @@
 		</div>
 
 		<div class="col form-group">
-			<label class="txt_Categoria">Categoria: </label>
+			<label class="txt_Categoria">Categoría: </label>
 			<span th:text="${categoria}">
 		</div>
 	</div>
@@ -37,54 +37,46 @@
 	
 	<div class="row row-cols-2">
 		<div class="col">
-			<div>
-				<label class="txt_editar">Nombre de la actividad o evento:</label>
+			<div class="form-group">
+				<label class="txt_editar">Nombre del evento:</label>
 				<input th:value="${solicitud.nombreEvento}" type="text" id="EnombreEvento" name="nombreEvento" class="form-control">
+				
+			</div>
+			<div class="form-group">
 				<label class="txt_editar">Costo del evento: $</label>
 				<input th:value="${solicitud.costo}" min="0" step="0.01" type="number" id="Ecosto" name="costo" class="form-control">
 			</div>
 		</div>
 		<div class="col">
-			<label class="txt_editar">Lugar: </label>
-			<input th:value="${solicitud.lugar}"  type="text" id="Elugar" name="lugar" class="form-control">
-			<label for="idCarrera" class="txt_editar">Carrera</label>
-			<select class="form-control " id="idCarrera" name="idCarrera" required>
-	            <option th:each="carrera : ${carreras}"
-	            		th:value="${carrera.idCarrera}"
-	                    th:text="${carrera.Carrera_Nombre}"
-	                    th:if="${carrera.idCarrera == solicitud.idCarrera}"></option>
-	       	</select>
+			<div class="form-group">
+				<label class="txt_editar">Lugar: </label>
+				<input th:value="${solicitud.lugar}"  type="text" id="Elugar" name="lugar" class="form-control">
+			</div>
+			<div class="form-group">
+				<label for="idCarrera" class="txt_editar">Carrera</label>
+				<select class="form-control " id="idCarrera" name="idCarrera" required disabled>
+		            <option th:each="carrera : ${carreras}"
+		            		th:value="${carrera.idCarrera}"
+		                    th:text="${carrera.Carrera_Nombre}"
+		                    th:if="${carrera.idCarrera == solicitud.idCarrera}"></option>
+		       	</select>
+			</div>
+			
 		</div>
 	</div>
-	<div class="row row-cols-4">
-		<div class="col">
+	<div class="row row-cols-2">
+		<div class="col form-group">
 			<label class="txt_editar">Fecha y hora de salida:</label>
 			<input th:value="${fechaSalida}" type="date" id="fSalidaE" onchange="validarFechas('fSalidaE','fRegresoE');"  name="fSalida" class="form-control">
-		</div>
-		<div class="col">
-			<label></label>
 			<input th:value="${horaSalida}" type="time"  id="EhoraSalida" name="horaSalida" class="form-control">
 		</div>
-		<div class="col">
+		<div class="col form-group">
 			<label class="txt_editar">Fecha y hora de regreso:</label>
 			<input th:value="${fechaRegreso}" type="date" id="fRegresoE" onchange="validarFechas('fSalidaE','fRegresoE');" name="fRegreso" class="form-control">
-		</div>
-		<div class="col">
-			<label></label>
 			<input th:value="${horaRegreso}" type="time" id="EhoraRegreso" name="horaRegreso" class="form-control">
 		</div>
 	</div>
-	<label for="idCarrera">Carrera</label>
-	<input type="hidden" th:value="${solicitud.idCarrera}" name="idCarrera">
-    	<select class="form-control " id="idCarrera" required disabled>
-            <option th:each="carrera : ${carreras}"
-            		th:value="${carrera.idCarrera}"
-                    th:text="${carrera.Carrera_Nombre}"
-                    th:if="${carrera.idCarrera == solicitud.idCarrera}"></option>
-       	</select>
-    <br>
-    
-    
+	
     <div class="row row-cols-2">
 		<div class="col-5 bg-light seccionModalTxt">
 			<h5>Recurso a solicitar:</h5>
