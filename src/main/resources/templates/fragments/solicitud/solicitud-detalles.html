@@ -72,7 +72,7 @@
             <div class="col">
 
                 <div th:each="recurso : ${recursos}">
-                    <input type="checkbox" disabled  th:attr="checked=${recurso.registrado}?'checked':null" checked>
+                    <input class="form-check-input" type="checkbox" disabled  th:attr="checked=${recurso.registrado}?'checked':null" checked>
                     <span th:text="${recurso.desc}"></span>
                     <input type="text" th:if="${recurso.detalles != null}" th:value="${recurso.detalles}" disabled>
                 </div>
@@ -80,7 +80,7 @@
             </div>
             <div class="col">
                 <div th:each="act : ${actividades}">
-                    <input type="checkbox" disabled  th:attr="checked=${act.registrado}?'checked':null" checked>
+                    <input class="form-check-input" type="checkbox" disabled  th:attr="checked=${act.registrado}?'checked':null" checked>
                     <span th:text="${act.nombre}"></span>
                     <input type="text" th:if="${act.desc != null}" th:value="${act.desc}" disabled>
                 </div>
@@ -92,7 +92,7 @@
             <div class="firmasdiv">
                 <div th:each="f : ${firmas}" class="form-control d-flex justify-content-between" >
 					<span th:text="${f.rol}"></span>
-                    <input type="checkbox"  disabled  th:attr="checked=${f.usuario != null}?'checked':null" checked>
+                    <input class="form-check-input" type="checkbox"  disabled  th:attr="checked=${f.usuario != null}?'checked':null" checked>
                 </div>
             </div>
         </div>
