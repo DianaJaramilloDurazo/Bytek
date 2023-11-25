@@ -51,7 +51,7 @@
 		</div>
 	</div>
 	<label for="idCarrera">Carrera</label>
-    	<select class="form-control " id="idCarrera" name="idCarrera" required>
+    	<select class="form-control " id="idCarrera" name="idCarrera" required disabled>
             <option th:each="carrera : ${carreras}"
             		th:value="${carrera.idCarrera}"
                     th:text="${carrera.Carrera_Nombre}"

@@ -48,7 +48,7 @@
 					<!-- Contenido del segundo div -->
 			      <div class="p-3">
 			        	<b class="Importante">
-                    		IMPORTANTE: *Cuentas con 5 dias habiles para entregar el reporte de salida despues de la fecha de regreso*
+                    		IMPORTANTE: *Cuentas con 5 días hábiles para entregar el reporte de salida después de la fecha de regreso*
             			</b>
 			      </div>
 			    </div>
@@ -152,7 +152,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Cancelar Solicitud</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="cerrar"></button>
             </div>
             <div class="modal-body">
                 ¿Desea cancelar esta solicitud?
@@ -292,7 +292,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                 <h5 class="modal-title" id="subirReporteModalLabel">Subir Reporte</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="cerrar"></button>
                 </div>
                 <div class="modal-body">
                 Elige un archivo PDF(Máximo de tamaño son 2MB):
@@ -335,7 +335,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Rechazar Solicitud</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="cerrar"></button>
       </div>
 
       <form
@@ -373,14 +373,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">Confirmar firma</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="cerrar"></button>
             </div>
             <div class="modal-body">
                 Desea firmar <span id="confirmar-firma-evento"></span>
                 <input type="hidden" id="firmar-solicitud-id" name="solicitudid" value="">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="confirmar-firma-aceptar"
                         hx-post="/solicitud/firmar"
                         hx-include="[name='solicitudid']"
