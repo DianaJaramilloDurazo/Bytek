@@ -32,6 +32,20 @@ function activarInput(checkboxid, inputid) {
 	if (checkbox.checked) {
 		// Activar el input
 		input.disabled = false;
+		if (checkboxid === 'Transporte_c' || checkboxid === 'Transporte') {
+			input.value = '1';
+
+			input.addEventListener('change', function() {
+				// Obtener el valor actual del campo de entrada
+				var valor = input.value;
+
+				// Validar y ajustar el valor
+				if (valor <= 0 || isNaN(valor)) {
+					// Si es menor o igual a cero o no es un número, establecer el valor en 1
+					input.value = 1;
+				}
+			});
+		}
 	} else {
 		// Desactivar el input
 		input.disabled = true;
@@ -98,26 +112,26 @@ function validarForm() {
 		var alertafRegreso = document.getElementById('fechas-alert');
 		alertafRegreso.style.display = 'block';
 		formListo = false;
-	} 
+	}
 
 	if (lugar.value === '') {
 		var alertaLugar = document.getElementById('fechas-alert');
 		alertaLugar.style.display = 'block';
 		formListo = false;
-	} 
+	}
 
 	if (horaSalida.value === '') {
 		var alertahoraSalida = document.getElementById('fechas-alert');
 		alertahoraSalida.style.display = 'block';
 		formListo = false;
-	} 
+	}
 	if (horaRegreso.value === '') {
 		var alertahoraRegreso = document.getElementById('fechas-alert');
 		alertahoraRegreso.style.display = 'block'
 		formListo = false;
-	} 
-	
-	if(fSalida.value !== '' && fRegreso.value !== '' && horaSalida.value !== '' && horaRegreso.value !== ''){
+	}
+
+	if (fSalida.value !== '' && fRegreso.value !== '' && horaSalida.value !== '' && horaRegreso.value !== '') {
 		var alertahoraRegreso = document.getElementById('fechas-alert');
 		alertahoraRegreso.style.display = 'none'
 	}
@@ -185,7 +199,7 @@ function validarFormEditar() {
 	var checkboxes = document.getElementsByName('actividadesEditar');
 	var actvidadSeleccionada = false;
 	var recursoSeleccionado = false;
-	
+
 	var formListo = true;
 	var nombreEvento = document.getElementById('EnombreEvento');
 	var costo = document.getElementById('Ecosto');
@@ -211,39 +225,39 @@ function validarFormEditar() {
 		var alertaCosto = document.getElementById('Ecosto-alert');
 		alertaCosto.style.display = 'none';
 	}
-	if(lugar.value === ''){
+	if (lugar.value === '') {
 		var alertaLugar = document.getElementById('Elugar-alert');
 		alertaLugar.style.display = 'block';
 		formListo = false;
-	}else{
+	} else {
 		var alertaLugar = document.getElementById('Elugar-alert');
 		alertaLugar.style.display = 'none';
-	}	
+	}
 	if (fSalida.value === '') {
 		var fSalidaAlerta = document.getElementById('Efechas-alert');
 		fSalidaAlerta.style.display = 'block';
 		formListo = false;
-	} 
+	}
 
 	if (fRegreso.value == '') {
 		var alertafRegreso = document.getElementById('Efechas-alert');
 		alertafRegreso.style.display = 'block';
 		formListo = false;
-	} 
+	}
 	if (horaSalida.value === '') {
 		var alertahoraSalida = document.getElementById('Efechas-alert');
 		alertahoraSalida.style.display = 'block';
 		formListo = false;
-	} 
+	}
 	if (horaRegreso.value === '') {
 		var alertahoraRegreso = document.getElementById('Efechas-alert');
 		alertahoraRegreso.style.display = 'block'
 		formListo = false;
 	}
-		if(fSalida.value !== '' && fRegreso.value !== '' && horaSalida.value !== '' && horaRegreso.value !== ''){
+	if (fSalida.value !== '' && fRegreso.value !== '' && horaSalida.value !== '' && horaRegreso.value !== '') {
 		var alertahoraRegreso = document.getElementById('Efechas-alert');
 		alertahoraRegreso.style.display = 'none'
-	}	
+	}
 
 	// Verifica si al menos uno de los checkboxes está seleccionado
 	for (var i = 0; i < checkboxes.length; i++) {
@@ -349,8 +363,19 @@ function validarEditarRecursos(idCheckbox) {
 
 		// Verificar si el checkbox está seleccionado
 		if (checkbox2.checked) {
+			input2.value = '1';
 			// Activar el input
 			input2.disabled = false;
+			input2.addEventListener('change', function() {
+				// Obtener el valor actual del campo de entrada
+				var valor = input2.value;
+
+				// Validar y ajustar el valor
+				if (valor <= 0 || isNaN(valor)) {
+					// Si es menor o igual a cero o no es un número, establecer el valor en 1
+					input2.value = 1;
+				}
+			});
 		} else {
 			// Desactivar el input
 			input2.disabled = true;
@@ -400,7 +425,7 @@ function validarMotivo() {
 		botonRechazar.click();
 		limpiarModalRechazar();
 	}
-	
+
 }
 function limpiarModalRechazar() {
 	// Obtener el valor del textarea
