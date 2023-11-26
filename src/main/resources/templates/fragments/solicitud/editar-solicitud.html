@@ -93,7 +93,7 @@
 	             		type="checkbox" th:attr="checked=${recurso.registrado}?'checked':null" 
 	             		th:onclick="'validarEditarRecursos(\'' + ${recurso.idRecurso} + '\')'" checked>
 	             	<label class="form-check-label" th:text="${recurso.desc}"></label>
-	             	<input type="text" th:if="${recurso.desc == 'Transporte' or recurso.desc == 'Otro'}" th:name="${recurso.desc}" th:value="${recurso.detalles}" th:id="@{|I${recurso.desc}|}" >
+	             	<input type="text" th:if="${recurso.desc == 'Transporte' or recurso.desc == 'Otro'}" th:name="${recurso.desc}" th:value="${recurso.detalles}" th:id="@{|I${recurso.desc}|}" th:attr="disabled=${!recurso.registrado}?'disabled':null" disabled>
 	             </div>
 		</div>
 		
@@ -106,7 +106,7 @@
 	             		th:onclick="'validarEditarActividad()'"
 	             		checked>
 	             <label class="form-check-label" th:text="${act.nombre}"></label>
-	             <input th:id="@{|I${act.nombre}|}" type="text" th:if="${act.nombre == 'Otra'}" th:value="${act.desc}" th:name="${act.nombre}">
+	             <input th:id="@{|I${act.nombre}|}" type="text" th:if="${act.nombre == 'Otra'}" th:value="${act.desc}" th:name="${act.nombre}" th:attr="disabled=${!act.registrado}?'disabled':null" disabled>
 	        </div>
 		</div>
 	</div>
