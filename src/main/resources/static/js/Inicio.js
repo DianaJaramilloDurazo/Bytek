@@ -135,7 +135,6 @@ function validarForm() {
 		var alertahoraRegreso = document.getElementById('fechas-alert');
 		alertahoraRegreso.style.display = 'none'
 	}
-	console.log(idCarrera.value);
 	if (idCarrera.value == '0') {
 		var alertaidCarrera = document.getElementById('idCarrera-alert');
 		alertaidCarrera.style.display = 'block';
@@ -208,7 +207,6 @@ function validarFormEditar() {
 	var lugar = document.getElementById('Elugar');
 	var horaSalida = document.getElementById('EhoraSalida');
 	var horaRegreso = document.getElementById('EhoraRegreso');
-	console.log(fRegreso.value);
 	if (nombreEvento.value === '') {
 		var alertaEvento = document.getElementById('EnombreEvento-alert');
 		alertaEvento.style.display = 'block';
@@ -299,7 +297,6 @@ const myDiv = document.getElementById('result-accion');
 // Crea una instancia de MutationObserver
 const observer = new MutationObserver((mutationsList, observer) => {
 	// Se ejecutará cada vez que haya un cambio en el div
-	console.log("Hubo cambios");
 	setTimeout(function() {
 		// Elimina el elemento
 		myDiv.innerHTML = "";
@@ -320,14 +317,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function validarFechas(idFechaSalida, idFechaRegreso) {
 	//Validar fechas
 	var fechaSalida = document.getElementById(idFechaSalida);
-	console.log(fechaSalida);
 	var fechaRegreso = document.getElementById(idFechaRegreso);
 	// Obtener referencias a los elementos de fecha
 	var fechaActual = new Date().toISOString().split('T')[0];
 
 	// Añadir un event listener al input de fecha de inicio
 	fechaSalida.addEventListener('change', function() {
-		console.log("CAMBIO DE FECHA");
 		// Obtener la fecha seleccionada en el input de inicio
 		var fechaInicio = new Date(fechaSalida.value);
 		// Verificar si la fecha de inicio es anterior a la fecha actual

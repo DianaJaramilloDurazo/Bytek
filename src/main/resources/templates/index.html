@@ -177,7 +177,7 @@
 <!--MODAL CREAR SOLICITUD-->
 <!-- Modal -->
 <div
-        hx-swap="outerHTML"
+        hx-swap="innerHTML"
         hx-trigger="resetForm from:body"
         hx-get="/docente/get-registrar-solicitud-form"
         hx-target="#modal-crear-solicitud-body"
@@ -197,7 +197,9 @@
                 >
                     <div id="result-msg"></div>
 
-                    <div id="modal-crear-solicitud-body"></div>
+                    <div id="modal-crear-solicitud-body">
+						
+					</div>
 
 
                     <div id="miModal" class="modalConfirmar">
