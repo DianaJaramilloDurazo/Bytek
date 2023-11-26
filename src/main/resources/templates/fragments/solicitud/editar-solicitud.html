@@ -53,8 +53,9 @@
 				<input th:value="${solicitud.lugar}"  type="text" id="Elugar" name="lugar" class="form-control">
 			</div>
 			<div class="form-group">
+				<input type="hidden" name="idCarrera" th:value="${solicitud.idCarrera}">
 				<label for="idCarrera" class="txt_editar">Carrera</label>
-				<select class="form-control " id="idCarrera" name="idCarrera" required disabled>
+				<select class="form-control " id="idCarrera" required disabled>
 		            <option th:each="carrera : ${carreras}"
 		            		th:value="${carrera.idCarrera}"
 		                    th:text="${carrera.Carrera_Nombre}"

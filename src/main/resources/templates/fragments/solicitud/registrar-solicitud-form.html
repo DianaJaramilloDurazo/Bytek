@@ -58,13 +58,13 @@
 	<div class="row row-cols-2">
 		<div class="col form-group">
 			<label class="txt_editar">Fecha y hora de salida:</label>
-			<input type="date" id="fSalida" name="fSalida" class="form-control" onchange="validarFechas('fSalida','fRegreso');" required>
+			<input type="date" id="fSalida" name="fSalida" class="form-control" onclick="validarFechas('fSalida','fRegreso');" required>
 			<input type="time" id="horaSalida" name="horaSalida" class="form-control" required>
 		</div>
 		
 		<div class="col form-group">
 			<label class="txt_editar">Fecha y hora de regreso:</label>
-			<input type="date" id="fRegreso" name="fRegreso" class="form-control" onchange="validarFechas('fSalida','fRegreso');"   required>
+			<input type="date" id="fRegreso" name="fRegreso" class="form-control" onclick="validarFechas('fSalida','fRegreso');"   required>
 			<input type="time" id="horaRegreso" name="horaRegreso" class="form-control" required>
 		</div>	
 	</div>
