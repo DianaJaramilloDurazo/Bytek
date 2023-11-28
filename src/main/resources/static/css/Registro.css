@@ -6,6 +6,7 @@
 	color: white;
 	text-align: right;
 	height: 100px;
+	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); /* Ajusta los valores según tus preferencias */
 }
 
 /*ESTABLECE LA POSICION DE LA FIGURA CUADRANULAR QUE RESALTA AL LOGO*/
@@ -16,6 +17,7 @@
 	width: 250px;
 	border-right: 60px solid transparent;
     border-top: 110px solid #024731;
+    
 }
 
 
@@ -68,15 +70,22 @@
 	top: -100px;
 	width: 90px;
 	height: 130px;
+	
 }
 
 /*ESTABLECE LA FUENTE DE LOS FORMULARIOS*/
 label{
+	padding-top: 5px;
 	font-family: proxima-nova;
+	font-size: 20px;
+	padding-bottom: 10px;
 }
 
 /**/
 .btn{
 	font-family: proxima-nova;
+	background-color: #DD971A !important;
+	border: none;
+	color: #6C4603;
 }
 
