@@ -44,6 +44,10 @@
 }
 .txt_info{
 	color: #514F4F;
+	display: block;
+    max-width: 400px; /* Puedes ajustar el valor según tus necesidades */
+   	overflow: hidden; /* Maneja el desbordamiento si el contenido es demasiado ancho */
+    word-wrap: break-word; /* Permite que el texto se divida en varias líneas si es demasiado largo */
 }
 .firmasdiv{
 	width: 100%;
@@ -171,9 +175,10 @@
 	width: 60%;
 	border: none;
 }
-
-#slc_Costo{
-	width: 60px;
+.table td{
+	max-width: 100px !important;
+	overflow: hidden; /* Maneja el desbordamiento si el contenido es demasiado ancho */
+    word-wrap: break-word; /* Agrega puntos suspensivos (...) si el contenido es demasiado ancho */
 }
 .izquierda{
 	position: relative;

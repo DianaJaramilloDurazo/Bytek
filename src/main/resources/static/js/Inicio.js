@@ -78,30 +78,76 @@ function validarForm() {
 	var horaSalida = document.getElementById('horaSalida');
 	var horaRegreso = document.getElementById('horaRegreso');
 	var idCarrera = document.getElementById('idCarrera');
-	if (nombreEvento.value === '') {
-		var alertaEvento = document.getElementById('nombreEvento-alert');
-		alertaEvento.style.display = 'block';
+	
+	var longitudNombre = nombreEvento.value.length;
+	var longitudCosto = parseFloat(costo.value);
+	var longitudLugar = lugar.value.length;
+	
+	
+	if (nombreEvento.value === '' || longitudNombre > 100) {
+		
+		if(longitudNombre >100)
+		{
+			var alertaEvento2 = document.getElementById('largoEventoC-alert');
+			alertaEvento2.style.display = 'block';
+			var alertaEvento = document.getElementById('nombreEvento-alert');
+			alertaEvento.style.display = 'none';
+		}else{
+			var alertaEvento = document.getElementById('nombreEvento-alert');
+			alertaEvento.style.display = 'block';
+			var alertaEvento2 = document.getElementById('largoEventoC-alert');
+			alertaEvento2.style.display = 'none';
+		}
+		
 		formListo = false;
 	} else {
 		var alertaEvento = document.getElementById('nombreEvento-alert');
 		alertaEvento.style.display = 'none';
+		var alertaEvento2 = document.getElementById('largoEventoC-alert');
+			alertaEvento2.style.display = 'none';
 	}
 
-	if (costo.value === '' || costo.value.toString().charAt(0) === '-') {
-		var alertaCosto = document.getElementById('costo-alert');
-		alertaCosto.style.display = 'block';
+	if (costo.value === '' || costo.value.toString().charAt(0) === '-'|| longitudCosto > 100000) {
+		if(longitudCosto > 100000)
+		{
+			var alertaCosto2 = document.getElementById('largocosto-alert');
+			alertaCosto2.style.display = 'block';
+			var alertaCosto = document.getElementById('costo-alert');
+			alertaCosto.style.display = 'none';
+		}else{
+			var alertaCosto = document.getElementById('costo-alert');
+			alertaCosto.style.display = 'block';
+			var alertaCosto2 = document.getElementById('largocosto-alert');
+			alertaCosto2.style.display = 'none';
+		}
+		
 		formListo = false;
 	} else {
 		var alertaCosto = document.getElementById('costo-alert');
 		alertaCosto.style.display = 'none';
+		var alertaCosto2 = document.getElementById('largocosto-alert');
+		alertaCosto2.style.display = 'none';
 	}
 
-	if (lugar.value === '') {
-		var alertaLugar = document.getElementById('lugar-alert');
-		alertaLugar.style.display = 'block';
+	if (lugar.value === '' || longitudLugar > 100) {
+		if(longitudLugar > 100)
+		{
+			var alertaLugar2 = document.getElementById('largolugar-alert');
+			alertaLugar2.style.display = 'block';
+			var alertaLugar = document.getElementById('lugar-alert');
+			alertaLugar.style.display = 'none';
+		}else{
+			var alertaLugar = document.getElementById('lugar-alert');
+			alertaLugar.style.display = 'block';
+			var alertaLugar2 = document.getElementById('largolugar-alert');
+			alertaLugar2.style.display = 'none';
+		}
+		formListo = false;
 	} else {
 		var alertaLugar = document.getElementById('lugar-alert');
 		alertaLugar.style.display = 'none';
+		var alertaLugar2 = document.getElementById('largolugar-alert');
+			alertaLugar2.style.display = 'none';
 	}
 	if (fSalida.value === '') {
 		var fSalidaAlerta = document.getElementById('fechas-alert');
@@ -199,7 +245,6 @@ function validarFormEditar() {
 	var checkboxes = document.getElementsByName('actividadesEditar');
 	var actvidadSeleccionada = false;
 	var recursoSeleccionado = false;
-	var form = document.getElementById('form_EditarSolicitud');
 
 	var formListo = true;
 	var nombreEvento = document.getElementById('EnombreEvento');
@@ -222,9 +267,13 @@ function validarFormEditar() {
 		{
 			var alertaEvento2 = document.getElementById('nombrelargo-alert');
 			alertaEvento2.style.display = 'block';
+			var alertaEvento = document.getElementById('EnombreEvento-alert');
+			alertaEvento.style.display = 'none';
 		}else{
 			var alertaEvento = document.getElementById('EnombreEvento-alert');
 			alertaEvento.style.display = 'block';
+			var alertaEvento2 = document.getElementById('nombrelargo-alert');
+			alertaEvento2.style.display = 'none';
 		}
 		
 		formListo = false;
@@ -241,9 +290,13 @@ function validarFormEditar() {
 		{
 			var alertaCosto2 = document.getElementById('costolargo-alert');
 			alertaCosto2.style.display = 'block';
+			var alertaCosto = document.getElementById('Ecosto-alert');
+			alertaCosto.style.display = 'none';
 		}else{
 			var alertaCosto = document.getElementById('Ecosto-alert');
 			alertaCosto.style.display = 'block';
+			var alertaCosto2 = document.getElementById('costolargo-alert');
+			alertaCosto2.style.display = 'none';
 		}
 		
 		formListo = false;
@@ -258,7 +311,11 @@ function validarFormEditar() {
 		{
 			var alertaLugar2 = document.getElementById('lugarLargo-alert');
 			alertaLugar2.style.display = 'block';
+			var alertaLugar = document.getElementById('Elugar-alert');
+			alertaLugar.style.display = 'none';
 		}else{
+			var alertaLugar2 = document.getElementById('lugarLargo-alert');
+			alertaLugar2.style.display = 'none';
 			var alertaLugar = document.getElementById('Elugar-alert');
 			alertaLugar.style.display = 'block';
 		}
