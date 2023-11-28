@@ -32,6 +32,20 @@ function activarInput(checkboxid, inputid) {
 	if (checkbox.checked) {
 		// Activar el input
 		input.disabled = false;
+		if (checkboxid === 'Transporte_c' || checkboxid === 'Transporte') {
+			input.value = '1';
+
+			input.addEventListener('change', function() {
+				// Obtener el valor actual del campo de entrada
+				var valor = input.value;
+
+				// Validar y ajustar el valor
+				if (valor <= 0 || isNaN(valor)) {
+					// Si es menor o igual a cero o no es un número, establecer el valor en 1
+					input.value = 1;
+				}
+			});
+		}
 	} else {
 		// Desactivar el input
 		input.disabled = true;
@@ -73,7 +87,7 @@ function validarForm() {
 		alertaEvento.style.display = 'none';
 	}
 
-	if (costo.value === '') {
+	if (costo.value === '' || costo.value.toString().charAt(0) === '-') {
 		var alertaCosto = document.getElementById('costo-alert');
 		alertaCosto.style.display = 'block';
 		formListo = false;
@@ -98,30 +112,29 @@ function validarForm() {
 		var alertafRegreso = document.getElementById('fechas-alert');
 		alertafRegreso.style.display = 'block';
 		formListo = false;
-	} 
+	}
 
 	if (lugar.value === '') {
 		var alertaLugar = document.getElementById('fechas-alert');
 		alertaLugar.style.display = 'block';
 		formListo = false;
-	} 
+	}
 
 	if (horaSalida.value === '') {
 		var alertahoraSalida = document.getElementById('fechas-alert');
 		alertahoraSalida.style.display = 'block';
 		formListo = false;
-	} 
+	}
 	if (horaRegreso.value === '') {
 		var alertahoraRegreso = document.getElementById('fechas-alert');
 		alertahoraRegreso.style.display = 'block'
 		formListo = false;
-	} 
-	
-	if(fSalida.value !== '' && fRegreso.value !== '' && horaSalida.value !== '' && horaRegreso.value !== ''){
+	}
+
+	if (fSalida.value !== '' && fRegreso.value !== '' && horaSalida.value !== '' && horaRegreso.value !== '') {
 		var alertahoraRegreso = document.getElementById('fechas-alert');
 		alertahoraRegreso.style.display = 'none'
 	}
-	console.log(idCarrera.value);
 	if (idCarrera.value == '0') {
 		var alertaidCarrera = document.getElementById('idCarrera-alert');
 		alertaidCarrera.style.display = 'block';
@@ -185,7 +198,7 @@ function validarFormEditar() {
 	var checkboxes = document.getElementsByName('actividadesEditar');
 	var actvidadSeleccionada = false;
 	var recursoSeleccionado = false;
-	
+
 	var formListo = true;
 	var nombreEvento = document.getElementById('EnombreEvento');
 	var costo = document.getElementById('Ecosto');
@@ -194,7 +207,6 @@ function validarFormEditar() {
 	var lugar = document.getElementById('Elugar');
 	var horaSalida = document.getElementById('EhoraSalida');
 	var horaRegreso = document.getElementById('EhoraRegreso');
-	console.log(fRegreso.value);
 	if (nombreEvento.value === '') {
 		var alertaEvento = document.getElementById('EnombreEvento-alert');
 		alertaEvento.style.display = 'block';
@@ -203,7 +215,7 @@ function validarFormEditar() {
 		var alertaEvento = document.getElementById('EnombreEvento-alert');
 		alertaEvento.style.display = 'none';
 	}
-	if (costo.value === '') {
+	if (costo.value === '' || costo.value.toString().charAt(0) === '-') {
 		var alertaCosto = document.getElementById('Ecosto-alert');
 		alertaCosto.style.display = 'block';
 		formListo = false;
@@ -211,38 +223,39 @@ function validarFormEditar() {
 		var alertaCosto = document.getElementById('Ecosto-alert');
 		alertaCosto.style.display = 'none';
 	}
-	if(lugar.value === ''){
+	if (lugar.value === '') {
 		var alertaLugar = document.getElementById('Elugar-alert');
 		alertaLugar.style.display = 'block';
-	}else{
+		formListo = false;
+	} else {
 		var alertaLugar = document.getElementById('Elugar-alert');
 		alertaLugar.style.display = 'none';
-	}	
+	}
 	if (fSalida.value === '') {
 		var fSalidaAlerta = document.getElementById('Efechas-alert');
 		fSalidaAlerta.style.display = 'block';
 		formListo = false;
-	} 
+	}
 
 	if (fRegreso.value == '') {
 		var alertafRegreso = document.getElementById('Efechas-alert');
 		alertafRegreso.style.display = 'block';
 		formListo = false;
-	} 
+	}
 	if (horaSalida.value === '') {
 		var alertahoraSalida = document.getElementById('Efechas-alert');
 		alertahoraSalida.style.display = 'block';
 		formListo = false;
-	} 
+	}
 	if (horaRegreso.value === '') {
 		var alertahoraRegreso = document.getElementById('Efechas-alert');
 		alertahoraRegreso.style.display = 'block'
 		formListo = false;
 	}
-		if(fSalida.value !== '' && fRegreso.value !== '' && horaSalida.value !== '' && horaRegreso.value !== ''){
+	if (fSalida.value !== '' && fRegreso.value !== '' && horaSalida.value !== '' && horaRegreso.value !== '') {
 		var alertahoraRegreso = document.getElementById('Efechas-alert');
 		alertahoraRegreso.style.display = 'none'
-	}	
+	}
 
 	// Verifica si al menos uno de los checkboxes está seleccionado
 	for (var i = 0; i < checkboxes.length; i++) {
@@ -284,7 +297,6 @@ const myDiv = document.getElementById('result-accion');
 // Crea una instancia de MutationObserver
 const observer = new MutationObserver((mutationsList, observer) => {
 	// Se ejecutará cada vez que haya un cambio en el div
-	console.log("Hubo cambios");
 	setTimeout(function() {
 		// Elimina el elemento
 		myDiv.innerHTML = "";
@@ -305,14 +317,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function validarFechas(idFechaSalida, idFechaRegreso) {
 	//Validar fechas
 	var fechaSalida = document.getElementById(idFechaSalida);
-	console.log(fechaSalida);
 	var fechaRegreso = document.getElementById(idFechaRegreso);
 	// Obtener referencias a los elementos de fecha
 	var fechaActual = new Date().toISOString().split('T')[0];
 
 	// Añadir un event listener al input de fecha de inicio
 	fechaSalida.addEventListener('change', function() {
-		console.log("CAMBIO DE FECHA");
 		// Obtener la fecha seleccionada en el input de inicio
 		var fechaInicio = new Date(fechaSalida.value);
 		// Verificar si la fecha de inicio es anterior a la fecha actual
@@ -348,8 +358,19 @@ function validarEditarRecursos(idCheckbox) {
 
 		// Verificar si el checkbox está seleccionado
 		if (checkbox2.checked) {
+			input2.value = '1';
 			// Activar el input
 			input2.disabled = false;
+			input2.addEventListener('change', function() {
+				// Obtener el valor actual del campo de entrada
+				var valor = input2.value;
+
+				// Validar y ajustar el valor
+				if (valor <= 0 || isNaN(valor)) {
+					// Si es menor o igual a cero o no es un número, establecer el valor en 1
+					input2.value = 1;
+				}
+			});
 		} else {
 			// Desactivar el input
 			input2.disabled = true;
@@ -399,7 +420,7 @@ function validarMotivo() {
 		botonRechazar.click();
 		limpiarModalRechazar();
 	}
-	
+
 }
 function limpiarModalRechazar() {
 	// Obtener el valor del textarea

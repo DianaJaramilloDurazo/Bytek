@@ -5,6 +5,7 @@
     <div th:replace="fragments/layout :: head(title='Administrar Cuentas')">
 
     </div>
+    <link rel="stylesheet" href="/css/ListarUsuarios.css">
 </head>
 
 <body>
@@ -20,6 +21,12 @@
 </div>
 <div th:fragment="listaUsuarios" class="listaUsuarios" id="listaUsuarios">
 <div class="container">
+	<div class="titulo_pag">
+            <h4 class="display-6">Listado de usuarios</h4>
+            <h5>
+				Gestiona el estado y la información de las cuentas
+			</h5>
+        </div>
     <div class="div-encabezado">
         <div hx-target="#listaUsuarios"
              hx-swap="outerHTML"
@@ -27,17 +34,6 @@
              hx-include="[name='filtros-form']"
              th:attr="hx-get=@{'/admin/pagination?page=' + ${current}}">
 
-        </div>
-        <div class="titulo">
-            <h1 class="display-6">Listado de Usuarios</h1>
-        </div>
-
-        <div class="add">
-            <button class="btn btn-primary btn-agregar" data-bs-target="#ModalRegistrar" data-bs-toggle="modal"
-                    hx-get="/registrar-usuario/get-registrar-form"
-                    hx-target="#modal-registrar-body">
-                Registrar Usuario
-            </button>
         </div>
 
     </div>
@@ -64,12 +60,25 @@
                 </div>
             </div>
 
-            <div class="col-12">
+            <div class="col-12 ">
                 <button type="submit" class="btn btn-primary"
                         onclick="document.getElementById('page').value = 1">
-                    Buscar
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+					  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+					</svg>
                 </button>
             </div>
+            
+            <div class="col-12 agregar_usr">
+            <button class="btn btn-primary btn_agregar" data-bs-target="#ModalRegistrar" data-bs-toggle="modal"
+                    hx-get="/registrar-usuario/get-registrar-form"
+                    hx-target="#modal-registrar-body">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#024731" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+				  <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+				  <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
+				</svg>
+            </button>
+        </div>
 
         </form>
         <span class="htmx-indicator">
@@ -78,13 +87,12 @@
     </div>
 
     <table class="table">
-        <thead>
-        <tr>
+        <thead class="table-bordered">
+        <tr class="table-light">
             <th scope="col">Nombre</th>
             <th scope="col">Correo</th>
             <th scope="col">Rol</th>
             <th scope="col">Editar</th>
-            <th scope="col">Borrar</th>
         </tr>
         </thead>
         <tbody>
@@ -93,15 +101,15 @@
             <td th:text="${user.correo}"></td>
             <td th:text="${user.rol}">@</td>
             <td>
-                <button type="button" class="btn btn-primary editar" data-bs-target="#ModalEditar" data-bs-toggle="modal"
+                <button type="button" class="btn editar_btn editar" data-bs-target="#ModalEditar" data-bs-toggle="modal"
                         hx-target="#modal-perfil-editar"
                         th:attr="hx-get=@{'/usuario/get-editar-form?id=' + ${user.idUsuario} + '&idRol=' + ${user.idRol}}">
-                Editar
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#B08208" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                    </svg>
                 </button>
 
-            </td>
-            <td>
-                <button type="button" class="btn btn-close"></button>
             </td>
         </tr>
         </tbody>
@@ -116,7 +124,9 @@
                            hx-get="/admin/pagination"
                            hx-target=".listaUsuarios"
                            th:onclick="'document.getElementById(\'page\').value = ' + ${prev}">
-                            Anterior
+                           <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+							  <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+							</svg>
                         </a>
                     </li>
                     <li class="page-item" th:if="${first > 1}">
@@ -156,7 +166,9 @@
                            hx-get="/admin/pagination"
                            hx-target=".listaUsuarios"
                            th:onclick="'document.getElementById(\'page\').value=' + ${next}">
-                            Siguiente
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+							  <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+							</svg>
                         </a>
                     </li>
                 </ul>
@@ -178,7 +190,7 @@
                   hx-target="#result-msg">
 
                 <div class="modal-header">
-                    <h5 class="modal-title">Registrar Usuario</h5>
+                    <h5 class="modal-title">Registrar usuario</h5>
                     <div id="result-msg"></div>
                 </div>
 
@@ -202,17 +214,32 @@
             <form class="form-control" id="editar-usuario-form"
                   hx-post="/usuario/editar"
                   hx-target="#result"
-                  hx-confirm="¿Seguro que desea guardar los cambios?"
                   hx-swap="innerHTML">
                 <div class="modal-header">
-                    <h5 class="modal-title">Editar Usuario</h5>
+                    <h5 class="modal-title">Editar usuario</h5>
                 </div>
                 <div class="modal-body" id="modal-perfil-editar">
-
                 </div>
+                
+                <div id="modalConfirmar" class="modalConfirmar">
+				    <div class="modal-dialog modal-sm" role="document">
+				        <div class="modal-content">
+				            <div class="modal-header">
+				                <h5 class="modal-title">Guardar Cambios</h5>
+				            </div>
+				            <div class="modal-body text-center">
+				                <p>¿Seguro que desea guardar los cambios?</p>
+				            </div>
+				            <div class="modal-footer">
+				                <button type="button" onclick="cerrarModalConfirmar()" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+				                <button type="submit" onclick="cerrarModalConfirmar()" class="btn btn-primary" data-bs-dismiss="modal">Confirmar</button>
+				            </div>
+				        </div>
+				    </div>					
+                </div>                                                                      
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button id="guardarCambiosBtn" data-bs-dismiss="modal" type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button id="guardarCambiosBtn" onclick="mostrarModalConfirmar()" type="button" class="btn btn-primary">Guardar Cambios</button>
                 </div>
             </form>
         </div>

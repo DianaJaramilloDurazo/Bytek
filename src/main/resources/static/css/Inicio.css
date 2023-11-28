@@ -4,8 +4,132 @@
 	text-align: center;
 	
 }
-.solicitudContenedor h4{
-	padding-bottom: 100px;
+.CrearModal{
+	max-width: 1100px;
+}
+.CrearModal input{
+	margin-right: 10px !important;
+}
+.CrearModal input[type="number"]{
+	max-height: 35px !important;
+	max-width: 300px;
+}
+.CrearModal input[type="text"]{
+	max-height: 35px !important;
+	max-width: 300px;
+}
+.CrearModal select{
+	max-height: 35px !important;
+	max-width: 300px;
+}
+.CrearModal input[type="date"]{
+	max-height: 35px !important;
+	max-width: 140px;
+}
+.CrearModal input[type="time"]{
+	max-height: 35px !important;
+	max-width: 140px;
+}
+.modalEditar{
+	max-width: 1100px;
+}
+.txt_editar{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_Nombre
+{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_info{
+	color: #514F4F;
+}
+.firmasdiv{
+	width: 100%;
+}
+.txt_Categoria
+{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_NumEmpleado{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_Carrera{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_Costo{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_FechaSalida{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_Lugar{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_FechaRegreso{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txtCrear{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.col{
+	margin-bottom: 10px !important;
+}
+.seccionModalTxt{
+	text-align: center !important;
+	margin-bottom: 10px !important;
+
+}
+.seccionModalTxtI{
+	text-align: center !important;
+	margin-bottom: 10px !important;
+}
+.seccionModalTxtD{
+	text-align: center !important;
+	margin-bottom: 10px !important;
+	
+}
+.check_firma{
+	right: 0px !important;
+}
+.Descripcion_tabla{
+	color: #514F4F;
+}
+.ModalSLC{
+	max-width: 1100px;
+}
+.reporte_btn{
+	background-color: #50B848 !important;
+	border: none;
+}
+.reporte_btn:hover{
+	background-color: #93E77D !important;
+	border: none;
+}
+
+.editar_btn{
+	background-color: #FEBE10 !important;
+	border: none;
+}
+.editar_btn:hover{
+	background-color: #EAB75D !important;
+	border: none;
+}
+.Importante{
+	color: #FF1700;
+}
+.custom-container{
+     width: 100%;
+     margin: 0 auto;
 }
 #tituloModal{
 	text-align: center;
@@ -54,22 +178,20 @@
 .izquierda{
 	position: relative;
 	grid-area: izquierdo;
-	margin-bottom: 10px;
 	margin-right: 3px;
 }
 .izquierda input{
-	margin-top: 3px;
+	
 	margin-right: 3px;
 	border-radius: 3px;
 }
 .derecha{
 	position: relative;
 	grid-area: derecho;
-	margin-bottom: 10px;
 	margin-right: 3px;
 }
 .derecha input{
-	margin-top: 3px;
+	
 	margin-right: 3px;
 	border-radius: 3px;
 }
@@ -82,13 +204,11 @@
 }
 
 .completo span{
-	margin-top: 3px;
 	margin-right: 20px;
 }
 .completo input{
 	margin-right: 7px;
 	max-width: 70px;
-	margin-top: 2px;
 	border: 1px solid;
 	border-color: #DFDFDF;
 	border-radius: 3px;
@@ -99,28 +219,55 @@
 	border: none;
 	border-radius: 3px;
 }
-.Recursos{
-	margin-bottom: 10px;
-}
+
 .pieTabla{
 	text-align: center;
 }
 .modalEditar{
 	
 	width: 100%;
-	display: grid;
-	grid-template-areas:
-    "izquierdo derecho"
-    "completo1 completo1";
 }
 #nombreEvento{
 	height: 30px;
 }
 .modalEditar input{
 	margin-right: 10px;
-	height: 30px;
 }
-
+.modalEditar input[type="text"]{
+	max-height: 35px !important;
+	max-width: 300px;
+}
+.modalEditar{
+	max-width: 1100px;
+}
+.txt_editar{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.form-group
+{
+	display: flex;
+	margin-bottom: 10px;
+}
+.form-group label{
+	margin-right: 15px;
+}
+.modalEditar input[type="number"]{
+	max-height: 35px !important;
+	max-width: 300px;
+}
+.modalEditar input[type="date"]{
+	max-height: 35px !important;
+	max-width: 140px;
+}
+.modalEditar input[type="time"]{
+	max-height: 35px !important;
+	max-width: 140px;
+}
+.modalEditar select{
+	max-height: 35px !important;
+	max-width: 300px;
+}
 .completo1{
 	position: relative;
 	grid-area: completo1;
@@ -132,7 +279,6 @@
 	border: 1px solid;
 	border-color: #F2F2F2;
 	border-radius: 3px;
-	margin-top: 3px;
 	width: 60px;
 	height: 30px;
 	border-style: solid;
@@ -142,16 +288,24 @@
 	margin-left: 20px;
 	margin-right: 5px;
 	max-width: 70px;
-	margin-top: 2px;
 	border: 1px solid;
 	border-color: #DFDFDF;
 	border-radius: 3px;
 	border-style: solid;
 }
-.checkbox label{
-	font-weight: bold;
+.checkbox{
+	justify-content: center !important;
+}
+.checkbox input[type="checkbox"]{
+	display: flex;
 }
 
+.checkbox input[type="text"]{
+	max-width: 100px !important;
+}
+.checkbox input[type="number"]{
+	max-width: 100px !important;
+}
 .actividades, .recursos{
 	display: flex;
 	flex-wrap: wrap;
@@ -180,7 +334,7 @@
 	margin-left: 20px;
 }
 .piedepagina{
-	height: 400px;
+	height: 100px;
 }
 .separadordetablas
 {
@@ -200,7 +354,7 @@
 	padding-bottom: 40px;
 }
 .solicitudContenedor h4{
-	padding-bottom: 40px;
+	padding-bottom: 20px;
 }
 
 

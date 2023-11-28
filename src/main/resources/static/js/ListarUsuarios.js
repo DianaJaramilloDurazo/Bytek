@@ -75,3 +75,15 @@ function cerrarModal() {
 	modal.style.display = "none";
 }
 
+
+// Función para mostrar el modal
+function mostrarModalConfirmar() {
+	var modal = document.getElementById("modalConfirmar");
+	modal.style.display = "block";
+}
+
+// Función para cerrar el modal
+function cerrarModalConfirmar() {
+	var modal = document.getElementById("modalConfirmar");
+	modal.style.display = "none";
+}

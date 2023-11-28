@@ -40,7 +40,7 @@
                         </li>
 
                         <li class="nav-item active" id="inicio">
-                            <a class="nav-link" href="/">Inicio</a>
+                            <a class="nav-link" href="/" onclick="cambiarOpcion()">Inicio</a>
                         </li>
                         <div sec:authorize="hasAnyRole('ROLE_ADMINISTRADOR','ROLE_SUBDIRECTOR')">
                             <li class="nav-item active" id="administrar">
@@ -61,20 +61,13 @@
                                     hx-target="#ModalPerfil .modal-body">Ver Perfil</button>
                         </li>
 
-                        <li class="nav-item opc">
                             <div sec:authorize="isAuthenticated()">
-                                <a th:href="@{/logout}">Cerrar
-                                sesión</a></div>
-
-                        </li>
+								<li class="nav-item opc" id="cerrarSesion">
+                                <a class="nav-link" th:href="@{/logout}">Cerrar sesión</a>
+                                </li>
+                            </div>
 
                     </ul>
-
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
-                        <button class="btn btn-outline-success buscar" type="submit">Buscar</button>
-                    </form>
-
                 </div>
             </div>
         </nav>
@@ -96,7 +89,7 @@
                           hx-swap="innerHTML">
 
                         <div class="modal-header">
-                            <h5 class="modal-title" id="ModalPerfilTitle">Editar Usuario</h5>
+                            <h5 class="modal-title" id="ModalPerfilTitle">Perfil usuario</h5>
                         </div>
 
                         <div class="modal-body" id="modal-perfil-body" hx-swap="innerHTML">

@@ -1,13 +1,17 @@
 <div th:fragment="registrar-usuario-form" class="container-fluid">
+    <div id="result-msg"
+         hx-swap-oob="true"
+    ></div>
+
     <label for="username">Nombre(s)</label>
     <input class="form-control " type="text" id="username" name="username" maxlength="100" required>
 
-    <div class="container contM">
-        <div class="cont-1">
+    <div class="row row-cols-2">
+        <div class="col">
             <label for="apPaterno">Apellido paterno</label>
             <input class="form-control " type="text" id="apPaterno" name="apPaterno" maxlength="45" required>
         </div>
-        <div class="cont-2">
+        <div class="col">
             <label for="apMaterno">Apellido materno</label>
             <input class="form-control" type="text" id="apMaterno" name="apMaterno" maxlength="45">
         </div>
@@ -25,35 +29,35 @@
         <div class="invalid-feedback" th:text="${correoMsg} ?: ''"></div>
     </div>
 
-    <div class="container contM">
+    <div class="row row-cols-2">
 
-        <div class="cont-1">
+        <div class="col">
             <label for="password">Contraseña</label>
             <input class="form-control" type="password" id="password" name="password" required>
         </div>
 
-        <div class="cont-2">
+        <div class="col">
             <label for="numEmpleado">Numero de empleado</label>
             <input class="form-control" type="number" id="numEmpleado" name="numEmpleado" required
                    min="10000" max="999999" step="1" pattern="^[0-9]*$" onkeydown="if([69,187,188,189,190].includes(event.keyCode))event.preventDefault()">
         </div>
     </div>
 
-    <div class="container contM">
-        <div class="cont-1">
+    <div class="row row-cols-2">
+        <div class="col">
             <label for="idCategoria">Categoria</label>
             <select class="form-control" id="idCategoria" name="idCategoria" required>
-                <option value="0" selected>Selecciona una categoria</option>
+                <option value="" selected>Selecciona una categoria</option>
                 <option th:each="categoria : ${categorias}"
                         th:value="${categoria.idCategoria}"
                         th:text="${categoria.Cat_Descripcion}"></option>
             </select>
         </div>
 
-        <div class="cont-2">
+        <div class="col">
             <label for="idCarrera">Carrera</label>
             <select class="form-control " id="idCarrera" name="idCarrera" required>
-                <option value="0" selected>Selecciona una carrera</option>
+                <option value="" selected>Selecciona una carrera</option>
                 <option th:each="carrera : ${carreras}"
                            th:value="${carrera.idCarrera}"
                            th:text="${carrera.Carrera_Nombre}"></option>

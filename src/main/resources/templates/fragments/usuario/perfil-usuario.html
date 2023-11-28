@@ -4,12 +4,12 @@
   <input th:value="${usuario.username}"
          class="form-control" type="text" disabled>
 
-  <div class="container contM">
-    <div class="cont-1">
+  <div class="row row-cols-2">
+    <div class="col">
       <label>Apellido paterno</label>
       <input th:value="${usuario.apPaterno}" class="form-control" type="text" disabled>
     </div>
-    <div class="cont-2">
+    <div class="col">
       <label>Apellido materno</label>
       <input th:value="${usuario.apMaterno}" class="form-control" type="text" disabled>
     </div>
@@ -18,22 +18,22 @@
     <label>Correo</label>
     <input th:value="${usuario.correo}" class="form-control" disabled>
 
-  <div class="container contM">
-    <div class="cont-2">
-      <label>Numero de empleado</label>
+  <div class="row row-cols-2">
+    <div class="col">
+      <label>Número de empleado</label>
       <input th:value="${usuario.numEmpleado}" class="form-control" type="number" disabled>
     </div>
 
-    <div class="cont-2">
+    <div class="col">
       <label>Carrera</label>
       <input th:value="${carrera.Carrera_Nombre}" class="form-control" disabled>
     </div>
 
   </div>
 
-  <div class="container contM">
-    <div class="cont-2">
-      <label>Categoria</label>
+  <div class="row row-cols-2">
+    <div class="col">
+      <label>Categoría</label>
       <input th:value="${categoria.Cat_Descripcion}" class="form-control" disabled>
       </select>
     </div>

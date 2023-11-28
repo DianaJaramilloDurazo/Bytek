@@ -1,35 +1,29 @@
 function seleccionInicio(){
-    document.getElementById("inicio").style.border="3px solid var(--text-color-verde)";
- 	document.getElementById("inicio").style.borderTop="none";
- 	document.getElementById("inicio").style.borderLeft="none";
- 	document.getElementById("inicio").style.borderRight="none";
+	var ruta = window.location.pathname;
+	//window.alert('Estás en la página: ' + ruta);
+	if(ruta === "/")
+	{
+	    document.getElementById("inicio").style.border="3px solid var(--text-color-verde)";
+	 	document.getElementById("inicio").style.borderTop="none";
+	 	document.getElementById("inicio").style.borderLeft="none";
+	 	document.getElementById("inicio").style.borderRight="none";
+	 	//otras opciones
+	 	document.getElementById("administrar").style.border="none";
+	}
+	if(ruta === "/admin/administrarCuenta")
+	{
+		document.getElementById("administrar").style.border="3px solid var(--text-color-verde)";
+	 	document.getElementById("administrar").style.borderTop="none";
+	 	document.getElementById("administrar").style.borderLeft="none";
+	 	document.getElementById("administrar").style.borderRight="none";
+	 	//otras opciones
+	 	document.getElementById("inicio").style.border="none";
+	}
+
+  
 }
  
 window.onload = seleccionInicio;
-
-function cambiarIframe(string){
- var iframe = document.getElementById("contenedor");
- iframe.src =  string;
-
- if(string === "ListarUsuarios.html")
- {
- 	document.getElementById("administrar").style.border="3px solid var(--text-color-verde)";
- 	document.getElementById("administrar").style.borderTop="none";
- 	document.getElementById("administrar").style.borderLeft="none";
- 	document.getElementById("administrar").style.borderRight="none";
- 	//otras opciones
- 	document.getElementById("inicio").style.border="none";
- }
- if(string === "Inicio.html")
- {
- 	document.getElementById("inicio").style.border="3px solid var(--text-color-verde)";
- 	document.getElementById("inicio").style.borderTop="none";
- 	document.getElementById("inicio").style.borderLeft="none";
- 	document.getElementById("inicio").style.borderRight="none";
- 	//otras opciones
- 	document.getElementById("administrar").style.border="none";
- }
-}
 
 function habilitar_edicion(){
 	var nombre = document.getElementById("nombre");

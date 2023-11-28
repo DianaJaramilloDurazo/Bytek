@@ -19,7 +19,7 @@ import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/admin")
-public class adminController {
+public class AdminController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;

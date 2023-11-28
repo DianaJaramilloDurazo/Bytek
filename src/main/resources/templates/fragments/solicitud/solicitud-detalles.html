@@ -1,82 +1,98 @@
 <div th:fragment="solicitud-detalles" class="cont_Formato">
-
-    <span id="slc_Evento"
+		<span id="slc_Evento" 
           hx-swap-oob="true"
           th:text="${solicitud.nombreEvento}"
-    ></span>
-
+    ></span>	
+    
     <div class="row row-cols-2">
+		
+    <div class="completo">
+		<div class="col-12 bg-light seccionModalTxt">
+			<h5>Información del docente</h5>
+		</div>
+		
         <div class="col">
             <div >
-                <label class="txt_Nombre">Nombre Docente: </label>
-                <span id="slc_Nombre" th:text="${usuario.username} + ' ' + ${usuario.apPaterno} + ' ' + ${usuario.apMaterno}"></span>
+                <label class="txt_Nombre">Nombre: </label>
+                <span id="slc_Nombre" class="txt_info" th:text="${usuario.username} + ' ' + ${usuario.apPaterno} + ' ' + ${usuario.apMaterno}"></span>
             </div>
 
             <div >
-                <label class="txt_Categoria">Categoria: </label>
-                <span id="slc_Categoria" th:text="${categoria}"></span>
-            </div>
-
-            <div >
-                <label class="txt_Costo">Costo del evento: $ </label>
-                <span id="slc_Costo" th:text="${solicitud.costo}"></span>
-            </div>
-
-            <div >
-                <label class="txt_FechaSalida">Fecha y hora de salida: </label>
-                <span id="slc_FechaSalida" th:text="${#temporals.format(solicitud.fechaSalida, 'dd/MM/yyyy HH:mm')}"></span>
+                <label class="txt_Categoria">Categoría: </label>
+                <span id="slc_Categoria" class="txt_info" th:text="${categoria}"></span>
             </div>
 
         </div>
         <div class="col">
             <div >
-                <label class="txt_NumEmpleado">No Empleado: </label>
-                <span id="slcNumEmpleado" th:text="${usuario.numEmpleado}"></span>
+                <label class="txt_NumEmpleado">No. Empleado: </label>
+                <span id="slcNumEmpleado" class="txt_info" th:text="${usuario.numEmpleado}"></span>
             </div>
 
             <div >
                 <label class="txt_Carrera">Carrera: </label>
-                <span id="slc_carrera" th:text="${carrera}"></span>
+                <span id="slc_carrera" class="txt_info" th:text="${carrera}"></span>
             </div>
 
-            <div >
-                <label class="txt_Lugar">Lugar: </label>
-                <span id="slc_Lugar" th:text="${solicitud.lugar}">Tecate, Baja California</span>
-            </div>
-
-            <div >
-                <label class="txt_FechaRegreso">Fecha y hora de Regreso </label>
-                <span id="slc_FechaRegreso" th:text="${#temporals.format(solicitud.fechaRegreso, 'dd/MM/yyyy HH:mm')}"></span>
-            </div>
         </div>
+        <div class="col-12 bg-light seccionModalTxt">
+			<h5>Detalles del evento</h5>
+		</div>
+		<div class="col">
+			<div >
+                <label class="txt_Costo">Costo del evento: $ </label>
+                <span id="slc_Costo" class="txt_info" th:text="${solicitud.costo}"></span>
+            </div>
+
+            <div >
+                <label class="txt_FechaSalida">Fecha y hora de salida: </label>
+                <span id="slc_FechaSalida" class="txt_info" th:text="${#temporals.format(solicitud.fechaSalida, 'dd/MM/yyyy HH:mm')}"></span>
+            </div>
+		</div>
+		<div class="col">
+			<div >
+                <label class="txt_Lugar">Lugar: </label>
+                <span id="slc_Lugar" class="txt_info" th:text="${solicitud.lugar}">Tecate, Baja California</span>
+            </div>
+
+            <div >
+                <label class="txt_FechaRegreso">Fecha y hora de regreso: </label>
+                <span id="slc_FechaRegreso" class="txt_info" th:text="${#temporals.format(solicitud.fechaRegreso, 'dd/MM/yyyy HH:mm')}"></span>
+            </div>
+		</div>
 
     </div>
-    <div class="completo">
         <div class="row row-cols-2">
+			<div class="col-5 bg-light seccionModalTxtI">
+				<h5>Recurso a solicitar:</h5>
+			</div>
+			<div class="col-5 offset-1 bg-light seccionModalTxtD">
+				<h5>Actividad asociada a:</h5>
+			</div>
             <div class="col">
-                <label>Recurso a solicitar:</label><br>
 
                 <div th:each="recurso : ${recursos}">
-                    <input type="checkbox" disabled  th:attr="checked=${recurso.registrado}?'checked':null" checked>
+                    <input class="form-check-input" type="checkbox" disabled  th:attr="checked=${recurso.registrado}?'checked':null" checked>
                     <span th:text="${recurso.desc}"></span>
                     <input type="text" th:if="${recurso.detalles != null}" th:value="${recurso.detalles}" disabled>
                 </div>
                 <br>
             </div>
             <div class="col">
-                <label>Actividad asociada a:</label><br>
                 <div th:each="act : ${actividades}">
-                    <input type="checkbox" disabled  th:attr="checked=${act.registrado}?'checked':null" checked>
+                    <input class="form-check-input" type="checkbox" disabled  th:attr="checked=${act.registrado}?'checked':null" checked>
                     <span th:text="${act.nombre}"></span>
                     <input type="text" th:if="${act.desc != null}" th:value="${act.desc}" disabled>
                 </div>
 
             </div>
-            <div class="col">
-                <label>Firmas:</label><br>
-                <div th:each="f : ${firmas}">
-                    <input type="checkbox" disabled  th:attr="checked=${f.usuario != null}?'checked':null" checked>
-                    <span th:text="${f.rol}"></span>
+            <div class="col-12 bg-light seccionModalTxtD">
+				<h5>Firmas:</h5>
+			</div>
+            <div class="firmasdiv">
+                <div th:each="f : ${firmas}" class="form-control d-flex justify-content-between" >
+					<span th:text="${f.rol}"></span>
+                    <input class="form-check-input" type="checkbox"  disabled  th:attr="checked=${f.usuario != null}?'checked':null" checked>
                 </div>
             </div>
         </div>

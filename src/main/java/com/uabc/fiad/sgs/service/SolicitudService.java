@@ -494,6 +494,14 @@ public class SolicitudService implements ISolicitudService {
 
 	}
 
+	/**
+	 * Regresa una lista de solicitudes con una cantidad especifica para realizar una paginación
+	 * @param limit     cantidad de registros a regresar
+	 * @param offset    Indica el punto de inicio de los registros que se recuperarán
+	 * @param filtros   los filtros a aplicar
+	 * @param rolId   	id de rol que firmará la solicitudes
+	 * @return          lista de solicitudes pendientes por firmar
+	 */
 	@Override
 	public List<Solicitud> PaginacionSolicitudesPendientes(Integer limit, Integer offset, Filtros filtros,
 			Integer rolId) {
@@ -512,6 +520,11 @@ public class SolicitudService implements ISolicitudService {
 				limit, offset);
 	}
 
+	/**
+	 * Recupera el total de solicitudes pendientes por firmar de acuerdo a un rol (sirve para la paginación)
+	 * @param id	id del rol que firmará las solicitudes
+	 * @return		total de solicitudes pendientesn por firmar
+	 */
 	@Override
 	public Integer totalSolicitudesPendientes(Integer id) {
 		String sql = """
