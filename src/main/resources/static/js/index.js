@@ -3,7 +3,7 @@ function seleccionInicio(){
 	//window.alert('Estás en la página: ' + ruta);
 	if(ruta === "/")
 	{
-	    document.getElementById("inicio").style.border="3px solid var(--text-color-verde)";
+	    document.getElementById("inicio").style.border="2px solid var(--text-color-verde)";
 	 	document.getElementById("inicio").style.borderTop="none";
 	 	document.getElementById("inicio").style.borderLeft="none";
 	 	document.getElementById("inicio").style.borderRight="none";
@@ -13,7 +13,7 @@ function seleccionInicio(){
 	}
 	if(ruta === "/admin/administrarCuenta")
 	{
-		document.getElementById("administrar").style.border="3px solid var(--text-color-verde)";
+		document.getElementById("administrar").style.border="2px solid var(--text-color-verde)";
 	 	document.getElementById("administrar").style.borderTop="none";
 	 	document.getElementById("administrar").style.borderLeft="none";
 	 	document.getElementById("administrar").style.borderRight="none";
@@ -23,7 +23,7 @@ function seleccionInicio(){
 	}
 	if(ruta === "/historialDeSolicitudes")
  {
- 	document.getElementById("historialSolicitudes").style.border="3px solid var(--text-color-verde)";
+ 	document.getElementById("historialSolicitudes").style.border="2px solid var(--text-color-verde)";
  	document.getElementById("historialSolicitudes").style.borderTop="none";
  	document.getElementById("historialSolicitudes").style.borderLeft="none";
  	document.getElementById("historialSolicitudes").style.borderRight="none";
