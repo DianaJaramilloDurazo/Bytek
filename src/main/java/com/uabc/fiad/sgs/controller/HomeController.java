@@ -1,6 +1,8 @@
 package com.uabc.fiad.sgs.controller;
 
+import com.uabc.fiad.sgs.DTO.UsuarioDTO;
 import com.uabc.fiad.sgs.entity.Filtros;
+import com.uabc.fiad.sgs.entity.FiltrosSolicitudes;
 import com.uabc.fiad.sgs.entity.Solicitud;
 import com.uabc.fiad.sgs.entity.Usuario;
 import com.uabc.fiad.sgs.service.ISolicitudService;
@@ -152,35 +154,89 @@ public class HomeController {
 	@GetMapping("/historialDeSolicitudes")
 	public String listarUsuario(Model model) {
 		int page = 1;
-		Filtros filtros = new Filtros();
+		FiltrosSolicitudes filtros = new FiltrosSolicitudes();
 		filtros.setPage(page);
 	//        model.addAttribute("current", page);
 		model.addAttribute("filtros", filtros);
 		return "HistorialSolicitudes";
     }
 	
-	
+
 	
 	@GetMapping("/listaSolicitudesRealizadas")
-    public String listaSolictudesRealizadas(Model model) {
+    public String listaSolictudesRealizadas(@ModelAttribute FiltrosSolicitudes filtros, Model model) {
     	 // Obtener lista de solicitudes
         Usuario u = SessionUtils.getUsuario(usuarioService);
         if (u == null) {
             return "redirect:/login";
         }
+
+		System.out.println(filtros);
+		model.addAttribute("filtros", filtros);
+
+		// Tamaño de página: cuántos registros se mostrarán por página
+		int pageSize = 2;
+
+		// Calcular el desplazamiento (offset) para determinar desde qué registro se debe iniciar en la base de datos
+		int offset = (filtros.getPage() - 1) * pageSize;
+
+		// Define el número máximo de páginas a mostrar en la barra de paginación
+		int maxPagesToShow = 4;
+
+		int totalRecords;
+
 		List<Solicitud> solicitudesRealizadas;
 		List<Usuario> usuarios;
 		if (SessionUtils.getUserDetails().getAuthorities().stream()
 				.anyMatch(a -> a.getAuthority().equals("ROLE_DOCENTE"))) {
 
-			solicitudesRealizadas = solicitudService.listarSolicitudesRealizadasById(u.getIdUsuario());
+			//Obtener total de registros
+			totalRecords = solicitudService.totalSolicitudesRealizadasById(u.getIdUsuario(), filtros);
+
+			// Calcular el número total de páginas (totalPages) usando una división entera
+			int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+
+			// Calcula el rango de páginas a mostrar
+			int startPage = Math.max(1, filtros.getPage() - maxPagesToShow / 2);
+			int endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+			// Crear una lista de números de página para mostrar en la interfaz de usuario
+			List<Integer> pages = IntStream.rangeClosed(startPage, endPage).boxed().toList();
+			model.addAttribute("first", startPage);
+			model.addAttribute("pages", pages);
+			model.addAttribute("current", filtros.getPage());
+			model.addAttribute("next", filtros.getPage() + 1);
+			model.addAttribute("prev", filtros.getPage() - 1);
+			model.addAttribute("end", endPage);
+			model.addAttribute("last", totalPages);
+
+			solicitudesRealizadas = solicitudService.paginarSolicitudesRealizadasById(u.getIdUsuario(), filtros, pageSize, offset);
 			usuarios = new ArrayList<>();
 			for (Solicitud s : solicitudesRealizadas) {
 				usuarios.add(usuarioService.findById(s.getIdUsuario()).get());
 			}
 		}else{
 
-				
+			totalRecords = solicitudService.listarSolicitudesRealizadas(usuarioService.findIdRolById(u.getIdUsuario())).size();
+
+			// Calcular el número total de páginas (totalPages) usando una división entera
+			int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+
+			// Calcula el rango de páginas a mostrar
+			int startPage = Math.max(1, filtros.getPage() - maxPagesToShow / 2);
+			int endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+			// Crear una lista de números de página para mostrar en la interfaz de usuario
+			List<Integer> pages = IntStream.rangeClosed(startPage, endPage).boxed().toList();
+			model.addAttribute("first", startPage);
+			model.addAttribute("pages", pages);
+			model.addAttribute("current", filtros.getPage());
+			model.addAttribute("next", filtros.getPage() + 1);
+			model.addAttribute("prev", filtros.getPage() - 1);
+			model.addAttribute("end", endPage);
+			model.addAttribute("last", totalPages);
+			//List<UsuarioDTO> users = usuarioService.pagination(pageSize, offset, filtros);
+			//model.addAttribute("users",users);
 			// Si tiene rol
 			// Lista de solicitudes para firmar
 			solicitudesRealizadas = solicitudService.listarSolicitudesRealizadas(usuarioService.findIdRolById(u.getIdUsuario()));
@@ -192,10 +248,10 @@ public class HomeController {
 				usuarios.add(usuarioService.findById(s.getIdUsuario()).get());
 			}
 		}
-	
+
 		model.addAttribute("solicitudes_realizadas", solicitudesRealizadas);
 		model.addAttribute("usuarios", usuarios);
-				
+
     	return "HistorialSolicitudes :: listaSolicitudesRealizadas";
     }
 	

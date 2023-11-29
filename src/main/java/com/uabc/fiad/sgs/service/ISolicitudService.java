@@ -4,10 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import com.uabc.fiad.sgs.entity.Filtros;
-import com.uabc.fiad.sgs.entity.Rol;
-import com.uabc.fiad.sgs.entity.Solicitud;
-import com.uabc.fiad.sgs.entity.Usuario;
+import com.uabc.fiad.sgs.entity.*;
 
 public interface ISolicitudService {
 
@@ -191,4 +188,8 @@ public interface ISolicitudService {
 
     public List<Solicitud> listarSolicitudesRealizadas(Integer rolId);
 	public List<Solicitud> listarSolicitudesRealizadasById(Integer userId);
+
+    Integer totalSolicitudesRealizadasById(Integer userId, FiltrosSolicitudes filtros);
+    List<Solicitud> paginarSolicitudesRealizadas(Integer rolId, FiltrosSolicitudes filtros, Integer limit, Integer offset);
+    List<Solicitud> paginarSolicitudesRealizadasById(Integer userId, FiltrosSolicitudes filtros, Integer limit, Integer offset);
 }

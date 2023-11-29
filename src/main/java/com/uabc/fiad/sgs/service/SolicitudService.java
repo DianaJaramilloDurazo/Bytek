@@ -1,9 +1,6 @@
 package com.uabc.fiad.sgs.service;
 
-import com.uabc.fiad.sgs.entity.Filtros;
-import com.uabc.fiad.sgs.entity.Rol;
-import com.uabc.fiad.sgs.entity.Solicitud;
-import com.uabc.fiad.sgs.entity.Usuario;
+import com.uabc.fiad.sgs.entity.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -563,7 +560,6 @@ public class SolicitudService implements ISolicitudService {
 				rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")), rolId);	
 	}
 
-	
 
 	@Override
 	public List<Solicitud> listarSolicitudesRealizadasById(Integer userId) {
@@ -596,5 +592,56 @@ public class SolicitudService implements ISolicitudService {
 				rs.getObject("Fecha_Salida", LocalDateTime.class), rs.getObject("Fecha_Regreso", LocalDateTime.class),
 				rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getInt("idUsuario"),
 				rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")), userId);
+	}
+
+	public List<Solicitud> paginarSolicitudesRealizadas(Integer rolId, FiltrosSolicitudes filtros, Integer limit, Integer offset) {
+		return template.query("""
+				select s.*, es.DescripcionEstado
+				from solicitud s
+				right join firmas_solicitud
+				on s.idSolicitud = firmas_solicitud.idSolicitud
+				left join estado_solicitud es
+				on s.idEstado_Solicitud = es.idEstado_Solicitud
+				where firmas_solicitud.idRol = ? and firmas_solicitud.idUsuario is null
+				            and (s.idEstado_Solicitud = 5 or s.idEstado_Solicitud = 6 or s.idEstado_Solicitud = 8);
+				""",
+				(rs, rowNum) -> new Solicitud(rs.getInt("idSolicitud"), rs.getString("Nombre_Evento"),
+						rs.getObject("Fecha_Salida", LocalDateTime.class), rs.getObject("Fecha_Regreso", LocalDateTime.class),
+						rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getInt("idUsuario"),
+						rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")),
+				rolId);
+	}
+
+	public Integer totalSolicitudesRealizadasById(Integer userId, FiltrosSolicitudes filtros) {
+
+		return template.queryForObject("""
+				select count(*)
+				from solicitud s
+				left join estado_solicitud es
+				on s.idEstado_Solicitud = es.idEstado_Solicitud
+				where s.idUsuario = ? and 
+				(s.idEstado_Solicitud = 5 or s.idEstado_Solicitud = 6 or s.idEstado_Solicitud = 8)
+				and s.Nombre_Evento like ?;
+				""",
+				Integer.class,
+				userId, "%" + filtros.getNombreEvento() + "%");
+	}
+	public List<Solicitud> paginarSolicitudesRealizadasById(Integer userId, FiltrosSolicitudes filtros, Integer limit, Integer offset) {
+
+		return template.query("""
+				select *
+				from solicitud s
+				left join estado_solicitud es
+				on s.idEstado_Solicitud = es.idEstado_Solicitud
+				where s.idUsuario = ? and 
+				(s.idEstado_Solicitud = 5 or s.idEstado_Solicitud = 6 or s.idEstado_Solicitud = 8)
+				and s.Nombre_Evento like ?
+				limit ? offset ?;
+				""",
+				(rs, rowNum) -> new Solicitud(rs.getInt("idSolicitud"), rs.getString("Nombre_Evento"),
+						rs.getObject("Fecha_Salida", LocalDateTime.class), rs.getObject("Fecha_Regreso", LocalDateTime.class),
+						rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getInt("idUsuario"),
+						rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")),
+				userId, "%" + filtros.getNombreEvento() + "%", limit, offset);
 	}
 }

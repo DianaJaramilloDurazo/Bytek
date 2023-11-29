@@ -1,71 +1,66 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:hx="http://www.w3.org/1999/xhtml">
-  <head>
+<head>
     <div th:replace="~{fragments/layout :: head(title='Historial de Solicitudes')}">
 
     </div>
     <!--Archivo css-->
     <link rel="stylesheet" href="/css/Historial.css" >
     <!--fin css-->
-    
+
     <!--archivo js-->
     <script  type="text/javascript" src="/js/Historial.js"></script>
-    
+
     <!--Fin archivo js-->
 
 
-  </head>
+</head>
 
-  <body>
-    <div th:replace="~{fragments/layout :: nav}">
+<body>
+<div th:replace="~{fragments/layout :: nav}">
 
-    </div>
-    
-    <div hx-get="/listaSolicitudesRealizadas"
-   	  	hx-target="#listaSolicitudesRealizadas"
-        hx-swap="outerHTML"
-        hx-trigger="load  from:body">
-    </div>
-    <div th:fragment="listaSolicitudesRealizadas" class="ContHistorial" id="listaSolicitudesRealizadas"><!--CONTENEDOR TABLA SOLICITUDES DE SALIDA-->
-        <h4>Historial de solicitudes</h4>
-        <div class="container-fluid">
-              <!-- Formulario con los filtros -->
-          <form class="row row-cols-lg-auto align-items-center g-3"
-                    name="filtros-form"
-                    hx-get="/admin/pagination"
-                    hx-indicator=".htmx-indicator"
-                    hx-target=".listaUsuarios"
-                    th:object="${filtros}"
-          >
-            <!--<input type="hidden" id="page" name="page" th:value="*{page}">
-                  -->
-                <!-- La página a mostrar --> 
-            
-              <!--<div class="col-12">
-                <label for="search-box" class="visually-hidden">Nombre</label>
-                <div class="input-group">
-                    <input id="search-box" name="nombre"
-                                class="form-control" type="text"
-                                placeholder="Nombre"
-                                th:value="*{nombre}"
-                    >
-                </div>
-                
-            </div>-->
+</div>
 
-            <!--
+<div hx-get="/listaSolicitudesRealizadas"
+     hx-target="#listaSolicitudesRealizadas"
+     hx-swap="outerHTML"
+     hx-include="[name='filtros-form']"
+     hx-trigger="load  from:body">
+</div>
+<div th:fragment="listaSolicitudesRealizadas" class="ContHistorial" id="listaSolicitudesRealizadas"><!--CONTENEDOR TABLA SOLICITUDES DE SALIDA-->
+    <h4>Historial de solicitudes</h4>
+    <div class="container-fluid">
+        <!-- Formulario con los filtros -->
+        <form class="row row-cols-lg-auto align-items-center g-3"
+              name="filtros-form"
+              hx-get="/listaSolicitudesRealizadas"
+              hx-indicator=".htmx-indicator"
+              hx-target="#listaSolicitudesRealizadas"
+              th:object="${filtros}"
+        >
+            <input type="hidden" id="page" name="page" th:value="*{page}">
+            <!-- La página a mostrar -->
+
+            <div class="form-floating">
+                <input id="nombre-evento" name="nombre"
+                       class="form-control" type="text"
+                       placeholder="Nombre del evento"
+                       th:field="*{nombreEvento}"
+                >
+                <label for="nombre-evento">Nombre del evento</label>
+            </div>
+
             <div class="col-12 ">
                 <button type="submit" class="btn btn-primary"
-                              onclick="document.getElementById('page').value = 1">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                  </svg>
+                        onclick="document.getElementById('page').value = 1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                    </svg>
                 </button>
             </div>
-            -->
-          </form>
-            <span class="htmx-indicator">
+        </form>
+        <span class="htmx-indicator">
                   Buscando...
             </span>
         </div>
@@ -109,22 +104,22 @@
 						  <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M6.354 9.854a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 8.707V12.5a.5.5 0 0 1-1 0V8.707z"/>
 						</svg>
 					</button>
-                    <!--<button class="btn btn-dark" data-bs-toggle="modal" 
+                    <!--<button class="btn btn-dark" data-bs-toggle="modal"
                             data-bs-target="#ModalSolicitudInfo">-->
                   </td>
                   <td>
-					  <button class="btn btn-primary roporte_btn" th:id="${sol.reporteFinal}"  
+					  <button class="btn btn-primary roporte_btn" th:id="${sol.reporteFinal}"
                             th:disabled="${sol.estadoSolicitud != 6}"
                             th:hx-get="'/solicitud/descargarReporte?idR='+${sol.reporteFinal}"
                             hx-indicator=".htmx-indicator"
                             hx-swap="none"
-                            hx-on = "htmx:afterRequest: abrir_url(this.id)" 
+                            hx-on = "htmx:afterRequest: abrir_url(this.id)"
                             >
                       <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-file-text-fill" viewBox="0 0 16 16">
 						  <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1"/>
 						</svg>
 	                    </button>
-                    
+
 				  </td>
 				  <td>
 					  <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo"
@@ -151,159 +146,221 @@
                       <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo">ver +</button>
                     </td>
 
-                </tr>
-                -->
+        </tr>
+        -->
 
-            </tbody><!--FIN CUERPO TABLA-->
-          </table>
-      </div><!--FIN CONTENEDOR SOLICITUDES-->
-      
-      <!--MODAL PARA VER INFORMACION DE SOLICITUD-->
-      <div class="modal fade m1" id="ModalSolicitudInfo" tabindex="-1" role="dialog" aria-labelledby="ModalSolicitudInfoLabel" aria-hidden="false">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content" id="cuadroModal">
-                <div class="modal-content" id="tituloModal">
-                    <h5 class="modal-title" id="ModalSolicitudInfoLabel">
-                        <span id="slc_Evento">Nombre del evento</span>
-                    </h5>
-                
-                </div>
-                <div class="modal-body" id="solicitud-info-body">
+        </tbody><!--FIN CUERPO TABLA-->
+    </table>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="quitarModal(ModalSolicitudInfo)">Cerrar</button>
-                </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <nav aria-label="Pagination" th:object="${filtros}">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${prev == 0 ? 'disabled': ''}">
+                        <a class="page-link"
+                           hx-include="[name='filtros-form']"
+                           hx-get="/listaSolicitudesRealizadas"
+                           hx-target="#listaSolicitudesRealizadas"
+                           th:onclick="'document.getElementById(\'page\').value = ' + ${prev}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                                <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="page-item" th:if="${first > 1}">
+                        <a class="page-link"
+                           hx-include="[name='filtros-form']"
+                           hx-get="/listaSolicitudesRealizadas"
+                           hx-target="#listaSolicitudesRealizadas"
+                           onclick="document.getElementById('page').value = 1"
+                        >1</a>
+                    </li>
+                    <li class="page-item" th:if="${first > 1}">
+                        <a class="page-link">...</a>
+                    </li>
+                    <li class="page-item" th:each="page : ${pages}" th:classappend="${current == page ? 'active': ''}">
+                        <a class="page-link"
+                           hx-include="[name='filtros-form']"
+                           hx-get="/listaSolicitudesRealizadas"
+                           hx-target="#listaSolicitudesRealizadas"
+                           th:onclick="'document.getElementById(\'page\').value=' + ${page}"
+                           th:text="${page}"></a>
+                    </li>
+                    <li class="page-item" th:if="${end < last }">
+                        <a class="page-link">...</a>
+                    </li>
+                    <li class="page-item" th:if="${end < last }">
+                        <a class="page-link"
+                           hx-include="[name='filtros-form']"
+                           hx-get="/listaSolicitudesRealizadas"
+                           hx-target="#listaSolicitudesRealizadas"
+                           th:onclick="'document.getElementById(\'page\').value=' + ${last}"
+                           th:text="${last}"
+                        >...</a>
+                    </li>
+                    <li class="page-item" th:classappend="${current == last ? 'disabled': ''}">
+                        <a class="page-link"
+                           hx-include="[name='filtros-form']"
+                           hx-get="/listaSolicitudesRealizadas"
+                           hx-target="#listaSolicitudesRealizadas"
+                           th:onclick="'document.getElementById(\'page\').value=' + ${next}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </ul>
+    </nav>
+</div><!--FIN CONTENEDOR SOLICITUDES-->
+
+<!--MODAL PARA VER INFORMACION DE SOLICITUD-->
+<div class="modal fade m1" id="ModalSolicitudInfo" tabindex="-1" role="dialog" aria-labelledby="ModalSolicitudInfoLabel" aria-hidden="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" id="cuadroModal">
+            <div class="modal-content" id="tituloModal">
+                <h5 class="modal-title" id="ModalSolicitudInfoLabel">
+                    <span id="slc_Evento">Nombre del evento</span>
+                </h5>
+
+            </div>
+            <div class="modal-body" id="solicitud-info-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="quitarModal(ModalSolicitudInfo)">Cerrar</button>
             </div>
         </div>
+    </div>
+</div>
+<!--FIN MODAL VER SOLICITUD INFO-->
+
+<!--MODAL PARA VER INFORMACION DE SOLICITUD-->
+<!--<div class="modal fade m1" id="ModalSolicitudInfo" tabindex="-1" role="dialog" aria-labelledby="ModalSolicitudInfoLabel" aria-hidden="false">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content" id="cuadroModal">
+      <div class="modal-content" id="tituloModal">
+        <h5 class="modal-title" id="ModalSolicitudInfoLabel">Evento:
+          <span id="slc_Evento">Nombre del evento</span>
+        </h5>
+
       </div>
-      <!--FIN MODAL VER SOLICITUD INFO-->
+      <div class="modal-body">
+          <div class="cont_Formato">
 
-      <!--MODAL PARA VER INFORMACION DE SOLICITUD-->
-    <!--<div class="modal fade m1" id="ModalSolicitudInfo" tabindex="-1" role="dialog" aria-labelledby="ModalSolicitudInfoLabel" aria-hidden="false">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content" id="cuadroModal">
-          <div class="modal-content" id="tituloModal">
-            <h5 class="modal-title" id="ModalSolicitudInfoLabel">Evento: 
-              <span id="slc_Evento">Nombre del evento</span>
-            </h5>
-            
-          </div>
-          <div class="modal-body">
-              <div class="cont_Formato">
-
-                    <div class="izquierda">
-                      <div >
-                      <label class="txt_Nombre">Nombre: </label>
-                      <span id="slc_Nombre">Edgar Nava Hernandez</span>
-                    </div>
-
-                    <div >
-                      <label class="txt_Categoria">Categoria: </label>
-                      <span id="slc_Categoria">Profesor de asignatura</span>
-                    </div>
-
-                    <div >
-                      <label class="txt_Costo">Costo del evento: $ </label>
-                      <span id="slc_Costo">0</span>
-                    </div>
-
-                    <div >
-                        <label class="txt_FechaSalida">Fecha y hora de salida: </label>
-                        <span id="slc_FechaSalida">02/11/2023 01:25pm</span>
-                      </div>
-
-                </div>
-                <div class="derecha">
-                    <div >
-                      <label class="txt_NumEmpleado">No Empleado: </label>
-                      <span id="slcNumEmpleado">12345</span>
-                    </div>
-                  
-                    <div >
-                      <label class="txt_Carrera">Carrera: </label>
-                      <span id="slc_carrera">Ingeniería en computación</span>
-                    </div>
-                    
-                    <div >
-                      <label class="txt_Lugar">Lugar: </label>
-                      <span id="slc_Lugar">Tecate, Baja California</span>
-                    </div>
-                    
-                    <div >
-                      <label class="txt_FechaRegreso">Fecha y hora de Regreso </label>
-                      <span id="slc_FechaRegreso">03/11/2023 01:25pm</span>
-                    </div>
-                </div>
-                <div class="completo">
-                  <form id="form_verInfo" method="post" action="Inicio.html">
+                <div class="izquierda">
                   <div >
-                      <label>Recurso a solicitar:</label><br>
-
-                      <input type="checkbox" id="Hospedaje_c" disabled checked><span>Hospedaje</span>
-                      <input type="checkbox" id="Transporte_c" onclick="activarInput('Transporte_c','Transporte_v')" disabled>
-                      <span>Transporte: </span>
-                      <input type="text" id="Transporte_v" value="0" disabled>
-
-                      <input type="checkbox" id="Combustible_c" onclick="activarInput('Combustible_c','Combustible_v')" disabled>
-                      <span>Combustible: </span>
-                      <input type="text" id="Combustible_v" value="0" disabled>
-
-                      <input type="checkbox" id="Viatico_c" disabled>
-                      <span>Viáticos</span><br>
-                      <input type="checkbox" id="OficioComision_c" disabled><span>Oficio comisón</span>
-
-                      <input type="checkbox" id="Otro_recurso_c" onclick="activarInput('Otro_recurso_c','Otro_recurso_v')" disabled>
-                      <span>Otro:</span>
-                      <input type="text" id="Otro_recurso_v" value="0" disabled>
-                      <br>
-                    </div>
-                  <div>
-                        <label>Actividad asociada a:</label><br>
-                        <label for="CACEI" id="normText">CACEI</label>
-                        <input type="checkbox" id="CACEI" value="CACEI" disabled>
-                        <label for="Licenciatura" id="normText">Licenciatura</label>
-                        <input type="checkbox" id="Licenciatura" value="Licenciatura" disabled>
-                        <label for="Personal" id="normText">Personal</label>
-                        <input type="checkbox" id="Personal" value="Personal" disabled>
-                        <label for="ISO 9001:2008" id="normText">ISO 9001:2008</label>
-                        <input type="checkbox" id="ISO 9001:2008" value="ISO 9001:2008" disabled>
-                        <label for="Posgrado" id="normText">Posgrado</label>
-                        <input type="checkbox" id="Posgrado" value="Posgrado" disabled>
-                        <div class="Recursos">
-                          <label for="Otra" id="normText">Otra:</label>
-                          <span id="otra">Otra</span>
-                        </div>
-                      
-                  </div>
-                  <div>
-                        <label>Firmas:</label><br>
-                        <label for="Profesor" id="normText">Profesor</label>
-                        <input type="checkbox" id="Profesor" value="Profesor" checked disabled>
-                        <label for="Coordinador" id="normText">Coordinador</label>
-                        <input type="checkbox" id="Coordinador" value="Coordinador" disabled>
-                        <label for="subdirector" id="normText">Subdirector</label>
-                        <input type="checkbox" id="subdirector" value="subdirector" disabled>
-                        <label for="Administrador" id="normText">Administrador</label>
-                        <input type="checkbox" id="Administrador" value="Administrador" disabled>
-                        <div>
-                          <label for="Director" id="normText">Director</label>
-                          <input type="checkbox" id="Director" value="Director" disabled>
-                          <label for="Posgrado" id="normText">Posgrado</label>
-                          <input type="checkbox" id="Posgrado" value="Posgrado" disabled>
-                        </div>
-                  </div>
-                  </form>
+                  <label class="txt_Nombre">Nombre: </label>
+                  <span id="slc_Nombre">Edgar Nava Hernandez</span>
                 </div>
+
+                <div >
+                  <label class="txt_Categoria">Categoria: </label>
+                  <span id="slc_Categoria">Profesor de asignatura</span>
+                </div>
+
+                <div >
+                  <label class="txt_Costo">Costo del evento: $ </label>
+                  <span id="slc_Costo">0</span>
+                </div>
+
+                <div >
+                    <label class="txt_FechaSalida">Fecha y hora de salida: </label>
+                    <span id="slc_FechaSalida">02/11/2023 01:25pm</span>
+                  </div>
+
+            </div>
+            <div class="derecha">
+                <div >
+                  <label class="txt_NumEmpleado">No Empleado: </label>
+                  <span id="slcNumEmpleado">12345</span>
+                </div>
+
+                <div >
+                  <label class="txt_Carrera">Carrera: </label>
+                  <span id="slc_carrera">Ingeniería en computación</span>
+                </div>
+
+                <div >
+                  <label class="txt_Lugar">Lugar: </label>
+                  <span id="slc_Lugar">Tecate, Baja California</span>
+                </div>
+
+                <div >
+                  <label class="txt_FechaRegreso">Fecha y hora de Regreso </label>
+                  <span id="slc_FechaRegreso">03/11/2023 01:25pm</span>
+                </div>
+            </div>
+            <div class="completo">
+              <form id="form_verInfo" method="post" action="Inicio.html">
+              <div >
+                  <label>Recurso a solicitar:</label><br>
+
+                  <input type="checkbox" id="Hospedaje_c" disabled checked><span>Hospedaje</span>
+                  <input type="checkbox" id="Transporte_c" onclick="activarInput('Transporte_c','Transporte_v')" disabled>
+                  <span>Transporte: </span>
+                  <input type="text" id="Transporte_v" value="0" disabled>
+
+                  <input type="checkbox" id="Combustible_c" onclick="activarInput('Combustible_c','Combustible_v')" disabled>
+                  <span>Combustible: </span>
+                  <input type="text" id="Combustible_v" value="0" disabled>
+
+                  <input type="checkbox" id="Viatico_c" disabled>
+                  <span>Viáticos</span><br>
+                  <input type="checkbox" id="OficioComision_c" disabled><span>Oficio comisón</span>
+
+                  <input type="checkbox" id="Otro_recurso_c" onclick="activarInput('Otro_recurso_c','Otro_recurso_v')" disabled>
+                  <span>Otro:</span>
+                  <input type="text" id="Otro_recurso_v" value="0" disabled>
+                  <br>
+                </div>
+              <div>
+                    <label>Actividad asociada a:</label><br>
+                    <label for="CACEI" id="normText">CACEI</label>
+                    <input type="checkbox" id="CACEI" value="CACEI" disabled>
+                    <label for="Licenciatura" id="normText">Licenciatura</label>
+                    <input type="checkbox" id="Licenciatura" value="Licenciatura" disabled>
+                    <label for="Personal" id="normText">Personal</label>
+                    <input type="checkbox" id="Personal" value="Personal" disabled>
+                    <label for="ISO 9001:2008" id="normText">ISO 9001:2008</label>
+                    <input type="checkbox" id="ISO 9001:2008" value="ISO 9001:2008" disabled>
+                    <label for="Posgrado" id="normText">Posgrado</label>
+                    <input type="checkbox" id="Posgrado" value="Posgrado" disabled>
+                    <div class="Recursos">
+                      <label for="Otra" id="normText">Otra:</label>
+                      <span id="otra">Otra</span>
+                    </div>
+
               </div>
+              <div>
+                    <label>Firmas:</label><br>
+                    <label for="Profesor" id="normText">Profesor</label>
+                    <input type="checkbox" id="Profesor" value="Profesor" checked disabled>
+                    <label for="Coordinador" id="normText">Coordinador</label>
+                    <input type="checkbox" id="Coordinador" value="Coordinador" disabled>
+                    <label for="subdirector" id="normText">Subdirector</label>
+                    <input type="checkbox" id="subdirector" value="subdirector" disabled>
+                    <label for="Administrador" id="normText">Administrador</label>
+                    <input type="checkbox" id="Administrador" value="Administrador" disabled>
+                    <div>
+                      <label for="Director" id="normText">Director</label>
+                      <input type="checkbox" id="Director" value="Director" disabled>
+                      <label for="Posgrado" id="normText">Posgrado</label>
+                      <input type="checkbox" id="Posgrado" value="Posgrado" disabled>
+                    </div>
+              </div>
+              </form>
+            </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" onclick="quitarModal(ModalSolicitudInfo)">Cerrar</button>
-          </div>
-        </div>
       </div>
-    </div>-->
-    <!--FIN MODAL VER SOLICITUD INFO-->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="quitarModal(ModalSolicitudInfo)">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>-->
+<!--FIN MODAL VER SOLICITUD INFO-->
 
     <div class="piedepagina">
     </div>
@@ -312,7 +369,7 @@
     function abrir_url(b_id){
       uriFile = '/solicitud/descargarReporte?idR='  + b_id
       window.open(uriFile, '_blank');
-      
+
     }
 
   </script>
