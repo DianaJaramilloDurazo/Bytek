@@ -34,37 +34,42 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item titulo">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
                             <a class="nav-link" id="titulo" aria-current="page" href="/">SISTEMA DE GESTIÓN DE SALIDAS</a>
                         </li>
-
-                        <li class="nav-item active" id="inicio">
+						<div>
+							<li class="nav-item active" id="inicio">
                             <a class="nav-link" href="/" onclick="cambiarOpcion()">Inicio</a>
                         </li>
-                        <div sec:authorize="hasAnyRole('ROLE_ADMINISTRADOR','ROLE_SUBDIRECTOR')">
+						</div>
+                        
+                        <div class="col-3" sec:authorize="hasAnyRole('ROLE_ADMINISTRADOR','ROLE_SUBDIRECTOR')">
                             <li class="nav-item active" id="administrar">
                                 <a class="nav-link" href="/admin/administrarCuenta">Administrar Cuentas</a>
                             </li>
                         </div>
 
-                        <div >
+                        <div class="col-4" >
                             <li class="nav-item active" id="historialSolicitudes">
                                 <a class="nav-link" href="/historialDeSolicitudes">Historial de Solicitudes</a>
                             </li>
                         </div>
 
-                        <li class="nav-item opc">
-                            <!-- Este botón hace una petición get para obtener el perfil, el resultado se coloca en el
-                                 elemento de la clase modal-body dentro del modal ModalPerfil -->
-                            <button id="btn-perfil" class="btn"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#ModalPerfil"
-                                    hx-get="/usuario/perfil"
-                                    hx-target="#ModalPerfil .modal-body">Ver Perfil</button>
-                        </li>
+						<div class="col-2">
+							<li class="nav-item">
+	                            <!-- Este botón hace una petición get para obtener el perfil, el resultado se coloca en el
+	                                 elemento de la clase modal-body dentro del modal ModalPerfil -->
+	                            <button id="btn-perfil" class="btn"
+	                                    data-bs-toggle="modal"
+	                                    data-bs-target="#ModalPerfil"
+	                                    hx-get="/usuario/perfil"
+	                                    hx-target="#ModalPerfil .modal-body">Ver Perfil</button>
+	                        </li>
+						</div>
+                        
 
-                            <div sec:authorize="isAuthenticated()">
+                            <div class="col-2" sec:authorize="isAuthenticated()">
 								<li class="nav-item opc" id="cerrarSesion">
                                 <a class="nav-link" th:href="@{/logout}">Cerrar sesión</a>
                                 </li>

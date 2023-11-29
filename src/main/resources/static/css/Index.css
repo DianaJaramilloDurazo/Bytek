@@ -13,6 +13,7 @@ body{
 }
 
 .navbar .container-fluid{
+	width: 100% !important;
 	opacity: 90%;
 	position: relative;
 	height: 75px;
@@ -21,6 +22,11 @@ body{
 }
 .navbar a{
 	color: var(--text-color-verde);
+}
+
+.navbar{
+	width: 100%;
+	text-align: center;
 }
 .logo{
 	height: 70px;
@@ -41,7 +47,6 @@ body{
 }
 .nav-item {
 	height: 80%;
-	margin-left: 60px;
 	padding-top: 10px;
 }
 
@@ -130,4 +135,7 @@ body{
 	transition: opacity 0.5s;
 	font-size: 1.5rem;
 }
-
+#historialSolicitudes{
+	width: 82%;
+	margin-left: 15px;
+}
