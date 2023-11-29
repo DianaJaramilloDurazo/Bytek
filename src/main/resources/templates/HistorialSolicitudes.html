@@ -90,10 +90,11 @@
                   <td th:text="${#temporals.format(sol.fechaRegreso, 'dd/MM/yyyy')}"></td>
                   <td th:text="${sol.estadoSolicitud}"></td>
                   <td>
-                    <button class="btn btn-primary" 
+                    <a class="btn btn-primary" 
+                    		th:href="@{/solicitud/oficio/{id}(id=${sol.getIdSolicitud})}"
                             >
                       Oficio comisión
-                    </button>
+                    </a>
                     <button class="btn btn-primary" id="btn_eliminarHist" 
                             th:disabled="${sol.estadoSolicitud == 6}"
                             th:hx-get="'/solicitud/descargarReporte?idR=' + ${sol.reporteFinal}"

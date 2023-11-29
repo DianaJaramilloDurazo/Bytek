@@ -1,6 +1,7 @@
 package com.uabc.fiad.sgs.controller;
 
 import com.google.api.client.http.FileContent;
+import com.itextpdf.text.DocumentException;
 import com.uabc.fiad.sgs.entity.Filtros;
 import com.uabc.fiad.sgs.entity.Solicitud;
 import com.uabc.fiad.sgs.entity.Usuario;
@@ -8,9 +9,12 @@ import com.uabc.fiad.sgs.service.DriveGoogleService;
 import com.uabc.fiad.sgs.service.ISolicitudService;
 import com.uabc.fiad.sgs.service.IUsuarioService;
 import com.uabc.fiad.sgs.service.MailManager;
+import com.uabc.fiad.sgs.utils.PDFExporter;
 import com.uabc.fiad.sgs.utils.SessionUtils;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
 import jakarta.mail.Session;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -395,5 +399,22 @@ public class SolicitudController {
 		return true;
 	
 	}
+	
+	@GetMapping("/oficio/{id}")
+	@ResponseBody
+	public void exportPDF(HttpServletRequest request, HttpServletResponse response, @PathVariable Integer id) throws DocumentException, IOException {
+		response.setContentType("application/pdf");
+		
+		String headerKey = "Content-Disposition";
+  	String sbHeaderValue = "attachment; filename=Oficio de Comisión.pdf";
+  	Optional<Solicitud> solicitud = solicitudService.findById(id);
+  	Optional<Usuario> usuario = usuarioService.findById(solicitud.get().getIdUsuario());
+  	response.setHeader(headerKey, sbHeaderValue);
+  	System.out.println(solicitud.get());
+  	PDFExporter export = new PDFExporter(solicitud.get(),usuario.get());
+		export.export(response);
+	}
+
+
 
 }
