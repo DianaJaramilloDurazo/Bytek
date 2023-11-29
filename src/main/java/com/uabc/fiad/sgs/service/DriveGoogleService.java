@@ -60,13 +60,13 @@ public class DriveGoogleService {
         .setAccessType("online")
         .build();
     LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
-    Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("306295956869-5rsnduohkg41nlch3fql3nkke09f11m9.apps.googleusercontent.com");
+    Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("180586380141-r7ejqgc1i1s3lrf3315216otgsnm5ojl.apps.googleusercontent.com");
     //returns an authorized Credential object.
 
 
       Drive service = new Drive.Builder(HTTP_TRANSPORT, GsonFactory.getDefaultInstance(), 
           credential)
-          .setApplicationName("cliente_sgs_drive")
+          .setApplicationName("drive")
           .build();
 
 
@@ -109,13 +109,13 @@ public class DriveGoogleService {
           .setAccessType("online")
           .build();
       LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
-      Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("306295956869-5rsnduohkg41nlch3fql3nkke09f11m9.apps.googleusercontent.com");
+      Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("180586380141-r7ejqgc1i1s3lrf3315216otgsnm5ojl.apps.googleusercontent.com");
       //returns an authorized Credential object.
 
 
       Drive service = new Drive.Builder(HTTP_TRANSPORT, GsonFactory.getDefaultInstance(), 
             credential)
-            .setApplicationName("cliente_sgs_drive")
+            .setApplicationName("drive")
             .build();
 
 
@@ -130,28 +130,33 @@ public class DriveGoogleService {
 
       
 
-      List<File> files = new ArrayList<File>();
-
       String nombreFile = "nohay";
-      String pageToken = null;
-      do {
-        FileList result = service.files().list()
-            .setQ("mimeType='text/pdf'")
-            .setSpaces("drive")
-            .setFields("nextPageToken, items(id, title)")
-            .setPageToken(pageToken)
-            .execute();
-        for (File file : result.getFiles()) {
-          System.out.printf("Found file: %s (%s)\n",file.getName(), file.getId());
-          if(file.getId().equals(fileId)){
-            nombreFile = file.getName();
+      
+      
+      System.out.println("Antes de romperse");
+      
+      FileList result = service.files().list()
+         .setFields("nextPageToken, files(id, name)")
+         .execute();
+      List<File> files = result.getFiles();
+      if (files == null || files.size() == 0) {
+          System.out.println("No files found.");
+      } else {
+          System.out.println("Files:");
+          for (File file : files) {
+              System.out.printf("%s - %s\n", fileId, file.getId());
+              
+              if(fileId.equals(file.getId())){
+                nombreFile = file.getName();
+              }
           }
-        }
+      }
 
-        files.addAll(result.getFiles());
+      System.out.println("EN SERVICIO");
+      System.out.println("EN SERVICIO");
+      System.out.println("EN SERVICIO");
+      System.out.println(nombreFile);
 
-        pageToken = result.getNextPageToken();
-      } while (pageToken != null);
 
 
       Map<ByteArrayOutputStream, Object> mapeOfileNombre = new HashMap<>();

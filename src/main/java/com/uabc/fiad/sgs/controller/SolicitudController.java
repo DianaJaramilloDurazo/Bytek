@@ -220,7 +220,7 @@ public class SolicitudController {
 	throws IOException, GeneralSecurityException {
 		System.out.println(solicitud_id);
 		System.out.println(reporte_archivo.getSize());
-			
+		
 		Usuario u = SessionUtils.getUsuario(usuarioService);
 		if (u == null) {
 			return "redirect:/login";
@@ -358,28 +358,41 @@ public class SolicitudController {
 
 
 
-	@PostMapping(value = "subirReporte", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "multipart/form-data"  }, produces = MediaType.TEXT_HTML_VALUE)
-	@ResponseBody
-	@ResponseStatus(code = HttpStatus.CREATED)
-	public String descargarReporte(@RequestParam String reporte_id)
+	@RequestMapping(value = "/descargarReporte")
+	public boolean descargarReporte(@RequestParam("idR") String reporte_id)
 	throws IOException, GeneralSecurityException {
 			
-		Usuario u = SessionUtils.getUsuario(usuarioService);
-		if (u == null) {
-			return "redirect:/login";
+
+		if (reporte_id == null){
+			System.out.println("nohabia nombre");
+			return false;
 		}
 
-		Map<ByteArrayOutputStream, Object> mapFile = new HashMap<>();
+		Map<ByteArrayOutputStream, Object> mapeOfileNombre = new HashMap<>();
 		
-	 	mapFile = DriveGoogleService.downloadPDF(reporte_id);
 		
+		mapeOfileNombre =  DriveGoogleService.downloadPDF(reporte_id);	;
+		
+		ByteArrayOutputStream bao = (ByteArrayOutputStream) mapeOfileNombre.get("ByteArrayOutputStream");
 
-		ByteArrayOutputStream bao = (ByteArrayOutputStream) mapFile.get("ByteArrayOutputStream");
+		String nombre = (String) mapeOfileNombre.get("Object");
 		
 		
+		System.out.println("EN CONTROLADOR");
+		System.out.println("EN CONTROLADOR");
+		System.out.println("EN CONTROLADOR");  
+		System.out.println(bao);
+		System.err.println(nombre);
+		
+		
+		
+		OutputStream outputStream = new FileOutputStream( nombre  );
+		bao.writeTo(outputStream); 
 
 
-		return "<div id='alertaResultadoReporte' class='alert alert-success' role='alert'><b> El archivo fue subido con éxito </b></div>";
+
+
+		return true;
 	
 	}
 

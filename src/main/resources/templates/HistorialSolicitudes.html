@@ -95,7 +95,11 @@
                       Oficio comisión
                     </button>
                     <button class="btn btn-primary" id="btn_eliminarHist" 
-                            th:disabled="${sol.estadoSolicitud == 6}">
+                            th:disabled="${sol.estadoSolicitud == 6}"
+                            th:hx-get="'/solicitud/descargarReporte?idR=' + ${sol.reporteFinal}"
+                            hx-indicator=".htmx-indicator"
+                            
+                            >
                       Reporte de salida
                     </button>
                     <!--<button class="btn btn-dark" data-bs-toggle="modal" 
