@@ -540,4 +540,61 @@ public class SolicitudService implements ISolicitudService {
 		return template.queryForObject(sql, new Object[] { id }, Integer.class);
 	}
 
+	/**
+	 * Lista todas las solicitudes que esten en Pendientes, Finalizada o Cancelada
+	 * 
+	 * @param rolId la id del rol a consultar sus firmas
+	 * @return lista solicitudes finalizadas 	 
+	 * */
+	@Override
+	public List<Solicitud> listarSolicitudesRealizadas(Integer rolId) {
+		return template.query("""
+				select s.*, es.DescripcionEstado
+				from solicitud s
+				right join firmas_solicitud
+				on s.idSolicitud = firmas_solicitud.idSolicitud
+				left join estado_solicitud es
+				on s.idEstado_Solicitud = es.idEstado_Solicitud
+				where firmas_solicitud.idRol = ? and firmas_solicitud.idUsuario is null
+				            and (s.idEstado_Solicitud = 5 or s.idEstado_Solicitud = 6 or s.idEstado_Solicitud = 8);
+				""", (rs, rowNum) -> new Solicitud(rs.getInt("idSolicitud"), rs.getString("Nombre_Evento"),
+				rs.getObject("Fecha_Salida", LocalDateTime.class), rs.getObject("Fecha_Regreso", LocalDateTime.class),
+				rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getInt("idUsuario"),
+				rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")), rolId);	
+	}
+
+	
+
+	@Override
+	public List<Solicitud> listarSolicitudesRealizadasById(Integer userId) {
+		// Actualizacion del estado de las solicitudes que esten en estado Firmado
+		// cambiar a estado En Curso
+		String sqlUpdate1 = "update solicitud set idEstado_Solicitud = 4 where idUsuario = ? and idEstado_Solicitud = 3 and NOW() > Fecha_Salida;";
+		// update,no es necesario saber si afecto alguna fila
+		template.update(sqlUpdate1, userId);
+
+		// Actualizacion del estado de las solicitudes del usuario cada vez que se
+		// consultan
+		// set 5 al estado porque significa que es el estado de Reporte_Pendiente
+		// where idUsuario es ? porque se va leer el parametro de la funcion userId
+		// where idEstado_Solicitud = 4 porque solamente cuando se esta en curso puede
+		// pasar a pedir reporte automaticamente
+		// where Now > fecha_regreso porque significa porque el tiempo actual real ya
+		// paso al tiempo de la fecha de regreso
+		String sqlUpdate2 = "update solicitud set idEstado_Solicitud = 5 where idUsuario = ? and idEstado_Solicitud = 4 and NOW() > Fecha_Regreso;";
+		// update,no es necesario saber si afecto alguna fila
+		template.update(sqlUpdate2, userId);
+
+		return template.query("""
+				select *
+				from solicitud s
+				left join estado_solicitud es
+				on s.idEstado_Solicitud = es.idEstado_Solicitud
+				where s.idUsuario = ? and 
+				(s.idEstado_Solicitud = 5 or s.idEstado_Solicitud = 6 or s.idEstado_Solicitud = 8);;
+				""", (rs, rowNum) -> new Solicitud(rs.getInt("idSolicitud"), rs.getString("Nombre_Evento"),
+				rs.getObject("Fecha_Salida", LocalDateTime.class), rs.getObject("Fecha_Regreso", LocalDateTime.class),
+				rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getInt("idUsuario"),
+				rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")), userId);
+	}
 }

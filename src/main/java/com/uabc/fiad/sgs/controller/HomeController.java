@@ -6,6 +6,9 @@ import com.uabc.fiad.sgs.entity.Usuario;
 import com.uabc.fiad.sgs.service.ISolicitudService;
 import com.uabc.fiad.sgs.service.IUsuarioService;
 import com.uabc.fiad.sgs.utils.SessionUtils;
+
+import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -102,6 +105,11 @@ public class HomeController {
 		return "index.html";
     }
     
+
+
+	
+
+
     @GetMapping("/listaSolicitudes")
     public String listaSolictudes(Model model) {
     	 // Obtener lista de solicitudes
@@ -134,4 +142,63 @@ public class HomeController {
 
     	return "index :: listaSolicitudes";
     }
+
+
+	/**
+	 * Regresa la vista de historial de  solicitudes
+	 * @param model     el modelo utilizado para pasar datos a la vista
+	 * @return          La vista para ver solicitudes realizadas
+	 */
+	@HxTrigger("refresh")
+	@GetMapping("/historialDeSolicitudes")
+	public String listarUsuario(Model model) {
+		int page = 1;
+		Filtros filtros = new Filtros();
+		filtros.setPage(page);
+	//        model.addAttribute("current", page);
+		model.addAttribute("filtros", filtros);
+		return "HistorialSolicitudes";
+    }
+	
+	
+	
+	@GetMapping("/listaSolicitudesRealizadas")
+    public String listaSolictudesRealizadas(Model model) {
+    	 // Obtener lista de solicitudes
+        Usuario u = SessionUtils.getUsuario(usuarioService);
+        if (u == null) {
+            return "redirect:/login";
+        }
+		List<Solicitud> solicitudesRealizadas;
+		List<Usuario> usuarios;
+		if (SessionUtils.getUserDetails().getAuthorities().stream()
+				.anyMatch(a -> a.getAuthority().equals("ROLE_DOCENTE"))) {
+
+			solicitudesRealizadas = solicitudService.listarSolicitudesRealizadasById(u.getIdUsuario());
+			usuarios = new ArrayList<>();
+			for (Solicitud s : solicitudesRealizadas) {
+				usuarios.add(usuarioService.findById(s.getIdUsuario()).get());
+			}
+		}else{
+
+				
+			// Si tiene rol
+			// Lista de solicitudes para firmar
+			solicitudesRealizadas = solicitudService.listarSolicitudesRealizadas(usuarioService.findIdRolById(u.getIdUsuario()));
+			// También los usuarios registrados
+			// todo: Monitorear por problemas de rendimiento cargando la página de inicio, simplemente es la solución más
+			//  sencilla que se me ocurrió
+			usuarios = new ArrayList<>();
+			for (Solicitud s : solicitudesRealizadas) {
+				usuarios.add(usuarioService.findById(s.getIdUsuario()).get());
+			}
+		}
+	
+		model.addAttribute("solicitudes_realizadas", solicitudesRealizadas);
+		model.addAttribute("usuarios", usuarios);
+				
+    	return "HistorialSolicitudes :: listaSolicitudesRealizadas";
+    }
+	
+	
 }

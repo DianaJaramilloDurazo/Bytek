@@ -1,0 +1,85 @@
+.ContHistorial{
+  width: 98%;
+  margin: 0 auto;
+  text-align: center;
+}
+.ContHistorial h4{
+  margin-top: 80px;
+  margin-bottom: 30px;
+}
+.piedepagina{
+  height: 200px;
+}
+
+
+#tituloModal{
+  text-align: center;
+
+}
+#tituloModal h5{
+  font-weight: bold;
+  position: relative;
+  margin: 0 auto;
+  margin-bottom: 0px;
+  
+}
+#slc_Evento{
+  border: none;
+  border-radius: 3px;
+}
+.cont_Formato{
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-areas:
+    "izquierdo derecho"
+    "completo completo";
+
+}
+.cont_Formato label{
+
+  font-weight: bold;
+}
+.izquierda{
+  position: relative;
+  grid-area: izquierdo;
+  margin-bottom: 10px;
+  margin-right: 3px;
+}
+.izquierda input{
+  margin-top: 3px;
+  margin-right: 3px;
+  border-radius: 3px;
+}
+.derecha{
+  position: relative;
+  grid-area: derecho;
+  margin-bottom: 10px;
+  margin-right: 3px;
+}
+.derecha input{
+  margin-top: 3px;
+  margin-right: 3px;
+  border-radius: 3px;
+}
+.completo{
+  position: relative;
+  grid-area: completo;
+}
+#normText{
+  font-weight: normal;
+}
+
+.completo span{
+  margin-top: 3px;
+  margin-right: 20px;
+}
+.completo input{
+  margin-right: 7px;
+  max-width: 70px;
+  margin-top: 2px;
+  border: 1px solid;
+  border-color: #DFDFDF;
+  border-radius: 3px;
+  border-style: solid;
+}

@@ -188,4 +188,7 @@ public interface ISolicitudService {
      * @return		total de solicitudes pendientesn por firmar
      */
     Integer totalSolicitudesPendientes(Integer id);
+
+    public List<Solicitud> listarSolicitudesRealizadas(Integer rolId);
+	public List<Solicitud> listarSolicitudesRealizadasById(Integer userId);
 }

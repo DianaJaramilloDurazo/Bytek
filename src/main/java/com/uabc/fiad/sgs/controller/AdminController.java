@@ -3,8 +3,11 @@ package com.uabc.fiad.sgs.controller;
 import com.uabc.fiad.sgs.DTO.UsuarioDTO;
 import com.uabc.fiad.sgs.entity.Filtros;
 import com.uabc.fiad.sgs.entity.Rol;
+import com.uabc.fiad.sgs.entity.Solicitud;
 import com.uabc.fiad.sgs.entity.Usuario;
 import com.uabc.fiad.sgs.service.IUsuarioService;
+import com.uabc.fiad.sgs.utils.SessionUtils;
+
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -132,5 +136,8 @@ public class AdminController {
         model.addAttribute("users",users);
         return "ListarUsuarios :: listaUsuarios";
     }
+
+    
+
 
 }

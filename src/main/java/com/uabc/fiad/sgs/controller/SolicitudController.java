@@ -4,12 +4,14 @@ import com.google.api.client.http.FileContent;
 import com.uabc.fiad.sgs.entity.Filtros;
 import com.uabc.fiad.sgs.entity.Solicitud;
 import com.uabc.fiad.sgs.entity.Usuario;
-import com.uabc.fiad.sgs.service.DriveQuickstart;
+import com.uabc.fiad.sgs.service.DriveGoogleService;
 import com.uabc.fiad.sgs.service.ISolicitudService;
 import com.uabc.fiad.sgs.service.IUsuarioService;
 import com.uabc.fiad.sgs.service.MailManager;
 import com.uabc.fiad.sgs.utils.SessionUtils;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
+import jakarta.mail.Session;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -26,10 +28,12 @@ import java.io.OutputStream;
 import java.security.GeneralSecurityException;
 import java.sql.Blob;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.IntStream;
+import java.io.ByteArrayOutputStream;
 
 @Controller
 @RequestMapping("solicitud")
@@ -46,7 +50,7 @@ public class SolicitudController {
 
 
 	@Autowired
-	private DriveQuickstart driveService;
+	private DriveGoogleService driveService;
 	
 
 	@GetMapping("por-firmar")
@@ -242,7 +246,7 @@ public class SolicitudController {
 		os.write(reporte_archivo.getBytes());
 		
 		reporte_archivo.transferTo(driveFile);
-		String idDrive = DriveQuickstart.uploadPDF(  driveFile) ;
+		String idDrive = DriveGoogleService.uploadPDF(  driveFile) ;
 		
 		os.close();
 		driveFile.delete();
@@ -350,6 +354,33 @@ public class SolicitudController {
 		model.addAttribute("solicitudes_pendientes", solicitudesPendientes);
 		model.addAttribute("usuarios_firmar", usuarios);
 		return "fragments/solicitud/solicitudes-por-firmar :: solicitudes-por-firmar";
+	}
+
+
+
+	@PostMapping(value = "subirReporte", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "multipart/form-data"  }, produces = MediaType.TEXT_HTML_VALUE)
+	@ResponseBody
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public String descargarReporte(@RequestParam String reporte_id)
+	throws IOException, GeneralSecurityException {
+			
+		Usuario u = SessionUtils.getUsuario(usuarioService);
+		if (u == null) {
+			return "redirect:/login";
+		}
+
+		Map<ByteArrayOutputStream, Object> mapFile = new HashMap<>();
+		
+	 	mapFile = DriveGoogleService.downloadPDF(reporte_id);
+		
+
+		ByteArrayOutputStream bao = (ByteArrayOutputStream) mapFile.get("ByteArrayOutputStream");
+		
+		
+
+
+		return "<div id='alertaResultadoReporte' class='alert alert-success' role='alert'><b> El archivo fue subido con éxito </b></div>";
+	
 	}
 
 }
