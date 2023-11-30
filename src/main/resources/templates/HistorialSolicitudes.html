@@ -96,7 +96,7 @@
                       Oficio comisión
                     </a>
                     <button class="btn btn-primary" th:id="${sol.reporteFinal}"  
-                            th:disabled="${sol.estadoSolicitud == 6}"
+                            th:disabled="${sol.estadoSolicitud != 6}"
                             th:hx-get="'/solicitud/descargarReporte?idR='+${sol.reporteFinal}"
                             hx-indicator=".htmx-indicator"
                             hx-swap="none"
