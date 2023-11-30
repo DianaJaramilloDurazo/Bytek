@@ -130,6 +130,7 @@ body{
 }
 
 .cuadro-negro{
+	top: 7px;
 	text-align: center;
 	width: 100% !important;
 	background-color: #3B3A3A;
