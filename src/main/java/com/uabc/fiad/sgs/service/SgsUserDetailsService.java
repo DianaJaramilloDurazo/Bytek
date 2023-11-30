@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.StringTokenizer;
 
 @Service
 public class SgsUserDetailsService implements UserDetailsService {
@@ -46,6 +47,9 @@ public class SgsUserDetailsService implements UserDetailsService {
                 throw new UsernameNotFoundException("El usuario '" + correo + "' tiene asignado un rol inexistente");
             } else {
                 rolAsignado = rol.get().getRol().toUpperCase();
+            	StringTokenizer nombreRol = new StringTokenizer(rol.get().getRol().toUpperCase());
+                rolAsignado = nombreRol.nextToken();
+                System.out.println(rolAsignado);
             }
         }
 
