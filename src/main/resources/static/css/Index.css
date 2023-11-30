@@ -13,6 +13,7 @@ body{
 }
 
 .navbar .container-fluid{
+	width: 100% !important;
 	opacity: 90%;
 	position: relative;
 	height: 75px;
@@ -22,17 +23,18 @@ body{
 .navbar a{
 	color: var(--text-color-verde);
 }
+
+.navbar{
+	width: 100%;
+	text-align: center;
+}
 .logo{
 	height: 70px;
 	margin-top: 6px;
-	margin-left: 20px;
 }
 #titulo{
 	font-weight: bold;
 	color: white;
-	width: 300px;
-	padding-left: 0px;
-	padding-top: 0px;
 }
 .buscar{
 	background-color: var(--text-color-amarillo);
@@ -41,7 +43,6 @@ body{
 }
 .nav-item {
 	height: 80%;
-	margin-left: 60px;
 	padding-top: 10px;
 }
 
@@ -76,9 +77,6 @@ body{
 	font-weight: bold;
 }
 
-.navbar .nav-item a:hover{
-	color: var(--text-color-amarillo);
-}
 
 .navbar-nav> li{
     background: none;
@@ -131,3 +129,51 @@ body{
 	font-size: 1.5rem;
 }
 
+.cuadro-negro{
+	top: 7px;
+	text-align: center;
+	width: 100% !important;
+	background-color: #3B3A3A;
+	opacity: 90%;
+	position: relative;
+	height: 80px;
+	left: 12px;
+	box-shadow: 5px 5px 15px gray;
+	z-index: 4;
+	color: #50B845;
+	font-weight: 400;
+}
+
+.divnav{
+	padding-top: 30px;
+}
+.divnavb{
+	padding-top: 24px;
+}
+.divnavt
+{
+	padding-top: 30px;
+}
+.cuadro-negro button
+{
+	width: 100%;
+	font-size: 15px;
+}
+.cuadro-negro a:hover{
+	color: #DD971A;
+}
+
+.divnav a{
+	border: none;
+	border-left: none;
+	border-right: none;
+	border-top: none;
+}
+.col-2 {
+  flex: 0 0 14.9% !important; /* Calculado como 100% / 13 - ajusta según sea necesario */
+  max-width: 14.9% !important;
+}
+.col-1{
+	flex: 0 0 7% !important; /* Calculado como 100% / 13 - ajusta según sea necesario */
+  	max-width: 7% !important;
+}

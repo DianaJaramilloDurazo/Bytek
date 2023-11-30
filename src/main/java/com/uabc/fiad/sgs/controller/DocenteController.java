@@ -260,14 +260,13 @@ public class DocenteController {
 		model.addAttribute("usuario", u);
 		
 
-		System.out.println(solicitudService.findById(idSolicitud));
 		Solicitud solicitud = solicitudService.findById(idSolicitud).get();
 		model.addAttribute("solicitud", solicitud);
 		LocalDate fechaSalida = solicitud.getFechaSalida().toLocalDate();
 		LocalDate fechaRegreso = solicitud.getFechaRegreso().toLocalDate();
 		LocalTime horaSalida = solicitud.getFechaSalida().toLocalTime();
 		LocalTime horaRegreso = solicitud.getFechaRegreso().toLocalTime();
-		System.out.println(solicitud);
+
 		model.addAttribute("fechaSalida", fechaSalida);
 		model.addAttribute("fechaRegreso", fechaRegreso);
 		model.addAttribute("horaRegreso", horaRegreso);
@@ -323,28 +322,28 @@ public class DocenteController {
 			// Se actualiza los recursos y las actividades seleccionadas
 			
 			// Se obtienen los recursos seleccionados anteriormente
-			Set<Integer> setRecursos1 = new HashSet<>();
+			Set<Integer> setRecursosAnteriores = new HashSet<>();
 			List<Map<String, Object>> recursosS = solicitudService.listarRecursos(solicitud.getIdSolicitud());
 			for (Map<String, Object> recurso : recursosS) {
 				// Verifica si el mapa contiene la clave "idRecurso"
 				if ((Boolean) recurso.get("registrado")) {
 					if (recurso.containsKey("idRecurso")) {
 						// Obtén el valor asociado a la clave "idRecurso" y se agrega al conjunto
-						setRecursos1.add((Integer) recurso.get("idRecurso"));
+						setRecursosAnteriores.add((Integer) recurso.get("idRecurso"));
 					}
 				}
 			}
 
 			// Se obtienen los id de los recursos seleccionados actualmente
-			Set<Integer> setRecursos2 = new HashSet<>(recursos);
+			Set<Integer> setRecursosActuales = new HashSet<>(recursos);
 
-			Set<Integer> borrarRecursos = new HashSet<>(setRecursos1);
-			Set<Integer> agregarRecursos = setRecursos2;
+			Set<Integer> borrarRecursos = new HashSet<>(setRecursosAnteriores);
+			Set<Integer> agregarRecursos = setRecursosActuales;
 
 			// Se obtienen los recursos que se quitaron de la solicitud
-			borrarRecursos.removeAll(setRecursos2);
+			borrarRecursos.removeAll(setRecursosActuales);
 			// Se obtienen los nuevos recursos seleccionados
-			agregarRecursos.removeAll(setRecursos1);
+			agregarRecursos.removeAll(setRecursosAnteriores);
 			
 			Boolean recursoRegistrado;
 			Boolean resultRecurso = true;
@@ -379,31 +378,31 @@ public class DocenteController {
 
 			// Se actualizan las actividades
 
-			Set<Integer> setActividades1 = new HashSet<>();
-
 			// Se obtienen las actividades seleccionadas anteriormente
+			Set<Integer> setActividadesAnteriores = new HashSet<>();
+			
 			List<Map<String, Object>> actividadesS = solicitudService.listarActividadesAsociadas(idSolicitud);
 			for (Map<String, Object> actividad : actividadesS) {
 				// Verifica si el mapa contiene la clave "idRecurso"
 				if ((Boolean) actividad.get("registrado")) {
 					if (actividad.containsKey("idActividad")) {
 						// Obtén el valor asociado a la clave "idRecurso" y se agrega al conjunto
-						setActividades1.add((Integer) actividad.get("idActividad"));
+						setActividadesAnteriores.add((Integer) actividad.get("idActividad"));
 					}
 				}
 			}
 
 			// Se obtienen las actividades seleccionadas actualmente
-			Set<Integer> setActividades2 = new HashSet<>(actividades);
+			Set<Integer> setActividadesActuales = new HashSet<>(actividades);
 
-			Set<Integer> borrarActividades = new HashSet<>(setActividades1);
-			Set<Integer> agregarActividades = setActividades2;
+			Set<Integer> borrarActividades = new HashSet<>(setActividadesAnteriores);
+			Set<Integer> agregarActividades = setActividadesActuales;
 
 			// Se obtienen las actividades que se quitaron de la solicitud
-			borrarActividades.removeAll(setActividades2);
+			borrarActividades.removeAll(setActividadesActuales);
 
 			// Se obtienen las nuevas actividades fueron seleccionadas
-			agregarActividades.removeAll(setActividades1);
+			agregarActividades.removeAll(setActividadesAnteriores);
 			
 			Boolean actividadRegistrada;
 			Boolean resultActividad = true;

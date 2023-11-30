@@ -27,53 +27,44 @@
 <body>
     <div th:fragment="nav">
         <!--Inicio barra de navegacion------------------------------------------------------------------>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-light">
-            <div class="container-fluid">
-
-                <img class="navbar-brand logo" src="/img/Logo-UABC.png" alt="Logo-UABC">
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item titulo">
-                            <a class="nav-link" id="titulo" aria-current="page" href="/">SISTEMA DE GESTIÓN DE SALIDAS</a>
-                        </li>
-
-                        <li class="nav-item active" id="inicio">
-                            <a class="nav-link" href="/" onclick="cambiarOpcion()">Inicio</a>
-                        </li>
-                        <div sec:authorize="hasAnyRole('ROLE_ADMINISTRADOR','ROLE_SUBDIRECTOR')">
-                            <li class="nav-item active" id="administrar">
-                                <a class="nav-link" href="/admin/administrarCuenta">Administrar Cuentas</a>
-                            </li>
-                        </div>
-
-                        <div >
-                            <li class="nav-item active" id="historialSolicitudes">
-                                <a class="nav-link" href="/historialDeSolicitudes">Historial de Solicitudes</a>
-                            </li>
-                        </div>
-
-                        <li class="nav-item opc">
-                            <!-- Este botón hace una petición get para obtener el perfil, el resultado se coloca en el
-                                 elemento de la clase modal-body dentro del modal ModalPerfil -->
-                            <button id="btn-perfil" class="btn"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#ModalPerfil"
-                                    hx-get="/usuario/perfil"
-                                    hx-target="#ModalPerfil .modal-body">Ver Perfil</button>
-                        </li>
-
-                            <div sec:authorize="isAuthenticated()">
-								<li class="nav-item opc" id="cerrarSesion">
-                                <a class="nav-link" th:href="@{/logout}">Cerrar sesión</a>
-                                </li>
-                            </div>
-
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <div class="container-fluid cuadro-negro row row-cols-12">
+			
+			<div class="col-1">
+				<img class="logo" src="/img/Logo-UABC.png" alt="Logo-UABC">
+			</div>
+			
+			<div class="col-3 divnavt">
+				<a class="nav-link" id="titulo" aria-current="page" href="/">SISTEMA DE GESTIÓN DE SALIDAS</a>
+			</div>
+				
+			<div class="col-1 divnav">
+				<a id="inicio" class="nav-link" href="/" onclick="cambiarOpcion()">Inicio</a>
+			</div>
+			
+			<div class="col-2 divnav" sec:authorize="hasAnyRole('ROLE_ADMINISTRADOR','ROLE_SUBDIRECTOR')">
+				<a id="administrar" class="nav-link" href="/admin/administrarCuenta">Administrar Cuentas</a>
+			</div>
+			
+			<div class="col-2 divnav">
+				<a id="historialSolicitudes" class="nav-link" href="/historialDeSolicitudes">Historial de Solicitudes</a>
+			</div>
+			
+			<div class="col-2 divnavb">
+				<!-- Este botón hace una petición get para obtener el perfil, el resultado se coloca en el
+	                                 elemento de la clase modal-body dentro del modal ModalPerfil -->
+	                            <button id="btn-perfil" class="btn"
+	                                    data-bs-toggle="modal"
+	                                    data-bs-target="#ModalPerfil"
+	                                    hx-get="/usuario/perfil"
+	                                    hx-target="#ModalPerfil .modal-body">Ver Perfil</button>
+			</div>
+			
+			<div class="col-2 divnavt" sec:authorize="isAuthenticated()">
+				<a class="nav-link" th:href="@{/logout}">Cerrar sesión</a>
+			</div>
+			
+			
+		</div>
         <!-- Div para mensajes de resultado -->
         <div id="result"></div>
         <!--Fin Barra de navegacion----------------------------------------------------------------------->
