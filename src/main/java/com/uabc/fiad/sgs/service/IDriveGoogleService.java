@@ -33,6 +33,6 @@ import java.util.Map;
 public interface IDriveGoogleService {
   
     String uploadPDF(java.io.File filePDF);
-    Map<ByteArrayOutputStream, Object> downloadPDF(String fileId);
+    Object[] downloadPDF(String fileId);
 
 }

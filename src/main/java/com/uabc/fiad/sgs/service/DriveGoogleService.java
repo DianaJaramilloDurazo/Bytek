@@ -91,7 +91,7 @@ public class DriveGoogleService {
   }
 
 
-  public static Map<ByteArrayOutputStream,Object> downloadPDF(String fileId) throws IOException, GeneralSecurityException{
+  public static Object[] downloadPDF(String fileId) throws IOException, GeneralSecurityException{
     try {
       NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
       
@@ -132,19 +132,16 @@ public class DriveGoogleService {
 
       String nombreFile = "nohay";
       
-      
-      System.out.println("Antes de romperse");
-      
       FileList result = service.files().list()
          .setFields("nextPageToken, files(id, name)")
          .execute();
       List<File> files = result.getFiles();
       if (files == null || files.size() == 0) {
-          System.out.println("No files found.");
+          //System.out.println("No files found.");
       } else {
-          System.out.println("Files:");
+          //System.out.println("Files:");
           for (File file : files) {
-              System.out.printf("%s - %s\n", fileId, file.getId());
+              //System.out.printf("%s - %s\n", fileId, file.getId());
               
               if(fileId.equals(file.getId())){
                 nombreFile = file.getName();
@@ -152,16 +149,9 @@ public class DriveGoogleService {
           }
       }
 
-      System.out.println("EN SERVICIO");
-      System.out.println("EN SERVICIO");
-      System.out.println("EN SERVICIO");
-      System.out.println(nombreFile);
 
 
-
-      Map<ByteArrayOutputStream, Object> mapeOfileNombre = new HashMap<>();
-      mapeOfileNombre.put( (ByteArrayOutputStream) outputStream, nombreFile);
-      return  mapeOfileNombre;
+      return new Object[]{ (ByteArrayOutputStream) outputStream, nombreFile };
     } catch (GoogleJsonResponseException e) {
       // TODO(developer) - handle error appropriately
       System.err.println("Unable to move file: " + e.getDetails());

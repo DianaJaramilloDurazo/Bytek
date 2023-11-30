@@ -11,16 +11,24 @@ import com.uabc.fiad.sgs.service.MailManager;
 import com.uabc.fiad.sgs.utils.SessionUtils;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
 import jakarta.mail.Session;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.nio.file.Files;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -358,42 +366,39 @@ public class SolicitudController {
 
 
 
-	@RequestMapping(value = "/descargarReporte")
-	public boolean descargarReporte(@RequestParam("idR") String reporte_id)
+	@RequestMapping(value = "/descargarReporte", method = RequestMethod.GET, produces = MediaType.APPLICATION_PDF_VALUE)
+	@ResponseBody
+	public void descargarReporte(@RequestParam("idR") String reporte_id,  
+														HttpServletResponse response)
 	throws IOException, GeneralSecurityException {
-			
 
-		if (reporte_id == null){
-			System.out.println("nohabia nombre");
-			return false;
-		}
 
-		Map<ByteArrayOutputStream, Object> mapeOfileNombre = new HashMap<>();
-		
-		
-		mapeOfileNombre =  DriveGoogleService.downloadPDF(reporte_id);	;
-		
-		ByteArrayOutputStream bao = (ByteArrayOutputStream) mapeOfileNombre.get("ByteArrayOutputStream");
-
-		String nombre = (String) mapeOfileNombre.get("Object");
-		
+		System.out.println("EN CONTROLADOR");
+		System.out.println("EN CONTROLADOR");
+		System.out.println("EN CONTROLADOR");
 		
 		System.out.println("EN CONTROLADOR");
 		System.out.println("EN CONTROLADOR");
-		System.out.println("EN CONTROLADOR");  
-		System.out.println(bao);
-		System.err.println(nombre);
+
+		Object[] temp =  DriveGoogleService.downloadPDF(reporte_id);	;
+				
 		
+		System.out.println("EN CONTROLADOR");
+		System.out.println("EN CONTROLADOR");
+
+
+		ByteArrayOutputStream bao = (ByteArrayOutputStream) temp[0];
+
+		String nombre = (String) temp[1];
 		
+		response.setContentType(MediaType.APPLICATION_PDF_VALUE);
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + nombre);
+
+        // Escribir el contenido del PDF en la respuesta
+        response.getOutputStream().write(bao.toByteArray());
+        response.getOutputStream().flush();
+
 		
-		OutputStream outputStream = new FileOutputStream( nombre  );
-		bao.writeTo(outputStream); 
-
-
-
-
-		return true;
-	
 	}
 
 }

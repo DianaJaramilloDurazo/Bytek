@@ -94,14 +94,17 @@
                             >
                       Oficio comisión
                     </button>
-                    <button class="btn btn-primary" id="btn_eliminarHist" 
+                    <button class="btn btn-primary" th:id="${sol.reporteFinal}" 
                             th:disabled="${sol.estadoSolicitud == 6}"
-                            th:hx-get="'/solicitud/descargarReporte?idR=' + ${sol.reporteFinal}"
+                            th:hx-get="'/solicitud/descargarReporte?idR='+${sol.reporteFinal}"
                             hx-indicator=".htmx-indicator"
-                            
+                            hx-swap="none"
+                            hx-on = "htmx:afterRequest: abrir_url(this.id)" 
                             >
                       Reporte de salida
                     </button>
+
+
                     <!--<button class="btn btn-dark" data-bs-toggle="modal" 
                             data-bs-target="#ModalSolicitudInfo">-->
                     <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo"
@@ -282,4 +285,12 @@
     <div class="piedepagina">
     </div>
   </body>
+  <script>
+    function abrir_url(b_id){
+      uriFile = '/solicitud/descargarReporte?idR='  + b_id
+      window.open(uriFile, '_blank');
+      
+    }
+
+  </script>
 </html>
