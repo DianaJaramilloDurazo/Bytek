@@ -374,20 +374,7 @@ public class SolicitudController {
 														HttpServletResponse response)
 	throws IOException, GeneralSecurityException {
 
-
-		System.out.println("EN CONTROLADOR");
-		System.out.println("EN CONTROLADOR");
-		System.out.println("EN CONTROLADOR");
-		
-		System.out.println("EN CONTROLADOR");
-		System.out.println("EN CONTROLADOR");
-
 		Object[] temp =  DriveGoogleService.downloadPDF(reporte_id);	;
-				
-		
-		System.out.println("EN CONTROLADOR");
-		System.out.println("EN CONTROLADOR");
-
 
 		ByteArrayOutputStream bao = (ByteArrayOutputStream) temp[0];
 
