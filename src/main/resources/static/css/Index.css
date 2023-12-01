@@ -133,6 +133,7 @@ body{
 	top: 7px;
 	text-align: center;
 	width: 100% !important;
+	min-width: 800px !important;
 	background-color: #3B3A3A;
 	opacity: 90%;
 	position: relative;

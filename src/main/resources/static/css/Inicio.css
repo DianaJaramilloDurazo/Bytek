@@ -405,6 +405,13 @@
 
 .motivos{
 	margin: 1rem}
+	
+.col-4{
+	min-width: 300px !important;
+}
+.col-3{
+	min-width: 200px;
+}
 /*Codigo css para las cards de navegacion segun el numero de cards que se muestren*/
 
 /*grid-column: 1 / span 3;*/
