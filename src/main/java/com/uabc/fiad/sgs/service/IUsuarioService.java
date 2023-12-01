@@ -50,5 +50,7 @@ public interface IUsuarioService {
     Integer findIdRolByIdCarrera(Integer idCarrera);
     
     String findNameRolById(Integer idrol);
+    
+    Integer findIdCarreraByIdRol(Integer idRol);
 
 }

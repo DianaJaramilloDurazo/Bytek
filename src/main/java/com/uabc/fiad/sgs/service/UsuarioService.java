@@ -468,6 +468,22 @@ public class UsuarioService implements IUsuarioService {
 
         return results.get(0); // Devuelve el primer resultado
 	}
+
+    /**
+     * Obtiene el id de la carrera que le pertenece a un rol
+     * @param idRol  id del rol a consultar el id de su carrera (Coordinadores)
+     * @return       id de la carrera
+     */
+	@Override
+	public Integer findIdCarreraByIdRol(Integer idRol) {
+		List<Integer> results = template.query("SELECT r.Carrera_idCarrera FROM rol r WHERE idRol = ?", new Object[]{idRol}, (rs, rowNum) -> rs.getInt("Carrera_idCarrera"));
+
+        if (results.isEmpty()) {
+            return 0; // O si no se encuentra un resultado.
+        }
+
+        return results.get(0); // Devuelve el primer resultado
+	}
 	
 
 }

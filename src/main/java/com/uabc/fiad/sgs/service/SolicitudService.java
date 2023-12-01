@@ -523,7 +523,7 @@ public class SolicitudService implements ISolicitudService {
 	/**
 	 * Recupera el total de solicitudes pendientes por firmar de acuerdo a un rol (sirve para la paginación)
 	 * @param id	id del rol que firmará las solicitudes
-	 * @return		total de solicitudes pendientesn por firmar
+	 * @return		total de solicitudes pendientes por firmar
 	 */
 	@Override
 	public Integer totalSolicitudesPendientes(Integer id) {

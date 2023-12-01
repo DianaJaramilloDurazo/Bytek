@@ -55,7 +55,6 @@ public class HomeController {
 			model.addAttribute("solicitudes", solicitudes);
 		} else {
 			// Manejar filtros
-			System.out.println(filtros);
 			model.addAttribute("filtros", filtros);
 
 			// Tamaño de página: cuántos registros se mostrarán por página
@@ -66,7 +65,7 @@ public class HomeController {
 			int offset = (filtros.getPage() - 1) * pageSize;
 
 			// Obtener total de registros
-			Integer totalRecords = solicitudService.totalSolicitudesPendientes(2);
+			Integer totalRecords = solicitudService.totalSolicitudesPendientes(usuarioService.findIdRolById(u.getIdUsuario()));
 
 			// Calcular el número total de páginas (totalPages) usando una división entera
 			int totalPages = (int) Math.ceil((double) totalRecords / pageSize);

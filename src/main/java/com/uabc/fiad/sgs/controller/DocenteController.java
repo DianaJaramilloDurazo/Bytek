@@ -177,8 +177,10 @@ public class DocenteController {
 					// Es un coordinador
 					firmas.add(usuarioService.findIdRolByName("Director"));
 					firmas.add(usuarioService.findIdRolByName("Subdirector"));
+					Integer idCarreraRol = usuarioService.findIdCarreraByIdRol(rolUsuario);
 					// Verificar si va dirigido a otra carrea que no es la suya
-					if (u.getIdCarrera() != solicitud.getIdCarrera()) {
+					//u.getIdCarrera()
+					if (idCarreraRol != solicitud.getIdCarrera()) {
 						// Si no es la misma carrera se pide la firma del coordinador de la otra carrera
 						firmas.add(usuarioService.findIdRolByIdCarrera(solicitud.getIdCarrera()));
 					}

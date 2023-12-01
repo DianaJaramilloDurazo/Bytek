@@ -1,5 +1,5 @@
 <div th:fragment="solicitudes-por-firmar">
-    <div class="solicitudContenedor" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_COORDINADOR')">		
+    <div class="solicitudContenedor" sec:authorize="hasAnyRole('ROLE_ADMINISTRACIÓN','ROLE_SUBDIRECTOR', 'ROLE_DIRECTOR', 'ROLE_COORDINADOR','ROLE_POSGRADO')">		
          
          <div hx-target=".solicitudes-por-firmar"
              hx-trigger="refreshSolicitudesFirmar from:body"
