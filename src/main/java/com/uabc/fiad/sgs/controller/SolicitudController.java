@@ -297,9 +297,7 @@ public class SolicitudController {
 		if (u == null) {
 			return "redirect:/login";
 		}
-		System.out.println("HOLAA");
 		// Manejar filtros
-		System.out.println(filtros);
 		model.addAttribute("filtros", filtros);
 
 		// Tamaño de página: cuántos registros se mostrarán por página

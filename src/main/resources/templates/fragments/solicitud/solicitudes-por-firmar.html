@@ -102,7 +102,7 @@
                     <li class="page-item" th:classappend="${prev == 0 ? 'disabled': ''}">
                         <a class="page-link"
                            hx-include="[name='filtros-form']"
-                           hx-get="/solicitudPagination"
+                           hx-get="/solicitud/solicitudPagination"
                            hx-target=".solicitudes-por-firmar"
                            th:onclick="'document.getElementById(\'page\').value = ' + ${prev}">
                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
@@ -113,7 +113,7 @@
                     <li class="page-item" th:if="${first > 1}">
                         <a class="page-link"
                            hx-include="[name='filtros-form']"
-                           hx-get="/solicitudPagination"
+                           hx-get="/solicitud/solicitudPagination"
                            hx-target=".solicitudes-por-firmar"
                            onclick="document.getElementById('page').value = 1"
                            >1</a>
@@ -135,7 +135,7 @@
                     <li class="page-item" th:if="${end < last }">
                         <a class="page-link"
                            hx-include="[name='filtros-form']"
-                           hx-get="/solicitudPagination"
+                           hx-get="/solicitud/solicitudPagination"
                            hx-target=".solicitudes-por-firmar"
                            th:onclick="'document.getElementById(\'page\').value=' + ${last}"
                            th:text="${last}"
@@ -144,7 +144,7 @@
                     <li class="page-item" th:classappend="${current == last ? 'disabled': ''}">
                         <a class="page-link"
                            hx-include="[name='filtros-form']"
-                           hx-get="/solicitudPagination"
+                           hx-get="/solicitud/solicitudPagination"
                            hx-target=".solicitudes-por-firmar"
                            th:onclick="'document.getElementById(\'page\').value=' + ${next}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
