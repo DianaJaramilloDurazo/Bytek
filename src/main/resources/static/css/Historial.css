@@ -12,6 +12,23 @@
 }
 
 
+
+.roporte_btn{
+	background-color: #50B848 !important;
+	border: none;
+}
+.roporte_btn:hover{
+	background-color: #93E77D !important;
+	border: none;
+}
+.verOficioFirmado{
+	background-color: #FEBE10 !important;
+	border: none;
+}
+.verOficioFirmado:hover{
+	background-color: #EAB75D !important;
+	border: none;
+}
 #tituloModal{
   text-align: center;
 
