@@ -51,6 +51,84 @@
                 <label for="nombre-evento">Nombre del evento</label>
             </div>
 
+            <div class="form-floating" sec:authorize="!hasAnyRole('ROLE_DOCENTE')">
+                <select class="form-select" id="categoria-filtro" th:field="*{idCategoria}">
+                    <option value="" selected>-- Categoría --</option>
+                    <option th:each="categoria : ${categorias}"
+                            th:value="${categoria.idCategoria}"
+                            th:text="${categoria.Cat_Descripcion}"
+                            th:selected="${categoria.idCategoria == filtros.idCategoria}"></option>
+                </select>
+                <label for="categoria-filtro">Categoría</label>
+            </div>
+
+            <div class="form-floating">
+                <select class="form-select" id="act-asociada-filtro" th:field="*{idActAsociada}">
+                    <option value="" selected>-- Actividad Asociada --</option>
+                    <option th:each="act, iter : ${actAsociadas}"
+                            th:value="${iter.index + 1}"
+                            th:text="${act}"
+                            th:selected="${iter.index + 1 == filtros.idActAsociada}"></option>
+                </select>
+                <label for="act-asociada-filtro">Actividad asociada</label>
+            </div>
+
+            <div class="form-floating" sec:authorize="!hasAnyRole('ROLE_DOCENTE')">
+                <input th:field="*{numEmpleado}" class="form-control" type="number" id="num-empleado-filtro"
+                       min="10000" max="999999" step="1" pattern="^[0-9]*$" onkeydown="if([69,187,188,189,190].includes(event.keyCode))event.preventDefault()">
+                <label for="num-empleado-filtro">Número de empleado</label>
+            </div>
+
+            <div class="form-floating" sec:authorize="!hasAnyRole('ROLE_COORDINADOR')">
+                <select class="form-control " id="carrera-filtros" th:field="*{idCarrera}">
+                    <option value="" selected>-- Carrera --</option>
+                    <option th:each="carrera : ${carreras}"
+                            th:value="${carrera.idCarrera}"
+                            th:text="${carrera.Carrera_Nombre}"
+                            th:selected="${carrera.idCarrera == filtros.idCarrera}"></option>
+                </select>
+                <label for="carrera-filtros">Carrera</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="date" id="fecha-inicio" th:field="*{fechaInicio}" class="form-control">
+                <label for="fecha-inicio">Fecha inicio</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="date" id="fecha-fin" th:field="*{fechaFin}" class="form-control">
+                <label for="fecha-fin">Fecha fin</label>
+            </div>
+
+            <div class="form-floating">
+                <input id="lugar"
+                       class="form-control" type="text"
+                       placeholder="Lugar"
+                       th:field="*{lugar}"
+                >
+                <label for="lugar">Lugar</label>
+            </div>
+
+            <div class="form-floating">
+                <select class="form-control " id="estado-filtros" th:field="*{idEstado}">
+                    <option value="" selected>-- Estado --</option>
+                    <option th:each="estado, iter : ${estados}"
+                            th:value="${iter.index + 1}"
+                            th:text="${estado}"
+                            th:selected="${iter.index + 1 == filtros.idEstado}"></option>
+                </select>
+                <label for="estado-filtros">Estado</label>
+            </div>
+
+            <div class="form-floating" sec:authorize="!hasAnyRole('ROLE_DOCENTE')">
+                <input id="docente"
+                       class="form-control" type="text"
+                       placeholder="Docente"
+                       th:field="*{nombreDocente}"
+                >
+                <label for="docente">Docente</label>
+            </div>
+
             <div class="col-12 ">
                 <button type="submit" class="btn btn-primary"
                         onclick="document.getElementById('page').value = 1">
@@ -63,92 +141,76 @@
         <span class="htmx-indicator">
                   Buscando...
             </span>
-        </div>
-        
-        <table class="table ContHistorial">
-          <thead class="table-bordered"><!--ENCABEZADO DE LA TABLA-->
-                <tr class="table-light">
-                    <th scope="col-2">Nombre del solicitante</th>
-                    <th scope="col-2">Nombre del evento</th>
-                    <th scope="col-1">Fecha de salida</th>
-                    <th scope="col-1">Fecha de llegada</th>
-                    <th scope="col-2">Estado</th>
-                    <th scope="col-2">Oficio comisión</th>
-                    <th scope="col-1">Reporte de salida</th>
-                    <th scope="col-1">Solicitud</th>
-                </tr>
-            </thead><!--FIN ENCABEZADO DE TABLA-->
+    </div>
 
-            <tbody><!--CUERPO DE LA TABLA-->
-                <tr th:each="sol,iter : ${solicitudes_realizadas}">
-                  <td th:text="${usuarios[iter.index].username} + ' ' + ${usuarios[iter.index].apPaterno} + ' ' + ${usuarios[iter.index].apMaterno}"></td>
-                  <td th:text="${sol.nombreEvento}"></td>
-                  <td th:text="${#temporals.format(sol.fechaSalida, 'dd/MM/yyyy')}"></td>
-                  <td th:text="${#temporals.format(sol.fechaRegreso, 'dd/MM/yyyy')}"></td>
-                  <td th:text="${sol.estadoSolicitud}"></td>
-                  <td>
-                    <a class="btn btn-danger" id="oficioComision"
-                    		th:href="@{/solicitud/oficio/{id}(id=${sol.getIdSolicitud})}"
-                            >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#F5BFBB" class="bi bi-file-earmark-arrow-down-fill" viewBox="0 0 16 16">
-						  <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0"/>
-						</svg>
-                    </a>
-                    <button class="btn btn-primary verOficioFirmado">
-						<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-file-text-fill" viewBox="0 0 16 16">
-						  <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1"/>
-						</svg>
-					</button>
-					<button class="btn btn-primary">
-						<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-file-earmark-arrow-up-fill" viewBox="0 0 16 16">
-						  <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M6.354 9.854a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 8.707V12.5a.5.5 0 0 1-1 0V8.707z"/>
-						</svg>
-					</button>
-                    <!--<button class="btn btn-dark" data-bs-toggle="modal"
-                            data-bs-target="#ModalSolicitudInfo">-->
-                  </td>
-                  <td>
-					  <button class="btn btn-primary roporte_btn" th:id="${sol.reporteFinal}"
-                            th:disabled="${sol.estadoSolicitud != 6}"
-                            th:hx-get="'/solicitud/descargarReporte?idR='+${sol.reporteFinal}"
-                            hx-indicator=".htmx-indicator"
-                            hx-swap="none"
-                            hx-on = "htmx:afterRequest: abrir_url(this.id)"
-                            >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-file-text-fill" viewBox="0 0 16 16">
-						  <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1"/>
-						</svg>
-	                    </button>
+    <table class="table ContHistorial">
+        <thead class="table-bordered"><!--ENCABEZADO DE LA TABLA-->
+        <tr class="table-light">
+            <th scope="col-2">Nombre del solicitante</th>
+            <th scope="col-2">Nombre del evento</th>
+            <th scope="col-1">Fecha de salida</th>
+            <th scope="col-1">Fecha de llegada</th>
+            <th scope="col-2">Estado</th>
+            <th scope="col-2">Oficio comisión</th>
+            <th scope="col-1">Reporte de salida</th>
+            <th scope="col-1">Solicitud</th>
+        </tr>
+        </thead><!--FIN ENCABEZADO DE TABLA-->
 
-				  </td>
-				  <td>
-					  <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo"
-                      th:hx-get="'/solicitud?id=' + ${sol.getIdSolicitud}"
-                      hx-target="#solicitud-info-body"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+        <tbody><!--CUERPO DE LA TABLA-->
+        <tr th:each="sol,iter : ${solicitudes_realizadas}">
+            <td th:text="${usuarios[iter.index].username} + ' ' + ${usuarios[iter.index].apPaterno} + ' ' + ${usuarios[iter.index].apMaterno}"></td>
+            <td th:text="${sol.nombreEvento}"></td>
+            <td th:text="${#temporals.format(sol.fechaSalida, 'dd/MM/yyyy')}"></td>
+            <td th:text="${#temporals.format(sol.fechaRegreso, 'dd/MM/yyyy')}"></td>
+            <td th:text="${sol.estadoSolicitud}"></td>
+            <td>
+                <a class="btn btn-danger" id="oficioComision"
+                   th:href="@{/solicitud/oficio/{id}(id=${sol.getIdSolicitud})}"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#F5BFBB" class="bi bi-file-earmark-arrow-down-fill" viewBox="0 0 16 16">
+                        <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0"/>
+                    </svg>
+                </a>
+                <button class="btn btn-primary verOficioFirmado">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-file-text-fill" viewBox="0 0 16 16">
+                        <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1"/>
+                    </svg>
+                </button>
+                <button class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-file-earmark-arrow-up-fill" viewBox="0 0 16 16">
+                        <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M6.354 9.854a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 8.707V12.5a.5.5 0 0 1-1 0V8.707z"/>
+                    </svg>
+                </button>
+                <!--<button class="btn btn-dark" data-bs-toggle="modal"
+                        data-bs-target="#ModalSolicitudInfo">-->
+            </td>
+            <td>
+                <button class="btn btn-primary roporte_btn" th:id="${sol.reporteFinal}"
+                        th:disabled="${sol.estadoSolicitud != 6}"
+                        th:hx-get="'/solicitud/descargarReporte?idR='+${sol.reporteFinal}"
+                        hx-indicator=".htmx-indicator"
+                        hx-swap="none"
+                        hx-on = "htmx:afterRequest: abrir_url(this.id)"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-file-text-fill" viewBox="0 0 16 16">
+                        <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1"/>
+                    </svg>
+                </button>
+
+            </td>
+            <td>
+                <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo"
+                        th:hx-get="'/solicitud?id=' + ${sol.getIdSolicitud}"
+                        hx-target="#solicitud-info-body"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                         <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
                         <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
                     </svg>
-                    </button>
-				  </td>
-                </tr>
-                <!--
-                <tr>
-                    <td>Edgar Nava Hernandez</td>
-                    <td>Evento 1</td>
-                    <td>21/11/2023</td>
-                    <td>22/11/2023</td>
-                    <td>Estado</td>
-                    <td>
-                      <button class="btn btn-primary">Oficio comisión</button>
-                      <button class="btn btn-primary" id="btn_eliminarHist">Reporte de salida</button>
-                      <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo">ver +</button>
-                    </td>
-
+                </button>
+            </td>
         </tr>
-        -->
-
         </tbody><!--FIN CUERPO TABLA-->
     </table>
 
@@ -362,15 +424,15 @@
 </div>-->
 <!--FIN MODAL VER SOLICITUD INFO-->
 
-    <div class="piedepagina">
-    </div>
-  </body>
-  <script>
+<div class="piedepagina">
+</div>
+</body>
+<script>
     function abrir_url(b_id){
-      uriFile = '/solicitud/descargarReporte?idR='  + b_id
-      window.open(uriFile, '_blank');
+        uriFile = '/solicitud/descargarReporte?idR='  + b_id
+        window.open(uriFile, '_blank');
 
     }
 
-  </script>
+</script>
 </html>

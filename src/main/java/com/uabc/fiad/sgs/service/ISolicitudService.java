@@ -189,7 +189,10 @@ public interface ISolicitudService {
     public List<Solicitud> listarSolicitudesRealizadas(Integer rolId);
 	public List<Solicitud> listarSolicitudesRealizadasById(Integer userId);
 
+    Integer totalSolicitudesRealizadas(Integer rolId, FiltrosSolicitudes filtros);
     Integer totalSolicitudesRealizadasById(Integer userId, FiltrosSolicitudes filtros);
     List<Solicitud> paginarSolicitudesRealizadas(Integer rolId, FiltrosSolicitudes filtros, Integer limit, Integer offset);
     List<Solicitud> paginarSolicitudesRealizadasById(Integer userId, FiltrosSolicitudes filtros, Integer limit, Integer offset);
+
+    List<String> listarEstados();
 }

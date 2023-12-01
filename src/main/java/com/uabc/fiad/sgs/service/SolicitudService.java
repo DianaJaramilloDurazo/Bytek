@@ -594,54 +594,205 @@ public class SolicitudService implements ISolicitudService {
 				rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")), userId);
 	}
 
-	public List<Solicitud> paginarSolicitudesRealizadas(Integer rolId, FiltrosSolicitudes filtros, Integer limit, Integer offset) {
-		return template.query("""
-				select s.*, es.DescripcionEstado
+	public Integer totalSolicitudesRealizadas(Integer rolId, FiltrosSolicitudes filtros) {
+
+		return template.queryForObject("""
+				select count(*)
 				from solicitud s
 				right join firmas_solicitud
 				on s.idSolicitud = firmas_solicitud.idSolicitud
 				left join estado_solicitud es
 				on s.idEstado_Solicitud = es.idEstado_Solicitud
-				where firmas_solicitud.idRol = ? and firmas_solicitud.idUsuario is null
-				            and (s.idEstado_Solicitud = 5 or s.idEstado_Solicitud = 6 or s.idEstado_Solicitud = 8);
-				""",
-				(rs, rowNum) -> new Solicitud(rs.getInt("idSolicitud"), rs.getString("Nombre_Evento"),
-						rs.getObject("Fecha_Salida", LocalDateTime.class), rs.getObject("Fecha_Regreso", LocalDateTime.class),
-						rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getInt("idUsuario"),
-						rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")),
-				rolId);
-	}
-
-	public Integer totalSolicitudesRealizadasById(Integer userId, FiltrosSolicitudes filtros) {
-
-		return template.queryForObject("""
-				select count(*)
-				from solicitud s
-				left join estado_solicitud es
-				on s.idEstado_Solicitud = es.idEstado_Solicitud
-				where s.idUsuario = ? and 
-				(s.idEstado_Solicitud = 5 or s.idEstado_Solicitud = 6 or s.idEstado_Solicitud = 8)
-				and s.Nombre_Evento like ?;
+				left join usuario u
+				on s.idUsuario = u.idUsuario 
+				where firmas_solicitud.idRol = ?
+				and (s.idEstado_Solicitud = 5 or s.idEstado_Solicitud = 6 or s.idEstado_Solicitud = 8)
+				and s.Nombre_Evento like ?
+				and (u.Categoria_idCategoria1 = ? or ? is null)
+				and (? in (select aas.Act_Asociada_idAct_Asociada from act_asociada_solicitud aas where aas.Solicitud_idSolicitud = s.idSolicitud) or ? is null)
+				and (Num_Empleado = ? or ? is null)
+				and (s.idCarrera = ? or ? is null)
+				and s.Lugar like ?
+				and (s.idEstado_Solicitud = ? or ? is null)
+				and u.Usr_Nombre like ?
+				and (s.Fecha_Regreso > ? or ? is null)
+				and (s.Fecha_Salida < ? or ? is null);
 				""",
 				Integer.class,
-				userId, "%" + filtros.getNombreEvento() + "%");
+				rolId,
+				"%" + filtros.getNombreEvento() + "%",
+				filtros.getIdCategoria(),
+				filtros.getIdCategoria(),
+				filtros.getIdActAsociada(),
+				filtros.getIdActAsociada(),
+				filtros.getNumEmpleado(),
+				filtros.getNumEmpleado(),
+				filtros.getIdCarrera(),
+				filtros.getIdCarrera(),
+				"%" + filtros.getLugar() + "%",
+				filtros.getIdEstado(),
+				filtros.getIdEstado(),
+				"%" + filtros.getNombreDocente() + "%",
+				filtros.getFechaInicio(),
+				filtros.getFechaInicio(),
+				filtros.getFechaFin(),
+				filtros.getFechaFin());
 	}
-	public List<Solicitud> paginarSolicitudesRealizadasById(Integer userId, FiltrosSolicitudes filtros, Integer limit, Integer offset) {
 
+	public List<Solicitud> paginarSolicitudesRealizadas(Integer rolId, FiltrosSolicitudes filtros, Integer limit, Integer offset) {
 		return template.query("""
-				select *
+				select s.*, es.DescripcionEstado, u.Categoria_idCategoria1
 				from solicitud s
+				right join firmas_solicitud
+				on s.idSolicitud = firmas_solicitud.idSolicitud
 				left join estado_solicitud es
 				on s.idEstado_Solicitud = es.idEstado_Solicitud
-				where s.idUsuario = ? and 
-				(s.idEstado_Solicitud = 5 or s.idEstado_Solicitud = 6 or s.idEstado_Solicitud = 8)
+				left join usuario u
+				on s.idUsuario = u.idUsuario 
+				where firmas_solicitud.idRol = ?
+				and (s.idEstado_Solicitud = 5 or s.idEstado_Solicitud = 6 or s.idEstado_Solicitud = 8)
 				and s.Nombre_Evento like ?
+				and (u.Categoria_idCategoria1 = ? or ? is null)
+				and (? in (select aas.Act_Asociada_idAct_Asociada from act_asociada_solicitud aas where aas.Solicitud_idSolicitud = s.idSolicitud) or ? is null)
+				and (Num_Empleado = ? or ? is null)
+				and (s.idCarrera = ? or ? is null)
+				and s.Lugar like ?
+				and (s.idEstado_Solicitud = ? or ? is null)
+				and u.Usr_Nombre like ?
+				and (s.Fecha_Regreso > ? or ? is null)
+				and (s.Fecha_Salida < ? or ? is null)
 				limit ? offset ?;
 				""",
 				(rs, rowNum) -> new Solicitud(rs.getInt("idSolicitud"), rs.getString("Nombre_Evento"),
 						rs.getObject("Fecha_Salida", LocalDateTime.class), rs.getObject("Fecha_Regreso", LocalDateTime.class),
 						rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getInt("idUsuario"),
 						rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")),
-				userId, "%" + filtros.getNombreEvento() + "%", limit, offset);
+				rolId,
+				"%" + filtros.getNombreEvento() + "%",
+				filtros.getIdCategoria(),
+				filtros.getIdCategoria(),
+				filtros.getIdActAsociada(),
+				filtros.getIdActAsociada(),
+				filtros.getNumEmpleado(),
+				filtros.getNumEmpleado(),
+				filtros.getIdCarrera(),
+				filtros.getIdCarrera(),
+				"%" + filtros.getLugar() + "%",
+				filtros.getIdEstado(),
+				filtros.getIdEstado(),
+				"%" + filtros.getNombreDocente() + "%",
+				filtros.getFechaInicio(),
+				filtros.getFechaInicio(),
+				filtros.getFechaFin(),
+				filtros.getFechaFin(),
+				limit,
+				offset);
+	}
+
+	public Integer totalSolicitudesRealizadasById(Integer userId, FiltrosSolicitudes filtros) {
+		if (filtros.getNombreDocente() == null) {
+			filtros.setNombreDocente("");
+		}
+
+		return template.queryForObject("""
+				select count(*)
+				from solicitud s
+				left join estado_solicitud es
+				on s.idEstado_Solicitud = es.idEstado_Solicitud
+				left join usuario u
+				on u.idUsuario = s.idUsuario
+				where s.idUsuario = ? and 
+				(s.idEstado_Solicitud = 5 or s.idEstado_Solicitud = 6 or s.idEstado_Solicitud = 8)
+				and s.Nombre_Evento like ?
+				and (u.Categoria_idCategoria1 = ? or ? is null)
+				and (? in (select aas.Act_Asociada_idAct_Asociada from act_asociada_solicitud aas where aas.Solicitud_idSolicitud = s.idSolicitud) or ? is null)
+				and (Num_Empleado = ? or ? is null)
+				and (s.idCarrera = ? or ? is null)
+				and s.Lugar like ?
+				and (s.idEstado_Solicitud = ? or ? is null)
+				and u.Usr_Nombre like ?
+				and (s.Fecha_Regreso > ? or ? is null)
+				and (s.Fecha_Salida < ? or ? is null)
+				""",
+				Integer.class,
+				userId,
+				"%" + filtros.getNombreEvento() + "%",
+				filtros.getIdCategoria(),
+				filtros.getIdCategoria(),
+				filtros.getIdActAsociada(),
+				filtros.getIdActAsociada(),
+				filtros.getNumEmpleado(),
+				filtros.getNumEmpleado(),
+				filtros.getIdCarrera(),
+				filtros.getIdCarrera(),
+				"%" + filtros.getLugar() + "%",
+				filtros.getIdEstado(),
+				filtros.getIdEstado(),
+				"%" + filtros.getNombreDocente() + "%",
+				filtros.getFechaInicio(),
+				filtros.getFechaInicio(),
+				filtros.getFechaFin(),
+				filtros.getFechaFin()
+				);
+	}
+	public List<Solicitud> paginarSolicitudesRealizadasById(Integer userId, FiltrosSolicitudes filtros, Integer limit, Integer offset) {
+		if (filtros.getNombreDocente() == null) {
+			filtros.setNombreDocente("");
+		}
+
+		return template.query("""
+				select *
+				from solicitud s
+				left join estado_solicitud es
+				on s.idEstado_Solicitud = es.idEstado_Solicitud
+				left join usuario u
+				on u.idUsuario = s.idUsuario
+				where s.idUsuario = ? and 
+				(s.idEstado_Solicitud = 5 or s.idEstado_Solicitud = 6 or s.idEstado_Solicitud = 8)
+				and s.Nombre_Evento like ?
+				and (u.Categoria_idCategoria1 = ? or ? is null)
+				and (? in (select aas.Act_Asociada_idAct_Asociada from act_asociada_solicitud aas where aas.Solicitud_idSolicitud = s.idSolicitud) or ? is null)
+				and (Num_Empleado = ? or ? is null)
+				and (s.idCarrera = ? or ? is null)
+				and s.Lugar like ?
+				and (s.idEstado_Solicitud = ? or ? is null)
+				and u.Usr_Nombre like ?
+				and (s.Fecha_Regreso > ? or ? is null)
+				and (s.Fecha_Salida < ? or ? is null)
+				limit ? offset ?;
+				""",
+				(rs, rowNum) -> new Solicitud(rs.getInt("idSolicitud"), rs.getString("Nombre_Evento"),
+						rs.getObject("Fecha_Salida", LocalDateTime.class), rs.getObject("Fecha_Regreso", LocalDateTime.class),
+						rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getInt("idUsuario"),
+						rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")),
+				userId,
+				"%" + filtros.getNombreEvento() + "%",
+				filtros.getIdCategoria(),
+				filtros.getIdCategoria(),
+				filtros.getIdActAsociada(),
+				filtros.getIdActAsociada(),
+				filtros.getNumEmpleado(),
+				filtros.getNumEmpleado(),
+				filtros.getIdCarrera(),
+				filtros.getIdCarrera(),
+				"%" + filtros.getLugar() + "%",
+				filtros.getIdEstado(),
+				filtros.getIdEstado(),
+				"%" + filtros.getNombreDocente() + "%",
+				filtros.getFechaInicio(),
+				filtros.getFechaInicio(),
+				filtros.getFechaFin(),
+				filtros.getFechaFin(),
+				limit,
+				offset);
+	}
+
+	public List<String> listarEstados() {
+		return template.query(
+    		"""
+				select DescripcionEstado from estado_solicitud es;
+				""",
+				(rs, rowNum) -> rs.getString("DescripcionEstado")
+		);
 	}
 }

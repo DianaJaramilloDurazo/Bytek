@@ -11,6 +11,7 @@ import com.uabc.fiad.sgs.utils.SessionUtils;
 
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
 
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 @Controller
@@ -171,11 +174,10 @@ public class HomeController {
             return "redirect:/login";
         }
 
-		System.out.println(filtros);
 		model.addAttribute("filtros", filtros);
 
 		// Tamaño de página: cuántos registros se mostrarán por página
-		int pageSize = 2;
+		int pageSize = 10;
 
 		// Calcular el desplazamiento (offset) para determinar desde qué registro se debe iniciar en la base de datos
 		int offset = (filtros.getPage() - 1) * pageSize;
@@ -217,7 +219,7 @@ public class HomeController {
 			}
 		}else{
 
-			totalRecords = solicitudService.listarSolicitudesRealizadas(usuarioService.findIdRolById(u.getIdUsuario())).size();
+			totalRecords = solicitudService.totalSolicitudesRealizadas(usuarioService.findIdRolById(u.getIdUsuario()), filtros);
 
 			// Calcular el número total de páginas (totalPages) usando una división entera
 			int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
@@ -235,11 +237,9 @@ public class HomeController {
 			model.addAttribute("prev", filtros.getPage() - 1);
 			model.addAttribute("end", endPage);
 			model.addAttribute("last", totalPages);
-			//List<UsuarioDTO> users = usuarioService.pagination(pageSize, offset, filtros);
-			//model.addAttribute("users",users);
-			// Si tiene rol
+
 			// Lista de solicitudes para firmar
-			solicitudesRealizadas = solicitudService.listarSolicitudesRealizadas(usuarioService.findIdRolById(u.getIdUsuario()));
+			solicitudesRealizadas = solicitudService.paginarSolicitudesRealizadas(usuarioService.findIdRolById(u.getIdUsuario()), filtros, pageSize, offset);
 			// También los usuarios registrados
 			// todo: Monitorear por problemas de rendimiento cargando la página de inicio, simplemente es la solución más
 			//  sencilla que se me ocurrió
@@ -252,6 +252,20 @@ public class HomeController {
 		model.addAttribute("solicitudes_realizadas", solicitudesRealizadas);
 		model.addAttribute("usuarios", usuarios);
 
+		model.addAttribute("categorias", usuarioService.listarCategorias());
+
+		List<String> actAsociadas = new ArrayList<>();
+		actAsociadas.add("CACEI");
+		actAsociadas.add("Licenciatura");
+		actAsociadas.add("Personal");
+		actAsociadas.add("ISO");
+		actAsociadas.add("Posgrado");
+
+		model.addAttribute("actAsociadas", actAsociadas);
+
+		model.addAttribute("carreras", usuarioService.listarCarreras());
+
+		model.addAttribute("estados", solicitudService.listarEstados());
     	return "HistorialSolicitudes :: listaSolicitudesRealizadas";
     }
 	
