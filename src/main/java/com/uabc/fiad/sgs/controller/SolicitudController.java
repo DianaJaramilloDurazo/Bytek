@@ -326,7 +326,7 @@ public class SolicitudController {
 		}
 		
 		// Obtener total de registros
-		Integer totalRecords = solicitudService.totalSolicitudesPendientes(2);
+		Integer totalRecords = solicitudService.totalSolicitudesPendientes(usuarioService.findIdRolById(u.getIdUsuario()));
 
 		// Calcular el número total de páginas (totalPages) usando una división entera
 		int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
