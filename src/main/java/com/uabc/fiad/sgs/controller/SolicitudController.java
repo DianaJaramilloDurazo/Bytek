@@ -297,9 +297,7 @@ public class SolicitudController {
 		if (u == null) {
 			return "redirect:/login";
 		}
-		System.out.println("HOLAA");
 		// Manejar filtros
-		System.out.println(filtros);
 		model.addAttribute("filtros", filtros);
 
 		// Tamaño de página: cuántos registros se mostrarán por página
@@ -326,7 +324,7 @@ public class SolicitudController {
 		}
 		
 		// Obtener total de registros
-		Integer totalRecords = solicitudService.totalSolicitudesPendientes(2);
+		Integer totalRecords = solicitudService.totalSolicitudesPendientes(usuarioService.findIdRolById(u.getIdUsuario()));
 
 		// Calcular el número total de páginas (totalPages) usando una división entera
 		int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
