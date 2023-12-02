@@ -84,7 +84,7 @@ function validarForm() {
 	var longitudLugar = lugar.value.length;
 	
 	
-	if (nombreEvento.value === '' || longitudNombre > 100) {
+	if (nombreEvento.value.trim() === '' || longitudNombre > 100) {
 		
 		if(longitudNombre >100)
 		{
@@ -129,7 +129,7 @@ function validarForm() {
 		alertaCosto2.style.display = 'none';
 	}
 
-	if (lugar.value === '' || longitudLugar > 100) {
+	if (lugar.value.trim() === '' || longitudLugar > 100) {
 		if(longitudLugar > 100)
 		{
 			var alertaLugar2 = document.getElementById('largolugar-alert');
@@ -261,7 +261,7 @@ function validarFormEditar() {
 	
 	//window.alert(longitudCosto);
 	
-	if (nombreEvento.value === '' || longitudNombre > 100) {
+	if (nombreEvento.value.trim() === '' || longitudNombre > 100) {
 		
 		if(longitudNombre >100)
 		{
@@ -306,7 +306,7 @@ function validarFormEditar() {
 		var alertaCosto2 = document.getElementById('costolargo-alert');
 		alertaCosto2.style.display = 'none';
 	}
-	if (lugar.value === '' || longitudLugar > 100) {
+	if (lugar.value.trim() === '' || longitudLugar > 100) {
 		if(longitudLugar > 100)
 		{
 			var alertaLugar2 = document.getElementById('lugarLargo-alert');
