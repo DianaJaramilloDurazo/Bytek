@@ -394,14 +394,14 @@ public class SolicitudController {
 		response.setContentType("application/pdf");
 		
 		String headerKey = "Content-Disposition";
-  	String sbHeaderValue = "attachment; filename=Oficio de Comisión.pdf";
-  	Optional<Solicitud> solicitud = solicitudService.findById(id);
-  	Optional<Usuario> usuario = usuarioService.findById(solicitud.get().getIdUsuario());
-  	response.setHeader(headerKey, sbHeaderValue);
-  	System.out.println(solicitud.get());
-  	PDFExporter export = new PDFExporter(solicitud.get(),usuario.get());
-		export.export(response);
-	}
+		String sbHeaderValue = "attachment; filename=Oficio de Comisión.pdf";
+		Optional<Solicitud> solicitud = solicitudService.findById(id);
+		Optional<Usuario> usuario = usuarioService.findById(solicitud.get().getIdUsuario());
+		response.setHeader(headerKey, sbHeaderValue);
+		System.out.println(solicitud.get());
+		PDFExporter export = new PDFExporter(solicitud.get(),usuario.get());
+			export.export(response);
+		}
 
 
 

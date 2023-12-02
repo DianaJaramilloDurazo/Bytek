@@ -74,6 +74,10 @@ public class AdminController {
     @ResponseBody
     @ResponseStatus(code = HttpStatus.CREATED)
     public String registrarUsuario(Rol rol) {
+		Usuario u = SessionUtils.getUsuario(usuarioService);
+		if (u == null) {
+			return "redirect:/login";
+		}
         System.out.println(rol);
         String rawPwd =rol.getPassword();
 
@@ -100,6 +104,10 @@ public class AdminController {
 
     @GetMapping("/pagination")
     public String paginacion(@ModelAttribute Filtros filtros, Model model) {
+		Usuario u = SessionUtils.getUsuario(usuarioService);
+		if (u == null) {
+			return "redirect:/login";
+		}
 
         // Manejar filtros
         model.addAttribute("filtros", filtros);

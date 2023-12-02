@@ -57,6 +57,10 @@ public class DocenteController {
 	@GetMapping("/get-registrar-solicitud-form")
 	public String getForm(Model model) {
 		Usuario u= SessionUtils.getUsuario(usuarioService);
+		if (u == null) {
+			return "redirect:/login";
+		}
+		
 		List<Map<String, Object>> categorias = usuarioService.listarCategorias();
 		String categoria = "";
 		for (Map<String, Object> c : categorias) {
@@ -105,6 +109,10 @@ public class DocenteController {
 
 		// Se obtiene el usuario de la sesión actual
 		Usuario u = SessionUtils.getUsuario(usuarioService);
+		
+		if (u == null) {
+			return "redirect:/login";
+		}
 		// Se obtine su id
 		solicitud.setIdUsuario(u.getIdUsuario());
 		System.out.print(solicitud);
@@ -229,7 +237,10 @@ public class DocenteController {
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public String CancelarSolicitud(@RequestParam(value = "solicitudCancelar", required = false) Integer idSolicitud) {
 
-		System.out.print(idSolicitud);
+		Usuario u = SessionUtils.getUsuario(usuarioService);
+		if (u == null) {
+			return "redirect:/login";
+		}
 		if (idSolicitud != null) {
 			Boolean cancelada = solicitudService.cancelarSolicitud(idSolicitud);
 			if (cancelada) {
@@ -250,6 +261,9 @@ public class DocenteController {
 	public String editarSolicitud(@RequestParam(value = "id") Integer idSolicitud, Model model) {
 
 		Usuario u= SessionUtils.getUsuario(usuarioService);
+		if (u == null) {
+			return "redirect:/login";
+		}
 		List<Map<String, Object>> categorias = usuarioService.listarCategorias();
 		String categoria = "";
 		for (Map<String, Object> c : categorias) {
@@ -312,6 +326,9 @@ public class DocenteController {
 			@RequestParam(value = "Otra", required = false) String otroActividad){
 		
 		Usuario u = SessionUtils.getUsuario(usuarioService);
+		if (u == null) {
+			return "redirect:/login";
+		}
 		// Guarda id y fechas dentro de la solciitud a editar
 		Integer idSolicitud = solicitud.getIdSolicitud();
 		solicitud.setFechaSalida(fechaSalida.atTime(horaSalida));
