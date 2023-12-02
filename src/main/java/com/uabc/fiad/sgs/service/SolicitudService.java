@@ -493,6 +493,13 @@ public class SolicitudService implements ISolicitudService {
 		return rowsAffected > 0;
 
 	}
+	@Override
+	public boolean guardarReferenciaOficioSellado(String idReporteDrive, Integer idSolicitud) {
+		String sql = "UPDATE solicitud SET Oficio_Sellado = ? WHERE idSolicitud = ?;";
+		int rowsAffected = template.update(sql, idReporteDrive, idSolicitud);
+		return rowsAffected > 0;
+
+	}
 
 	/**
 	 * Regresa una lista de solicitudes con una cantidad especifica para realizar una paginación
@@ -826,14 +833,11 @@ public class SolicitudService implements ISolicitudService {
 		return template.queryForObject("""
 				select count(*)
 				from solicitud s
-				right join firmas_solicitud
-				on s.idSolicitud = firmas_solicitud.idSolicitud
 				left join estado_solicitud es
 				on s.idEstado_Solicitud = es.idEstado_Solicitud
 				left join usuario u
 				on s.idUsuario = u.idUsuario
-				where (s.idEstado_Solicitud = 5 or s.idEstado_Solicitud = 6 or s.idEstado_Solicitud = 8)
-				and s.Nombre_Evento like ?
+				where s.Nombre_Evento like ?
 				and (u.Categoria_idCategoria1 = ? or ? is null)
 				and (? in (select aas.Act_Asociada_idAct_Asociada from act_asociada_solicitud aas where aas.Solicitud_idSolicitud = s.idSolicitud) or ? is null)
 				and (Num_Empleado = ? or ? is null)
@@ -870,14 +874,11 @@ public class SolicitudService implements ISolicitudService {
 		return template.query("""
 				select s.*, es.DescripcionEstado, u.Categoria_idCategoria1
 				from solicitud s
-				right join firmas_solicitud
-				on s.idSolicitud = firmas_solicitud.idSolicitud
 				left join estado_solicitud es
 				on s.idEstado_Solicitud = es.idEstado_Solicitud
 				left join usuario u
 				on s.idUsuario = u.idUsuario 
-				where (s.idEstado_Solicitud = 5 or s.idEstado_Solicitud = 6 or s.idEstado_Solicitud = 8)
-				and s.Nombre_Evento like ?
+				where s.Nombre_Evento like ?
 				and (u.Categoria_idCategoria1 = ? or ? is null)
 				and (? in (select aas.Act_Asociada_idAct_Asociada from act_asociada_solicitud aas where aas.Solicitud_idSolicitud = s.idSolicitud) or ? is null)
 				and (Num_Empleado = ? or ? is null)
@@ -887,6 +888,7 @@ public class SolicitudService implements ISolicitudService {
 				and u.Usr_Nombre like ?
 				and (s.Fecha_Regreso > ? or ? is null)
 				and (s.Fecha_Salida < ? or ? is null)
+				order by field(es.DescripcionEstado, 'Firma parcial', 'Firmada', 'En curso', 'Reporte pendiente', 'Finalizada') desc
 				limit ? offset ?;
 				""",
 				(rs, rowNum) -> new Solicitud(rs.getInt("idSolicitud"), rs.getString("Nombre_Evento"),

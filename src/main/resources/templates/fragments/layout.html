@@ -45,8 +45,12 @@
 				<a id="administrar" class="nav-link" href="/admin/administrarCuenta">Administrar Cuentas</a>
 			</div>
 			
-			<div class="col-2 divnav">
+			<div class="col-2 divnav" sec:authorize="!hasAnyRole('ROLE_SECRETARIO')">
 				<a id="historialSolicitudes" class="nav-link" href="/historialDeSolicitudes">Historial de Solicitudes</a>
+			</div>
+            
+			<div class="col-2 divnav" sec:authorize="hasAnyRole('ROLE_SECRETARIO')">
+				<a id="historialSolicitudes" class="nav-link" href="/historialDeSolicitudes">Solicitudes</a>
 			</div>
 			
 			<div class="col-2 divnavb">

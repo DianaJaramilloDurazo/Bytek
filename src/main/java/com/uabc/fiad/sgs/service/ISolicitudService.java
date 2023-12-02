@@ -160,6 +160,7 @@ public interface ISolicitudService {
     boolean rechzarSolicitud(Integer idSolicitud);
 
     public boolean guardarReferenciaReporteFinal(String idReporteDrive,Integer idSolicitud);
+    public boolean guardarReferenciaOficioSellado(String idReporteDrive,Integer idSolicitud);
 	
     
 	/**

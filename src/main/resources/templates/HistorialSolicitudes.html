@@ -151,7 +151,7 @@
             <th scope="col-1">Fecha de salida</th>
             <th scope="col-1">Fecha de llegada</th>
             <th scope="col-2">Estado</th>
-            <th scope="col-2">Oficio comisión</th>
+            <th scope="col-2" sec:authorize="hasAnyRole('ROLE_SECRETARIO','ROLE_SUBDIRECTOR')">Oficio comisión</th>
             <th scope="col-1">Reporte de salida</th>
             <th scope="col-1">Solicitud</th>
         </tr>
@@ -164,30 +164,51 @@
             <td th:text="${#temporals.format(sol.fechaSalida, 'dd/MM/yyyy')}"></td>
             <td th:text="${#temporals.format(sol.fechaRegreso, 'dd/MM/yyyy')}"></td>
             <td th:text="${sol.estadoSolicitud}"></td>
-            <td>
+            <!--COLUMNA OFICIO DE COMISION-->
+            <td sec:authorize="hasAnyRole('ROLE_SECRETARIO','ROLE_SUBDIRECTOR')">
                 <a class="btn btn-danger" id="oficioComision"
                    th:href="@{/solicitud/oficio/{id}(id=${sol.getIdSolicitud})}"
+                   sec:authorize="hasAnyRole('ROLE_SECRETARIO')"
+                   th:disabled="${sol.oficioSellado != null}"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#F5BFBB" class="bi bi-file-earmark-arrow-down-fill" viewBox="0 0 16 16">
                         <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0"/>
                     </svg>
                 </a>
-                <button class="btn btn-primary verOficioFirmado">
+
+
+                <button class="btn btn-primary verOficioFirmado"
+                        th:disabled="${sol.oficioSellado == null}"
+                        th:id="${sol.oficioSellado}"
+                        th:hx-get="'/solicitud/descargarReporte?idR='+${sol.reporteFinal}"
+                        hx-indicator=".htmx-indicator"
+                        hx-swap="none"
+                        hx-on = "htmx:afterRequest: abrir_url(this.id)"
+                >
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-file-text-fill" viewBox="0 0 16 16">
                         <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1"/>
                     </svg>
                 </button>
-                <button class="btn btn-primary">
+                
+                <!-- INICIO BOTON SUBIR OFICIO-->
+                <button class="btn btn-primary"
+                        th:disabled="${sol.oficioSellado != null}"
+                        sec:authorize="hasAnyRole('ROLE_SECRETARIO')"
+                        th:onclick="'document.getElementById(\'subirReporte_Solicitud_Id\').value = ' + ${sol.getIdSolicitud}"
+                        type="button" data-bs-toggle="modal" data-bs-target="#subirReporteModal"        
+                >
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-file-earmark-arrow-up-fill" viewBox="0 0 16 16">
                         <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M6.354 9.854a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 8.707V12.5a.5.5 0 0 1-1 0V8.707z"/>
                     </svg>
                 </button>
+                <!-- FIN BOTON SUBIR OFICIO-->
+
                 <!--<button class="btn btn-dark" data-bs-toggle="modal"
                         data-bs-target="#ModalSolicitudInfo">-->
             </td>
             <td>
                 <button class="btn btn-primary roporte_btn" th:id="${sol.reporteFinal}"
-                        th:disabled="${sol.estadoSolicitud != 6}"
+                        th:disabled="${sol.idEstadoSolicitud != 6}"
                         th:hx-get="'/solicitud/descargarReporte?idR='+${sol.reporteFinal}"
                         hx-indicator=".htmx-indicator"
                         hx-swap="none"
@@ -277,6 +298,51 @@
     </nav>
 </div><!--FIN CONTENEDOR SOLICITUDES-->
 
+
+
+  <!-- MODAL SUBIR OFICIO -->
+  <div class="modal fade" id="subirReporteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+      <form
+          hx-post="/solicitud/subirReporte"
+          hx-target="#resultadoReporteDiv"
+          hx-swap="innerHTML"
+          hx-encoding='multipart/form-data'
+          hx-indicator="#indicadorReporte"
+          onsubmit="document.getElementById('botonSubirReporte').classList.add('disabled')
+                      "
+      >
+          <div class="modal-content">
+              <div class="modal-header">
+              <h5 class="modal-title" id="subirReporteModalLabel">Subir Oficio de Comisión</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="cerrar"></button>
+              </div>
+              <div class="modal-body">
+              Elige un archivo PDF(Máximo de tamaño son 2MB):
+              </div>
+              <input hidden id="subirReporte_Solicitud_Id" name="solicitud_id">
+              <input hidden id="tipoArchivo" name="tipoArchivo" value="2">
+              <input required type="file" accept=".pdf" id="PDF_ReporteSalida" name="reporte_archivo" class="form-control "
+                  onchange="document.getElementById('botonSubirReporte').classList.remove('disabled')
+                              document.getElementById('alertaResultadoReporte').remove()
+                              "
+              >
+              <div id="resultadoReporteDiv" class="modal-body d-flex justify-content-center">
+              </div>
+              <img  id="indicadorReporte" class="htmx-indicator" style="height: 5rem; width: 5rem;"  src="https://i.imgur.com/8THYvPQ.gif">
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                  <button id="botonSubirReporte"
+                  type="submit"  class="btn btn-primary">Subir</button>
+              </div>
+          </div>
+      </form>
+      </div>
+  </div>
+  <!-- FIN MODAL SUBIR OFICIO -->
+
+
+
 <!--MODAL PARA VER INFORMACION DE SOLICITUD-->
 <div class="modal fade m1" id="ModalSolicitudInfo" tabindex="-1" role="dialog" aria-labelledby="ModalSolicitudInfoLabel" aria-hidden="false">
     <div class="modal-dialog modal-lg" role="document">
@@ -296,133 +362,6 @@
         </div>
     </div>
 </div>
-<!--FIN MODAL VER SOLICITUD INFO-->
-
-<!--MODAL PARA VER INFORMACION DE SOLICITUD-->
-<!--<div class="modal fade m1" id="ModalSolicitudInfo" tabindex="-1" role="dialog" aria-labelledby="ModalSolicitudInfoLabel" aria-hidden="false">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content" id="cuadroModal">
-      <div class="modal-content" id="tituloModal">
-        <h5 class="modal-title" id="ModalSolicitudInfoLabel">Evento:
-          <span id="slc_Evento">Nombre del evento</span>
-        </h5>
-
-      </div>
-      <div class="modal-body">
-          <div class="cont_Formato">
-
-                <div class="izquierda">
-                  <div >
-                  <label class="txt_Nombre">Nombre: </label>
-                  <span id="slc_Nombre">Edgar Nava Hernandez</span>
-                </div>
-
-                <div >
-                  <label class="txt_Categoria">Categoria: </label>
-                  <span id="slc_Categoria">Profesor de asignatura</span>
-                </div>
-
-                <div >
-                  <label class="txt_Costo">Costo del evento: $ </label>
-                  <span id="slc_Costo">0</span>
-                </div>
-
-                <div >
-                    <label class="txt_FechaSalida">Fecha y hora de salida: </label>
-                    <span id="slc_FechaSalida">02/11/2023 01:25pm</span>
-                  </div>
-
-            </div>
-            <div class="derecha">
-                <div >
-                  <label class="txt_NumEmpleado">No Empleado: </label>
-                  <span id="slcNumEmpleado">12345</span>
-                </div>
-
-                <div >
-                  <label class="txt_Carrera">Carrera: </label>
-                  <span id="slc_carrera">Ingeniería en computación</span>
-                </div>
-
-                <div >
-                  <label class="txt_Lugar">Lugar: </label>
-                  <span id="slc_Lugar">Tecate, Baja California</span>
-                </div>
-
-                <div >
-                  <label class="txt_FechaRegreso">Fecha y hora de Regreso </label>
-                  <span id="slc_FechaRegreso">03/11/2023 01:25pm</span>
-                </div>
-            </div>
-            <div class="completo">
-              <form id="form_verInfo" method="post" action="Inicio.html">
-              <div >
-                  <label>Recurso a solicitar:</label><br>
-
-                  <input type="checkbox" id="Hospedaje_c" disabled checked><span>Hospedaje</span>
-                  <input type="checkbox" id="Transporte_c" onclick="activarInput('Transporte_c','Transporte_v')" disabled>
-                  <span>Transporte: </span>
-                  <input type="text" id="Transporte_v" value="0" disabled>
-
-                  <input type="checkbox" id="Combustible_c" onclick="activarInput('Combustible_c','Combustible_v')" disabled>
-                  <span>Combustible: </span>
-                  <input type="text" id="Combustible_v" value="0" disabled>
-
-                  <input type="checkbox" id="Viatico_c" disabled>
-                  <span>Viáticos</span><br>
-                  <input type="checkbox" id="OficioComision_c" disabled><span>Oficio comisón</span>
-
-                  <input type="checkbox" id="Otro_recurso_c" onclick="activarInput('Otro_recurso_c','Otro_recurso_v')" disabled>
-                  <span>Otro:</span>
-                  <input type="text" id="Otro_recurso_v" value="0" disabled>
-                  <br>
-                </div>
-              <div>
-                    <label>Actividad asociada a:</label><br>
-                    <label for="CACEI" id="normText">CACEI</label>
-                    <input type="checkbox" id="CACEI" value="CACEI" disabled>
-                    <label for="Licenciatura" id="normText">Licenciatura</label>
-                    <input type="checkbox" id="Licenciatura" value="Licenciatura" disabled>
-                    <label for="Personal" id="normText">Personal</label>
-                    <input type="checkbox" id="Personal" value="Personal" disabled>
-                    <label for="ISO 9001:2008" id="normText">ISO 9001:2008</label>
-                    <input type="checkbox" id="ISO 9001:2008" value="ISO 9001:2008" disabled>
-                    <label for="Posgrado" id="normText">Posgrado</label>
-                    <input type="checkbox" id="Posgrado" value="Posgrado" disabled>
-                    <div class="Recursos">
-                      <label for="Otra" id="normText">Otra:</label>
-                      <span id="otra">Otra</span>
-                    </div>
-
-              </div>
-              <div>
-                    <label>Firmas:</label><br>
-                    <label for="Profesor" id="normText">Profesor</label>
-                    <input type="checkbox" id="Profesor" value="Profesor" checked disabled>
-                    <label for="Coordinador" id="normText">Coordinador</label>
-                    <input type="checkbox" id="Coordinador" value="Coordinador" disabled>
-                    <label for="subdirector" id="normText">Subdirector</label>
-                    <input type="checkbox" id="subdirector" value="subdirector" disabled>
-                    <label for="Administrador" id="normText">Administrador</label>
-                    <input type="checkbox" id="Administrador" value="Administrador" disabled>
-                    <div>
-                      <label for="Director" id="normText">Director</label>
-                      <input type="checkbox" id="Director" value="Director" disabled>
-                      <label for="Posgrado" id="normText">Posgrado</label>
-                      <input type="checkbox" id="Posgrado" value="Posgrado" disabled>
-                    </div>
-              </div>
-              </form>
-            </div>
-          </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" onclick="quitarModal(ModalSolicitudInfo)">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>-->
-<!--FIN MODAL VER SOLICITUD INFO-->
 
 <div class="piedepagina">
 </div>

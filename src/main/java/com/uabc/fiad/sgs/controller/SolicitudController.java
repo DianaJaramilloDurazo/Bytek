@@ -223,11 +223,12 @@ public class SolicitudController {
 		}
 	}
 
-	@PostMapping(value = "subirReporte", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "multipart/form-data"  }, produces = MediaType.TEXT_HTML_VALUE)
+	@PostMapping(value = "/subirReporte", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "multipart/form-data"  }, produces = MediaType.TEXT_HTML_VALUE)
 	@ResponseBody
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public String subirReporte(@RequestParam Integer solicitud_id, @RequestParam MultipartFile reporte_archivo)
+	public String subirReporte(@RequestParam Integer solicitud_id,@RequestParam Integer tipoArchivo ,@RequestParam MultipartFile reporte_archivo)
 	throws IOException, GeneralSecurityException {
+		System.out.println(tipoArchivo);
 		System.out.println(solicitud_id);
 		System.out.println(reporte_archivo.getSize());
 		
@@ -273,16 +274,20 @@ public class SolicitudController {
 
 		System.out.println(idDrive);
 		
-		if(!solicitudService.guardarReferenciaReporteFinal(idDrive, solicitud_id)){
-			return "<div id='alertaResultadoReporte' class='alert alert-danger' role='alert'><b>El archivo no fue subido<br>El servidor falló </b></div>";
-		
+		if(tipoArchivo == 1){
+			//si es 1 entonces se un reporte
+			if(!solicitudService.guardarReferenciaReporteFinal(idDrive, solicitud_id)){
+				return "<div id='alertaResultadoReporte' class='alert alert-danger' role='alert'><b>El archivo no fue subido<br>El servidor falló </b></div>";
+			}
+		}else{
+			//si es otro numero entornces es oficio de comision
+			if(!solicitudService.guardarReferenciaOficioSellado(idDrive, solicitud_id)){
+				return "<div id='alertaResultadoReporte' class='alert alert-danger' role='alert'><b>El archivo no fue subido<br>El servidor falló </b></div>";			
+			}
 		}
-
-
-
 		return "<div id='alertaResultadoReporte' class='alert alert-success' role='alert'><b> El archivo fue subido con éxito </b></div>";
-	
 	}
+
 
 	/**
 	 * Obtiene una página de solicitudes paginada.

@@ -95,7 +95,6 @@
                 </span>
                 <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Subir reporte de salida">
                 <button  id="btn_reporte"
-                        
                         th:disabled="${sol.idEstadoSolicitud != 5}"
                         th:onclick="'document.getElementById(\'subirReporte_Solicitud_Id\').value = ' + ${sol.getIdSolicitud}"
                         type="button" class="btn reporte_btn mb-2 me-2" data-bs-toggle="modal" data-bs-target="#subirReporteModal">
@@ -304,6 +303,7 @@
                 Elige un archivo PDF(Máximo de tamaño son 2MB):
                 </div>
                 <input hidden id="subirReporte_Solicitud_Id" name="solicitud_id">
+                <input hidden id="tipoArchivo" name="tipoArchivo" value="1">
                 <input required type="file" accept=".pdf" id="PDF_ReporteSalida" name="reporte_archivo" class="form-control "
                     onchange="document.getElementById('botonSubirReporte').classList.remove('disabled')
                                 document.getElementById('alertaResultadoReporte').remove()
