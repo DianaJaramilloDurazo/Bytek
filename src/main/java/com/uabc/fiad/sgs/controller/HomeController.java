@@ -189,6 +189,9 @@ public class HomeController {
 
 		List<Solicitud> solicitudesRealizadas;
 		List<Usuario> usuarios;
+
+		//System.out.println();
+
 		if (SessionUtils.getUserDetails().getAuthorities().stream()
 				.anyMatch(a -> a.getAuthority().equals("ROLE_DOCENTE"))) {
 
@@ -219,8 +222,15 @@ public class HomeController {
 			}
 		}else{
 
-			totalRecords = solicitudService.totalSolicitudesRealizadas(usuarioService.findIdRolById(u.getIdUsuario()), filtros);
+			if (SessionUtils.getUserDetails().getAuthorities().stream()
+				.anyMatch(a -> a.getAuthority().equals("ROLE_SECRETARIO"))){
+				totalRecords = solicitudService.totalSolicitudesRealizadasSecretario(filtros);
+			}
+			else{				
+				//Si no es secretario
+				totalRecords = solicitudService.totalSolicitudesRealizadas(usuarioService.findIdRolById(u.getIdUsuario()), filtros);
 
+			}
 			// Calcular el número total de páginas (totalPages) usando una división entera
 			int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
 
@@ -238,8 +248,19 @@ public class HomeController {
 			model.addAttribute("end", endPage);
 			model.addAttribute("last", totalPages);
 
-			// Lista de solicitudes para firmar
-			solicitudesRealizadas = solicitudService.paginarSolicitudesRealizadas(usuarioService.findIdRolById(u.getIdUsuario()), filtros, pageSize, offset);
+
+
+			if (SessionUtils.getUserDetails().getAuthorities().stream()
+				.anyMatch(a -> a.getAuthority().equals("ROLE_SECRETARIO"))){
+				// Lista de solicitudes para firmar
+				solicitudesRealizadas = solicitudService.paginarSolicitudesRealizadasSecretario(filtros, pageSize, offset);
+					
+			}else{
+				//Si no es secretario
+				// Lista de solicitudes para firmar
+				solicitudesRealizadas = solicitudService.paginarSolicitudesRealizadas(usuarioService.findIdRolById(u.getIdUsuario()), filtros, pageSize, offset);
+			}
+
 			// También los usuarios registrados
 			// todo: Monitorear por problemas de rendimiento cargando la página de inicio, simplemente es la solución más
 			//  sencilla que se me ocurrió
@@ -247,6 +268,7 @@ public class HomeController {
 			for (Solicitud s : solicitudesRealizadas) {
 				usuarios.add(usuarioService.findById(s.getIdUsuario()).get());
 			}
+
 		}
 
 		model.addAttribute("solicitudes_realizadas", solicitudesRealizadas);

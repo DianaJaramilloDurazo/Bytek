@@ -22,6 +22,8 @@ public class Solicitud {
     private String lugar;
 
     private String reporteFinal;
+    
+    private String oficioSellado;
 
     private Integer idUsuario;
 

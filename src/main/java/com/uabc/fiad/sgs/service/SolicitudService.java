@@ -53,7 +53,8 @@ public class SolicitudService implements ISolicitudService {
 				where s.idUsuario = ?;
 				""", (rs, rowNum) -> new Solicitud(rs.getInt("idSolicitud"), rs.getString("Nombre_Evento"),
 				rs.getObject("Fecha_Salida", LocalDateTime.class), rs.getObject("Fecha_Regreso", LocalDateTime.class),
-				rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getInt("idUsuario"),
+				rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getString("Oficio_Sellado"), 
+				rs.getInt("idUsuario"),
 				rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")), userId);
 	}
 
@@ -73,7 +74,8 @@ public class SolicitudService implements ISolicitudService {
 				where s.idSolicitud = ?;
 				""", (rs, rowNum) -> new Solicitud(rs.getInt("idSolicitud"), rs.getString("Nombre_Evento"),
 				rs.getObject("Fecha_Salida", LocalDateTime.class), rs.getObject("Fecha_Regreso", LocalDateTime.class),
-				rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getInt("idUsuario"),
+				rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getString("Oficio_Sellado"), 
+				rs.getInt("idUsuario"),
 				rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")), id);
 
 		if (solicitudes.size() == 0) {
@@ -182,7 +184,8 @@ public class SolicitudService implements ISolicitudService {
 				            and (s.idEstado_Solicitud = 1 or s.idEstado_Solicitud = 2);
 				""", (rs, rowNum) -> new Solicitud(rs.getInt("idSolicitud"), rs.getString("Nombre_Evento"),
 				rs.getObject("Fecha_Salida", LocalDateTime.class), rs.getObject("Fecha_Regreso", LocalDateTime.class),
-				rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getInt("idUsuario"),
+				rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getString("Oficio_Sellado"), 
+				rs.getInt("idUsuario"),
 				rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")), rolId);
 	}
 
@@ -512,7 +515,8 @@ public class SolicitudService implements ISolicitudService {
 					LIMIT ? OFFSET ?;
 				""", (rs, rowNum) -> new Solicitud(rs.getInt("idSolicitud"), rs.getString("Nombre_Evento"),
 				rs.getObject("Fecha_Salida", LocalDateTime.class), rs.getObject("Fecha_Regreso", LocalDateTime.class),
-				rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getInt("idUsuario"),
+				rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getString("Oficio_Sellado"), 
+				rs.getInt("idUsuario"),
 				rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")), rolId,
 				limit, offset);
 	}
@@ -556,7 +560,8 @@ public class SolicitudService implements ISolicitudService {
 				            and (s.idEstado_Solicitud = 5 or s.idEstado_Solicitud = 6 or s.idEstado_Solicitud = 8);
 				""", (rs, rowNum) -> new Solicitud(rs.getInt("idSolicitud"), rs.getString("Nombre_Evento"),
 				rs.getObject("Fecha_Salida", LocalDateTime.class), rs.getObject("Fecha_Regreso", LocalDateTime.class),
-				rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getInt("idUsuario"),
+				rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getString("Oficio_Sellado"), 
+				rs.getInt("idUsuario"),
 				rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")), rolId);	
 	}
 
@@ -590,7 +595,8 @@ public class SolicitudService implements ISolicitudService {
 				(s.idEstado_Solicitud = 5 or s.idEstado_Solicitud = 6 or s.idEstado_Solicitud = 8);;
 				""", (rs, rowNum) -> new Solicitud(rs.getInt("idSolicitud"), rs.getString("Nombre_Evento"),
 				rs.getObject("Fecha_Salida", LocalDateTime.class), rs.getObject("Fecha_Regreso", LocalDateTime.class),
-				rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getInt("idUsuario"),
+				rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getString("Oficio_Sellado"), 
+				rs.getInt("idUsuario"),
 				rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")), userId);
 	}
 
@@ -665,7 +671,8 @@ public class SolicitudService implements ISolicitudService {
 				""",
 				(rs, rowNum) -> new Solicitud(rs.getInt("idSolicitud"), rs.getString("Nombre_Evento"),
 						rs.getObject("Fecha_Salida", LocalDateTime.class), rs.getObject("Fecha_Regreso", LocalDateTime.class),
-						rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getInt("idUsuario"),
+						rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getString("Oficio_Sellado"), 
+						rs.getInt("idUsuario"),
 						rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")),
 				rolId,
 				"%" + filtros.getNombreEvento() + "%",
@@ -763,7 +770,8 @@ public class SolicitudService implements ISolicitudService {
 				""",
 				(rs, rowNum) -> new Solicitud(rs.getInt("idSolicitud"), rs.getString("Nombre_Evento"),
 						rs.getObject("Fecha_Salida", LocalDateTime.class), rs.getObject("Fecha_Regreso", LocalDateTime.class),
-						rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getInt("idUsuario"),
+						rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getString("Oficio_Sellado"), 
+						rs.getInt("idUsuario"),
 						rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")),
 				userId,
 				"%" + filtros.getNombreEvento() + "%",
@@ -795,4 +803,118 @@ public class SolicitudService implements ISolicitudService {
 				(rs, rowNum) -> rs.getString("DescripcionEstado")
 		);
 	}
+
+	public Integer totalSolicitudesRealizadasSecretario(FiltrosSolicitudes filtros) {
+		// Actualizacion del estado de las solicitudes que esten en estado Firmado
+		// cambiar a estado En Curso
+		String sqlUpdate1 = "update solicitud set idEstado_Solicitud = 4 where idEstado_Solicitud = 3 and NOW() > Fecha_Salida;";
+		// update,no es necesario saber si afecto alguna fila
+		template.update(sqlUpdate1);
+
+		// Actualizacion del estado de las solicitudes del usuario cada vez que se
+		// consultan
+		// set 5 al estado porque significa que es el estado de Reporte_Pendiente
+		// where idUsuario es ? porque se va leer el parametro de la funcion userId
+		// where idEstado_Solicitud = 4 porque solamente cuando se esta en curso puede
+		// pasar a pedir reporte automaticamente
+		// where Now > fecha_regreso porque significa porque el tiempo actual real ya
+		// paso al tiempo de la fecha de regreso
+		String sqlUpdate2 = "update solicitud set idEstado_Solicitud = 5 where idEstado_Solicitud = 4 and NOW() > Fecha_Regreso;";
+		// update,no es necesario saber si afecto alguna fila
+		template.update(sqlUpdate2);
+
+		return template.queryForObject("""
+				select count(*)
+				from solicitud s
+				right join firmas_solicitud
+				on s.idSolicitud = firmas_solicitud.idSolicitud
+				left join estado_solicitud es
+				on s.idEstado_Solicitud = es.idEstado_Solicitud
+				left join usuario u
+				on s.idUsuario = u.idUsuario
+				where (s.idEstado_Solicitud = 5 or s.idEstado_Solicitud = 6 or s.idEstado_Solicitud = 8)
+				and s.Nombre_Evento like ?
+				and (u.Categoria_idCategoria1 = ? or ? is null)
+				and (? in (select aas.Act_Asociada_idAct_Asociada from act_asociada_solicitud aas where aas.Solicitud_idSolicitud = s.idSolicitud) or ? is null)
+				and (Num_Empleado = ? or ? is null)
+				and (s.idCarrera = ? or ? is null)
+				and s.Lugar like ?
+				and (s.idEstado_Solicitud = ? or ? is null)
+				and u.Usr_Nombre like ?
+				and (s.Fecha_Regreso > ? or ? is null)
+				and (s.Fecha_Salida < ? or ? is null);
+				""",
+				Integer.class,
+				
+				"%" + filtros.getNombreEvento() + "%",
+				filtros.getIdCategoria(),
+				filtros.getIdCategoria(),
+				filtros.getIdActAsociada(),
+				filtros.getIdActAsociada(),
+				filtros.getNumEmpleado(),
+				filtros.getNumEmpleado(),
+				filtros.getIdCarrera(),
+				filtros.getIdCarrera(),
+				"%" + filtros.getLugar() + "%",
+				filtros.getIdEstado(),
+				filtros.getIdEstado(),
+				"%" + filtros.getNombreDocente() + "%",
+				filtros.getFechaInicio(),
+				filtros.getFechaInicio(),
+				filtros.getFechaFin(),
+				filtros.getFechaFin());
+	}
+
+
+	public List<Solicitud> paginarSolicitudesRealizadasSecretario(FiltrosSolicitudes filtros, Integer limit, Integer offset) {
+		return template.query("""
+				select s.*, es.DescripcionEstado, u.Categoria_idCategoria1
+				from solicitud s
+				right join firmas_solicitud
+				on s.idSolicitud = firmas_solicitud.idSolicitud
+				left join estado_solicitud es
+				on s.idEstado_Solicitud = es.idEstado_Solicitud
+				left join usuario u
+				on s.idUsuario = u.idUsuario 
+				where (s.idEstado_Solicitud = 5 or s.idEstado_Solicitud = 6 or s.idEstado_Solicitud = 8)
+				and s.Nombre_Evento like ?
+				and (u.Categoria_idCategoria1 = ? or ? is null)
+				and (? in (select aas.Act_Asociada_idAct_Asociada from act_asociada_solicitud aas where aas.Solicitud_idSolicitud = s.idSolicitud) or ? is null)
+				and (Num_Empleado = ? or ? is null)
+				and (s.idCarrera = ? or ? is null)
+				and s.Lugar like ?
+				and (s.idEstado_Solicitud = ? or ? is null)
+				and u.Usr_Nombre like ?
+				and (s.Fecha_Regreso > ? or ? is null)
+				and (s.Fecha_Salida < ? or ? is null)
+				limit ? offset ?;
+				""",
+				(rs, rowNum) -> new Solicitud(rs.getInt("idSolicitud"), rs.getString("Nombre_Evento"),
+						rs.getObject("Fecha_Salida", LocalDateTime.class), rs.getObject("Fecha_Regreso", LocalDateTime.class),
+						rs.getFloat("Costo"), rs.getString("Lugar"), rs.getString("Reporte_Final"), rs.getString("Oficio_Sellado"),
+						rs.getInt("idUsuario"),
+						rs.getInt("idCarrera"), rs.getString("DescripcionEstado"), rs.getInt("idEstado_Solicitud")),
+				
+				"%" + filtros.getNombreEvento() + "%",
+				filtros.getIdCategoria(),
+				filtros.getIdCategoria(),
+				filtros.getIdActAsociada(),
+				filtros.getIdActAsociada(),
+				filtros.getNumEmpleado(),
+				filtros.getNumEmpleado(),
+				filtros.getIdCarrera(),
+				filtros.getIdCarrera(),
+				"%" + filtros.getLugar() + "%",
+				filtros.getIdEstado(),
+				filtros.getIdEstado(),
+				"%" + filtros.getNombreDocente() + "%",
+				filtros.getFechaInicio(),
+				filtros.getFechaInicio(),
+				filtros.getFechaFin(),
+				filtros.getFechaFin(),
+				limit,
+				offset);
+	}
+
+
 }

@@ -195,4 +195,8 @@ public interface ISolicitudService {
     List<Solicitud> paginarSolicitudesRealizadasById(Integer userId, FiltrosSolicitudes filtros, Integer limit, Integer offset);
 
     List<String> listarEstados();
+
+    Integer totalSolicitudesRealizadasSecretario(FiltrosSolicitudes filtros);
+    List<Solicitud> paginarSolicitudesRealizadasSecretario(FiltrosSolicitudes filtros, Integer limit, Integer offset);
+    
 }
