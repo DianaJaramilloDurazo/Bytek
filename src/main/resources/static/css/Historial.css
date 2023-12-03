@@ -16,8 +16,19 @@
 .filtros{
 	display: none;
 }
+.btn{
+	border: none;
+}
 .roporte_btn{
 	background-color: #50B848 !important;
+	border: none;
+}
+.btn_filtro{
+	background-color: #8C7878;
+	border: none;
+}
+.btn_filtro:hover{
+	background-color: #4B4646;
 	border: none;
 }
 .roporte_btn:hover{
@@ -102,4 +113,67 @@
   border-color: #DFDFDF;
   border-radius: 3px;
   border-style: solid;
+}
+.modalver{
+	max-width: 1100px;
+	width: 100% !important;
+}
+
+
+
+
+.txt_Nombre
+{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_info{
+	color: #514F4F;
+	display: block;
+
+    max-width: 400px; /* Puedes ajustar el valor según tus necesidades */
+   	overflow: hidden; /* Maneja el desbordamiento si el contenido es demasiado ancho */
+    word-wrap: break-word; /* Permite que el texto se divida en varias líneas si es demasiado largo */
+}
+.firmasdiv{
+	width: 100%;
+}
+.txt_Categoria
+{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_NumEmpleado{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_Carrera{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_Costo{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_FechaSalida{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_Lugar{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.txt_FechaRegreso{
+	font-weight: 400 !important;
+	font-size: large !important;
+}
+.seccionModalTxtD{
+	text-align: center !important;
+	max-height: 30px !important;
+}
+.seccionModalTxt{
+	text-align: center !important;
+	margin-bottom: 10px !important;
+	max-height: 30px !important;
+
 }

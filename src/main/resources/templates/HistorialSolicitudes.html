@@ -7,6 +7,7 @@
     </div>
     <!--Archivo css-->
     <link rel="stylesheet" href="/css/Historial.css" >
+    
     <!--fin css-->
 
     <!--archivo js-->
@@ -51,13 +52,13 @@
             </div>
 			<div class="col-12 ">
                 <button type="submit" class="btn btn-primary"
-                        onclick="document.getElementById('page').value = 1">
+                        onclick="document.getElementById('page').value = 1" data-toggle="tooltip" data-placement="top" title="Buscar">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                     </svg>
                 </button>
                 
-                <button type="button" class="btn btn-primary" onclick="activarFiltros()">
+                <button type="button" class="btn btn-primary btn_filtro" onclick="activarFiltros()" data-toggle="tooltip" data-placement="top" title="Filtrar busqueda">
 					<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
 					  <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
 					</svg>
@@ -351,8 +352,8 @@
 
 
 <!--MODAL PARA VER INFORMACION DE SOLICITUD-->
-<div class="modal fade m1" id="ModalSolicitudInfo" tabindex="-1" role="dialog" aria-labelledby="ModalSolicitudInfoLabel" aria-hidden="false">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="ModalSolicitudInfo" tabindex="-1" role="dialog" aria-labelledby="ModalSolicitudInfoLabel" aria-hidden="false">
+    <div class="modal-dialog modalver" role="document">
         <div class="modal-content" id="cuadroModal">
             <div class="modal-content" id="tituloModal">
                 <h5 class="modal-title" id="ModalSolicitudInfoLabel">

@@ -37,6 +37,7 @@
 	font-weight: 400 !important;
 	font-size: large !important;
 }
+
 .txt_Nombre
 {
 	font-weight: 400 !important;
@@ -91,15 +92,17 @@
 .seccionModalTxt{
 	text-align: center !important;
 	margin-bottom: 10px !important;
+	max-height: 30px !important;
 
 }
 .seccionModalTxtI{
 	text-align: center !important;
 	margin-bottom: 10px !important;
+	max-height: 30px !important;
 }
 .seccionModalTxtD{
 	text-align: center !important;
-	margin-bottom: 10px !important;
+	max-height: 30px !important;
 	
 }
 .check_firma{
