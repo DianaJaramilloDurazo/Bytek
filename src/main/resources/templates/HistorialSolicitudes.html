@@ -50,6 +50,14 @@
                 >
                 <label for="docente">Docente</label>
             </div>
+            <div class="form-floating" sec:authorize="hasAnyRole('ROLE_DOCENTE')">
+                <input id="nombre-evento" name="nombre"
+                       class="form-control" type="text"
+                       placeholder="Nombre del evento"
+                       th:field="*{nombreEvento}"
+                >
+                <label for="nombre-evento">Nombre del evento</label>
+            </div>
 			<div class="col-12 ">
                 <button type="submit" class="btn btn-primary"
                         onclick="document.getElementById('page').value = 1" data-toggle="tooltip" data-placement="top" title="Buscar">
@@ -68,7 +76,7 @@
             
             <div class="filtros row row-cols" id="filtrosid">
 				
-            <div class="form-floating col-3">
+            <div class="form-floating col-3" sec:authorize="!hasAnyRole('ROLE_DOCENTE')">
                 <input id="nombre-evento" name="nombre"
                        class="form-control" type="text"
                        placeholder="Nombre del evento"
