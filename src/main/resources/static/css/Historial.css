@@ -10,9 +10,12 @@
 .piedepagina{
   height: 200px;
 }
-
-
-
+.filtros div{
+	padding-top: 10px;
+}
+.filtros{
+	display: none;
+}
 .roporte_btn{
 	background-color: #50B848 !important;
 	border: none;

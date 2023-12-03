@@ -41,8 +41,33 @@
         >
             <input type="hidden" id="page" name="page" th:value="*{page}">
             <!-- La página a mostrar -->
-
-            <div class="form-floating">
+            <div class="form-floating" sec:authorize="!hasAnyRole('ROLE_DOCENTE')">
+                <input id="docente"
+                       class="form-control" type="text"
+                       placeholder="Docente"
+                       th:field="*{nombreDocente}"
+                >
+                <label for="docente">Docente</label>
+            </div>
+			<div class="col-12 ">
+                <button type="submit" class="btn btn-primary"
+                        onclick="document.getElementById('page').value = 1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                    </svg>
+                </button>
+                
+                <button type="button" class="btn btn-primary" onclick="activarFiltros()">
+					<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+					  <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+					</svg>
+				</button>
+            </div>
+            
+            
+            <div class="filtros row row-cols" id="filtrosid">
+				
+            <div class="form-floating col-3">
                 <input id="nombre-evento" name="nombre"
                        class="form-control" type="text"
                        placeholder="Nombre del evento"
@@ -51,7 +76,7 @@
                 <label for="nombre-evento">Nombre del evento</label>
             </div>
 
-            <div class="form-floating" sec:authorize="!hasAnyRole('ROLE_DOCENTE')">
+            <div class="form-floating col-3" sec:authorize="!hasAnyRole('ROLE_DOCENTE')">
                 <select class="form-select" id="categoria-filtro" th:field="*{idCategoria}">
                     <option value="" selected>-- Categoría --</option>
                     <option th:each="categoria : ${categorias}"
@@ -62,7 +87,7 @@
                 <label for="categoria-filtro">Categoría</label>
             </div>
 
-            <div class="form-floating">
+            <div class="form-floating col-3">
                 <select class="form-select" id="act-asociada-filtro" th:field="*{idActAsociada}">
                     <option value="" selected>-- Actividad Asociada --</option>
                     <option th:each="act, iter : ${actAsociadas}"
@@ -73,13 +98,7 @@
                 <label for="act-asociada-filtro">Actividad asociada</label>
             </div>
 
-            <div class="form-floating" sec:authorize="!hasAnyRole('ROLE_DOCENTE')">
-                <input th:field="*{numEmpleado}" class="form-control" type="number" id="num-empleado-filtro"
-                       min="10000" max="999999" step="1" pattern="^[0-9]*$" onkeydown="if([69,187,188,189,190].includes(event.keyCode))event.preventDefault()">
-                <label for="num-empleado-filtro">Número de empleado</label>
-            </div>
-
-            <div class="form-floating" sec:authorize="!hasAnyRole('ROLE_COORDINADOR')">
+            <div class="form-floating col-3" sec:authorize="!hasAnyRole('ROLE_COORDINADOR')">
                 <select class="form-control " id="carrera-filtros" th:field="*{idCarrera}">
                     <option value="" selected>-- Carrera --</option>
                     <option th:each="carrera : ${carreras}"
@@ -90,17 +109,7 @@
                 <label for="carrera-filtros">Carrera</label>
             </div>
 
-            <div class="form-floating">
-                <input type="date" id="fecha-inicio" th:field="*{fechaInicio}" class="form-control">
-                <label for="fecha-inicio">Fecha inicio</label>
-            </div>
-
-            <div class="form-floating">
-                <input type="date" id="fecha-fin" th:field="*{fechaFin}" class="form-control">
-                <label for="fecha-fin">Fecha fin</label>
-            </div>
-
-            <div class="form-floating">
+            <div class="form-floating col-3">
                 <input id="lugar"
                        class="form-control" type="text"
                        placeholder="Lugar"
@@ -109,7 +118,7 @@
                 <label for="lugar">Lugar</label>
             </div>
 
-            <div class="form-floating">
+            <div class="form-floating col-3">
                 <select class="form-control " id="estado-filtros" th:field="*{idEstado}">
                     <option value="" selected>-- Estado --</option>
                     <option th:each="estado, iter : ${estados}"
@@ -119,24 +128,22 @@
                 </select>
                 <label for="estado-filtros">Estado</label>
             </div>
-
-            <div class="form-floating" sec:authorize="!hasAnyRole('ROLE_DOCENTE')">
-                <input id="docente"
-                       class="form-control" type="text"
-                       placeholder="Docente"
-                       th:field="*{nombreDocente}"
-                >
-                <label for="docente">Docente</label>
+             <div class="form-floating col-2" sec:authorize="!hasAnyRole('ROLE_DOCENTE')">
+                <input th:field="*{numEmpleado}" class="form-control" type="number" id="num-empleado-filtro"
+                       min="10000" max="999999" step="1" pattern="^[0-9]*$" onkeydown="if([69,187,188,189,190].includes(event.keyCode))event.preventDefault()">
+                <label for="num-empleado-filtro">Número de empleado</label>
             </div>
 
-            <div class="col-12 ">
-                <button type="submit" class="btn btn-primary"
-                        onclick="document.getElementById('page').value = 1">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                    </svg>
-                </button>
+            <div class="form-floating col-2">
+                <input type="date" id="fecha-inicio" th:field="*{fechaInicio}" class="form-control">
+                <label for="fecha-inicio">Fecha inicio</label>
             </div>
+
+            <div class="form-floating col-2">
+                <input type="date" id="fecha-fin" th:field="*{fechaFin}" class="form-control">
+                <label for="fecha-fin">Fecha fin</label>
+            </div>
+		</div>
         </form>
         <span class="htmx-indicator">
                   Buscando...
