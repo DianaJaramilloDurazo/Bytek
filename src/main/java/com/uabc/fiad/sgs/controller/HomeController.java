@@ -52,6 +52,11 @@ public class HomeController {
 			return "redirect:/login";
 		}
 
+		if(SessionUtils.getUserDetails().getAuthorities().stream()
+				.anyMatch(a -> a.getAuthority().equals("ROLE_SECRETARIO"))){
+			return "redirect:/historialDeSolicitudes";
+		}
+
 		if (SessionUtils.getUserDetails().getAuthorities().stream()
 				.anyMatch(a -> a.getAuthority().equals("ROLE_DOCENTE"))) {
 
