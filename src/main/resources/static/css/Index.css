@@ -57,6 +57,7 @@ body{
 }
 #btn-perfil:hover{
 	color: var(--text-color-amarillo);
+	text-shadow: 0 0 4px #A57218, 0 0 9px #A57218;
 }
 .nombre{
 	font-family: sans-serif;
@@ -163,6 +164,7 @@ body{
 }
 .cuadro-negro a:hover{
 	color: #DD971A;
+	text-shadow: 0 0 4px #A57218, 0 0 9px #A57218;
 }
 
 .divnav a{

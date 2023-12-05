@@ -340,7 +340,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Rechazar Solicitud</h5>
+        <h2 class="modal-title" id="exampleModalLabel">Rechazar Solicitud</h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="cerrar"></button>
       </div>
 
@@ -349,8 +349,12 @@
               hx-target="#firmar-result"
               hx-swap="innerHTML"
       >
-      <div class="modal-body">
-        ¿Seguro que desea rechazar la solicitud '<span id="confirmar-rechazo-evento"></span>'?
+      <div class="modal-body rechazarSolicitud">
+		  <h5>
+			  ¿Seguro que desea rechazar la salida al evento "
+		  </h5>
+         <h5 class="nombreEventoModal" id="confirmar-rechazo-evento"></h5>
+         <h5>"?</h5>
       </div>
       <input hidden id="rechazar-solicitud-id" name="rechazarId">
 
@@ -378,11 +382,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5">Confirmar firma</h1>
+                <h2 class="modal-title">Confirme su autorización</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="cerrar"></button>
             </div>
-            <div class="modal-body">
-                Desea firmar <span id="confirmar-firma-evento"></span>
+            <div class="modal-body confirmarFirma">
+				<h5>¿Seguro qué desea firmar la salida al evento "</h5>
+                <h5 class="nombreEventoModal" id="confirmar-firma-evento"></h5>
+                <h5>"?</h5>
                 <input type="hidden" id="firmar-solicitud-id" name="solicitudid" value="">
             </div>
             <div class="modal-footer">

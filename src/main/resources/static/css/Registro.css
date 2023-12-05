@@ -61,6 +61,7 @@
 	top: 30px;
 	font-family: minion-pro;
 	color: white;
+	
 }
 
 /*ESTABLECE LA CONFIGURACION PARA LA IMAGEN DEL LOGO*/
@@ -84,8 +85,11 @@ label{
 /**/
 .btn{
 	font-family: proxima-nova;
+	font-weight: bold;
 	background-color: #DD971A !important;
 	border: none;
 	color: #6C4603;
 }
-
+.btn:hover{
+	text-shadow: 0 0 4px #B89B66, 0 0 9px #B89B66;
+}
