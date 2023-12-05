@@ -196,6 +196,7 @@
                 <form hx-post="/docente/registrar"
                       hx-target="#result-accion"
                       hx-swap="innerHTML"
+                      hx-indicator=".htmx-indicator"
                       id="crearSolictud"
                 >
                     <div id="result-msg"></div>
@@ -209,7 +210,7 @@
                         <div class="modalConfirmar-content">
                             <p>¿Todos los datos son correctos?</p>
                             <button type="button"  class="btn btn-secondary" onclick="cerrarModal('crearSolictud')">Cancelar</button>
-                            <button class="btn btn-primary" onclick="cerrarModal('crearSolictud');" type="submit" >Confirmar</button>
+                            <button class="btn btn-primary" onclick="cerrarModal('crearSolictud');quitarModal(ModalCrearSolicitud);" type="submit" >Confirmar</button>
                         </div>
                     </div>
                 </form>
