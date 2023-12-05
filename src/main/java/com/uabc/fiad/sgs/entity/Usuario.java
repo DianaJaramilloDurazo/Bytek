@@ -32,7 +32,7 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(Integer idUsuario, String username, String apPaterno, String apMaterno, String correo, Integer numEmpleado, Integer idCarrera, Integer idCategoria, Integer idEstado,Integer idRol) {
+    public Usuario(Integer idUsuario, String username, String apPaterno, String apMaterno, String correo, Integer numEmpleado, Integer idCarrera, Integer idCategoria, Integer idEstado,Integer idRol, String pwd) {
         this.idUsuario = idUsuario;
         this.username = username;
         this.apPaterno = apPaterno;
@@ -43,6 +43,7 @@ public class Usuario {
         this.idCategoria = idCategoria;
         this.idEstado = idEstado;
         this.idRol = idRol;
+        this.password = pwd;
     }
 
 
