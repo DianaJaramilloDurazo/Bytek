@@ -1,5 +1,5 @@
 body{
-	font-family: sans-serif;
+	font-family: "Calisto MT";
 }
 .agregar_usr{
 	margin-left: 64% !important;
@@ -9,6 +9,7 @@ body{
 	margin-bottom: 30px;
 }
 .container{
+	padding-top: 20px;
 	position: relative;
 	background-color: white;
 }

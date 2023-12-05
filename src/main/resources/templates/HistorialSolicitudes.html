@@ -30,7 +30,10 @@
      hx-trigger="load  from:body">
 </div>
 <div th:fragment="listaSolicitudesRealizadas" class="ContHistorial" id="listaSolicitudesRealizadas"><!--CONTENEDOR TABLA SOLICITUDES DE SALIDA-->
-    <h4>Historial de solicitudes</h4>
+    <h1>Historial de solicitudes</h1>
+    <h5>
+		Gestiona las solicitudes de eventos pasados
+	</h5>
     <div class="container-fluid">
         <!-- Formulario con los filtros -->
         <form class="row row-cols-lg-auto align-items-center g-3"
@@ -167,7 +170,7 @@
             <th scope="col-1">Fecha de salida</th>
             <th scope="col-1">Fecha de llegada</th>
             <th scope="col-2">Estado</th>
-            <th scope="col-2" sec:authorize="hasAnyRole('ROLE_SECRETARIO','ROLE_SUBDIRECTOR')">Oficio comisión</th>
+            <th scope="col-2" class="oficioCol" sec:authorize="hasAnyRole('ROLE_SECRETARIO','ROLE_SUBDIRECTOR')">Oficio comisión</th>
             <th scope="col-1">Reporte de salida</th>
             <th scope="col-1">Solicitud</th>
         </tr>
@@ -182,17 +185,18 @@
             <td th:text="${sol.estadoSolicitud}"></td>
             <!--COLUMNA OFICIO DE COMISION-->
             <td sec:authorize="hasAnyRole('ROLE_SECRETARIO','ROLE_SUBDIRECTOR')">
-                <a class="btn btn-danger" id="oficioComision"
+				<span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Generar oficio comisión">
+                <a class="btn btn-danger oficioComision" id="oficioComision"
                    th:href="@{/solicitud/oficio/{id}(id=${sol.getIdSolicitud})}"
                    sec:authorize="hasAnyRole('ROLE_SECRETARIO')"
                    th:disabled="${sol.oficioSellado != null}"
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#F5BFBB" class="bi bi-file-earmark-arrow-down-fill" viewBox="0 0 16 16">
-                        <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0"/>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-file-text-fill" viewBox="0 0 16 16">
+                        <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1"/>
                     </svg>
                 </a>
-
-
+				</span>
+				<span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Descargar oficio firmado">
                 <button class="btn btn-primary verOficioFirmado"
                         th:disabled="${sol.oficioSellado == null}"
                         th:id="${sol.oficioSellado}"
@@ -201,13 +205,15 @@
                         hx-swap="none"
                         hx-on = "htmx:afterRequest: abrir_url(this.id)"
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-file-text-fill" viewBox="0 0 16 16">
-                        <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1"/>
+                   
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-file-earmark-arrow-down-fill" viewBox="0 0 16 16">
+                        <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0"/>
                     </svg>
                 </button>
                 
                 <!-- INICIO BOTON SUBIR OFICIO-->
-                <button class="btn btn-primary"
+                <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Subir oficio firmado">
+                <button class="btn btn-primary ificiofirmado"
                         th:disabled="${sol.oficioSellado != null}"
                         sec:authorize="hasAnyRole('ROLE_SECRETARIO')"
                         th:onclick="'document.getElementById(\'subirReporte_Solicitud_Id\').value = ' + ${sol.getIdSolicitud}"
@@ -217,12 +223,14 @@
                         <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M6.354 9.854a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 8.707V12.5a.5.5 0 0 1-1 0V8.707z"/>
                     </svg>
                 </button>
+                </span>
                 <!-- FIN BOTON SUBIR OFICIO-->
 
                 <!--<button class="btn btn-dark" data-bs-toggle="modal"
                         data-bs-target="#ModalSolicitudInfo">-->
             </td>
             <td>
+				<span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Descargar reporte de salida">
                 <button class="btn btn-primary roporte_btn" th:id="${sol.reporteFinal}"
                         th:disabled="${sol.idEstadoSolicitud != 6}"
                         th:hx-get="'/solicitud/descargarReporte?idR='+${sol.reporteFinal}"
@@ -234,9 +242,11 @@
                         <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1"/>
                     </svg>
                 </button>
+				</span>
 
             </td>
             <td>
+				<span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Información de la solicitud">
                 <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalSolicitudInfo"
                         th:hx-get="'/solicitud?id=' + ${sol.getIdSolicitud}"
                         hx-target="#solicitud-info-body"
@@ -246,12 +256,13 @@
                         <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
                     </svg>
                 </button>
+				</span>
             </td>
         </tr>
         </tbody><!--FIN CUERPO TABLA-->
     </table>
 
-    <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example" class="pagCont">
         <ul class="pagination">
             <nav aria-label="Pagination" th:object="${filtros}">
                 <ul class="pagination justify-content-center">

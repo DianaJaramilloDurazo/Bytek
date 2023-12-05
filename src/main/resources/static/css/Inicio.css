@@ -318,6 +318,9 @@
 	display: flex;
 	flex-wrap: wrap;
 }
+body{
+	font-family: "Calisto MT";
+}
 #Otra_actividad{
 	border-radius: 3xp;
 	border-color: #F2F2F2;

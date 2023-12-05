@@ -1,11 +1,17 @@
+body{
+	font-family: "Calisto MT";
+}
 .ContHistorial{
   width: 98%;
   margin: 0 auto;
   text-align: center;
 }
-.ContHistorial h4{
-  margin-top: 80px;
-  margin-bottom: 30px;
+.ContHistorial h1{
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+.ContHistorial h5{
+  color: #514F4F;
 }
 .piedepagina{
   height: 200px;
@@ -42,6 +48,25 @@
 .verOficioFirmado:hover{
 	background-color: #EAB75D !important;
 	border: none;
+}
+.ificiofirmado{
+	background-color: #1BC6AC !important;
+	border: none;
+}
+.ificiofirmado:hover{
+	background-color: #2A9081 !important;
+	border: none;
+}
+.oficioComision{
+	background-color: #DA492B !important;
+	border: none;
+}
+.oficioComision:hover{
+	background-color: #C16653 !important;
+	border: none;
+}
+.oficioCol{
+	min-width: 200px;
 }
 #tituloModal{
   text-align: center;
@@ -176,4 +201,8 @@
 	margin-bottom: 10px !important;
 	max-height: 30px !important;
 
+}
+
+.pagCont{
+	margin-top: 10px;
 }
