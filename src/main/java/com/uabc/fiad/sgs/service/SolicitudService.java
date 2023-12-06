@@ -918,5 +918,38 @@ public class SolicitudService implements ISolicitudService {
 				offset);
 	}
 
+	@Override
+	public boolean guardarReporteFinal(byte[] reporteFinal, Integer idSolicitud) {
+		String sql = "UPDATE solicitud SET Reporte_Final=? WHERE idSolicitud=?;";
+		int rowsAffected = template.update(sql, reporteFinal,idSolicitud);
+		if(rowsAffected > 0) {
+			template.update("UPDATE solicitud SET idEstado_Solicitud=6 WHERE idSolicitud=?;",idSolicitud);
+		}
+		return rowsAffected > 0;
+
+	}
+	@Override
+	public boolean guardarOficio(byte[] oficio, Integer idSolicitud) {
+		String sql = "UPDATE solicitud SET Oficio_Sellado=? WHERE idSolicitud=?;";
+		int rowsAffected = template.update(sql, oficio,idSolicitud);
+		return rowsAffected > 0;
+	}
+
+	@Override
+	public byte[] obtenerReporteFinal(Integer idSolicitud) {
+		// TODO Auto-generated method stub 
+		String sql = "SELECT s.Reporte_Final from solicitud s WHERE s.idSolicitud =?;";
+		byte[] reporte = template.queryForObject(sql, new Object[]{idSolicitud}, byte[].class);
+		return reporte;
+	}
+	
+	@Override
+	public byte[] obtenerOficioSellado(Integer idSolicitud) {
+		// TODO Auto-generated method stub 
+		String sql = "SELECT s.Oficio_Sellado from solicitud s WHERE s.idSolicitud =?;";
+		byte[] reporte = template.queryForObject(sql, new Object[]{idSolicitud}, byte[].class);
+		return reporte;
+	}
+
 
 }
