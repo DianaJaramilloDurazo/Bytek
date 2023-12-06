@@ -226,6 +226,7 @@ public class SolicitudController {
 
 	@PostMapping(value = "/subirReporte", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "multipart/form-data"  }, produces = MediaType.TEXT_HTML_VALUE)
 	@ResponseBody
+	@HxTrigger("refreshSolicitudes")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public String subirReporte(@RequestParam Integer solicitud_id,@RequestParam Integer tipoArchivo ,@RequestParam MultipartFile reporte_archivo)
 	throws IOException, GeneralSecurityException {

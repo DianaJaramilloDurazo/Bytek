@@ -29,6 +29,12 @@
      hx-include="[name='filtros-form']"
      hx-trigger="load  from:body">
 </div>
+<div hx-get="/listaSolicitudesRealizadas"
+     hx-target="#listaSolicitudesRealizadas"
+     hx-swap="outerHTML"
+     hx-include="[name='filtros-form']"
+     hx-trigger="refreshSolicitudes  from:body">
+</div>
 <div th:fragment="listaSolicitudesRealizadas" class="ContHistorial" id="listaSolicitudesRealizadas"><!--CONTENEDOR TABLA SOLICITUDES DE SALIDA-->
     <h1>Historial de solicitudes</h1>
     <h5>
