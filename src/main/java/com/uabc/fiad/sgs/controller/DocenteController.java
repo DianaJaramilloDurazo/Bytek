@@ -218,7 +218,7 @@ public class DocenteController {
 			//System.out.println(nombreUsuario);
 			//System.out.println(rolesFirmas);
 			// Se comento el envio de correos, para no mandar correos a usuarios reales
-			//mailManager.solicitarFirmas(rolesFirmas, nombreUsuario, solicitud.getNombreEvento());
+			mailManager.solicitarFirmas(rolesFirmas, nombreUsuario, solicitud.getNombreEvento());
 
 			return  resultadoFinal;
 		}
@@ -335,7 +335,7 @@ public class DocenteController {
 		solicitud.setFechaRegreso(fechaRegreso.atTime(horaRegreso));
 		Boolean editado = solicitudService.updateSolicitud(solicitud);
 		
-		//mailManager.sendMessaje("omar.herrera13@uabc.edu.mx", "Holiii");
+
 		
 		if (editado) {
 			// Se actualiza los recursos y las actividades seleccionadas
@@ -457,7 +457,7 @@ public class DocenteController {
 				//System.out.println(nombreUsuario);
 				//System.out.println(rolesFirmas);
 				// Se comento el envio de correos, para no mandar correos a usuarios reales
-				//mailManager.Correcion(rolesFirmas, nombreUsuario, solicitud.getNombreEvento());
+				mailManager.Correcion(rolesFirmas, nombreUsuario, solicitud.getNombreEvento());
 			}
 
 			String resultadoFinal="";

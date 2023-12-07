@@ -177,7 +177,7 @@ public class SolicitudController {
 
 		correos.add(usuarioFirma.getCorreo());
 		// TODO: Descomentar la siguiente línea para que envíe los correos
-//        mailManager.firmada(correos, solicitud.getNombreEvento(), usuarioService.findNameRolById(u.getIdRol()));
+        mailManager.firmada(correos, solicitud.getNombreEvento(), usuarioService.findNameRolById(u.getIdRol()));
 
 //        List<String> c = new ArrayList<>();
 //        c.add(usuarioFirma.getCorreo());
@@ -214,7 +214,7 @@ public class SolicitudController {
 			Usuario user = usuarioService.findById(solicitud.getIdUsuario()).get();
 			String nombreUsuario = user.getUsername()+" " + user.getApPaterno() + " " + user.getApMaterno();
 			// Comentado para no enviar correos a otros usuarios
-			//mailManager.rechazada(user.getCorreo(), nombreUsuario, solicitud.getNombreEvento(),motivo);
+			mailManager.rechazada(user.getCorreo(), nombreUsuario, solicitud.getNombreEvento(),motivo);
 			
 			
 			return "<div class='alert alert-success' role='alert'> La solicitud fue rechazada </div>";
