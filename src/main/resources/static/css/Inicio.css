@@ -43,6 +43,9 @@
 	font-weight: 400 !important;
 	font-size: large !important;
 }
+.modalConfirmar-content{
+	width: 400px;
+}
 .txt_info{
 	color: #514F4F;
 	display: block;
@@ -318,6 +321,9 @@
 	display: flex;
 	flex-wrap: wrap;
 }
+body{
+	font-family: "Calisto MT";
+}
 #Otra_actividad{
 	border-radius: 3xp;
 	border-color: #F2F2F2;
@@ -414,6 +420,26 @@
 }
 .col-3{
 	min-width: 200px;
+}
+.confirmarFirma{
+	max-width: 500px;
+    word-wrap: break-word;
+ }
+.confirmarFirma h5{
+	font-weight: bold;
+	display: inline;
+}
+.rechazarSolicitud{
+	max-width: 500px;
+    word-wrap: break-word;
+}
+.rechazarSolicitud h5{
+	font-weight: bold;
+ display: inline;
+}
+.nombreEventoModal{
+	font-weight: normal !important;
+	font-style: italic;
 }
 /*Codigo css para las cards de navegacion segun el numero de cards que se muestren*/
 

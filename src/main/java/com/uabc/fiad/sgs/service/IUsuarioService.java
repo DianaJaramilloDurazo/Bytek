@@ -43,6 +43,8 @@ public interface IUsuarioService {
 
     Boolean saveRol(Rol rol);
 
+    Boolean updateRolPwd(Integer id, String pwd);
+
     Optional<Rol> findRolByCorreo(String correo);
 
     Integer findIdRolByName(String rol);

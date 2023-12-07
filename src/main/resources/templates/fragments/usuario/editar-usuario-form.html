@@ -1,12 +1,14 @@
 <div th:fragment="editar-usuario-form" class="container-fluid">
     <input th:value="${usuario.idUsuario}"
            class="form-control " type="text" id="idUsuario" name="idUsuario" hidden="">
-    <label for="username">Nombre(s)</label>
-    <input th:value="${usuario.username}"
-           th:attr="onchange='validarCampos(\'' + ${usuario.username} + '\', \'username\')'"
-           class="form-control " type="text" id="username" name="username" required>
+    <div class="mb-3">
+        <label for="username">Nombre(s)</label>
+        <input th:value="${usuario.username}"
+               th:attr="onchange='validarCampos(\'' + ${usuario.username} + '\', \'username\')'"
+               class="form-control " type="text" id="username" name="username" required>
+    </div>
 
-    <div class="row row-cols-2">
+    <div class="row row-cols-2 mb-3">
         <div class="col">
             <label for="apPaterno">Apellido paterno</label>
             <input
@@ -19,15 +21,23 @@
         </div>
     </div>
 
-    <div th:fragment="correo" class="mb-3">
-        <label>Correo</label>
-        <input th:value="${usuario.correo}" class="form-control" disabled>
-<!--               hx-post="/registrar-usuario/validar/correo"-->
-<!--               th:classappend="${valid == null} ? '' : (${valid} ? 'is-valid' : 'is-invalid')" type="email"-->
-<!--               th:value="${value} ?: ''"-->
+    <div class="row row-cols-2 mb-3">
+        <div th:fragment="correo" class="col">
+            <label>Correo</label>
+            <input th:value="${usuario.correo}" class="form-control" disabled>
+            <!--               hx-post="/registrar-usuario/validar/correo"-->
+            <!--               th:classappend="${valid == null} ? '' : (${valid} ? 'is-valid' : 'is-invalid')" type="email"-->
+            <!--               th:value="${value} ?: ''"-->
+        </div>
+
+        <div th:if="${perfil == null || !perfil}" class="col" >
+            <label for="contraseña">Contraseña</label>
+            <input id="contraseña" th:name="password" class="form-control" aria-describedby="pwd-help">
+            <div id="pwd-help" class="form-text">Dejar en blanco para no cambiar la contraseña.</div>
+        </div>
     </div>
 
-    <div class="row row-cols-2">
+    <div class="row row-cols-2 mb-3">
 
 
         <div class="col">
@@ -48,7 +58,7 @@
 
     </div>
 
-    <div class="row row-cols-2">
+    <div class="row row-cols-2 mb-3">
         <div class="col">
             <label for="idCategoria">Categoría</label>
             <select class="form-control" id="idCategoria" name="idCategoria" required>
@@ -73,7 +83,7 @@
 
     </div>
     <!-- Si la bandera del perfil es verdadera, no mostrar el campo de rol, si es falsa o nula mostrarlo -->
-    <div th:if="${perfil == null || !perfil}" class="row row-cols-2">
+    <div th:if="${perfil == null || !perfil}" class="row row-cols-2 mb-3">
         <div class="col">
             <label for="idRol">Rol</label>
             <select onchange="mostrarModal()" class="form-control" id="idRol" name="idRol"  required>

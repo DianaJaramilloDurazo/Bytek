@@ -31,33 +31,15 @@ public class UsuarioService implements IUsuarioService {
     @Override
     public Optional<Usuario> findById(Integer id) {
         return template.queryForObject(
-                "SELECT u.idUsuario, u.Usr_Nombre ,u.Ap_Paterno, u.Ap_Materno,u.Num_Empleado, u.Correo, " +
-                        "c.idCarrera AS 'carrera', ca.idCategoria as 'categoria',u.Estado_idEstado AS estado " +
-                        "FROM usuario u " +
-                        "LEFT JOIN rol ON u.idUsuario = rol.Usuario_idUsuario " +
-                        "LEFT JOIN carrera c ON u.Carrera_idCarrera = c.idCarrera " +
-                        "LEFT JOIN categoria ca ON u.Categoria_idCategoria1 = ca.idCategoria " +
-                        "WHERE idUsuario = ?;",
-                new Object[]{id},
-                (rs, rowNum) ->
-                        Optional.of(new Usuario(
-                                rs.getInt("idUsuario"),
-                                rs.getString("Usr_Nombre"),
-                                rs.getString("Ap_Paterno"),
-                                rs.getString("Ap_Materno"),
-                                rs.getString("Correo"),
-                                rs.getInt("Num_Empleado"),
-                                rs.getInt("carrera"),
-                                rs.getInt("categoria"),
-                                rs.getInt("estado"),0
-                        ))
-        );
-    }
-
-    @Override
-    public Optional<Usuario> findRolById(Integer id) {
-        return template.queryForObject(
-                "SELECT u.idUsuario,u.Usr_Nombre, u.Ap_Paterno, u.Ap_Materno, r.Correo_rol AS Correo, u.Num_Empleado, u.Carrera_idCarrera AS carrera, u.Categoria_idCategoria1 AS categoria, u.Estado_idEstado AS estado, r.idRol FROM rol r INNER JOIN usuario u ON r.Usuario_idUsuario = u.idUsuario WHERE r.idRol=?",
+                """
+                SELECT u.idUsuario, u.Usr_Nombre ,u.Ap_Paterno, u.Ap_Materno,u.Num_Empleado, u.Correo, u.Usr_Pwd,
+                c.idCarrera AS 'carrera', ca.idCategoria as 'categoria',u.Estado_idEstado AS estado
+                FROM usuario u
+                LEFT JOIN rol ON u.idUsuario = rol.Usuario_idUsuario
+                LEFT JOIN carrera c ON u.Carrera_idCarrera = c.idCarrera
+                LEFT JOIN categoria ca ON u.Categoria_idCategoria1 = ca.idCategoria
+                WHERE idUsuario = ?;
+                """,
                 new Object[]{id},
                 (rs, rowNum) ->
                         Optional.of(new Usuario(
@@ -70,7 +52,30 @@ public class UsuarioService implements IUsuarioService {
                                 rs.getInt("carrera"),
                                 rs.getInt("categoria"),
                                 rs.getInt("estado"),
-                                rs.getInt("idRol")
+                                0,
+                                rs.getString("Usr_Pwd")
+                        ))
+        );
+    }
+
+    @Override
+    public Optional<Usuario> findRolById(Integer id) {
+        return template.queryForObject(
+                "SELECT u.idUsuario,u.Usr_Nombre, u.Ap_Paterno, u.Ap_Materno, r.Correo_rol AS Correo, u.Num_Empleado, u.Carrera_idCarrera AS carrera, u.Categoria_idCategoria1 AS categoria, u.Estado_idEstado AS estado, r.idRol, r.password FROM rol r INNER JOIN usuario u ON r.Usuario_idUsuario = u.idUsuario WHERE r.idRol=?",
+                new Object[]{id},
+                (rs, rowNum) ->
+                        Optional.of(new Usuario(
+                                rs.getInt("idUsuario"),
+                                rs.getString("Usr_Nombre"),
+                                rs.getString("Ap_Paterno"),
+                                rs.getString("Ap_Materno"),
+                                rs.getString("Correo"),
+                                rs.getInt("Num_Empleado"),
+                                rs.getInt("carrera"),
+                                rs.getInt("categoria"),
+                                rs.getInt("estado"),
+                                rs.getInt("idRol"),
+                                rs.getString("password")
                         ))
         );
     }
@@ -225,6 +230,7 @@ public class UsuarioService implements IUsuarioService {
         inParamMap.put("p_carrera", usuario.getIdCarrera());
         inParamMap.put("p_categoria", usuario.getIdCategoria());
         inParamMap.put("p_estado", usuario.getIdEstado());
+        inParamMap.put("password", usuario.getPassword());
 
         SqlParameterSource in = new MapSqlParameterSource(inParamMap);
 
@@ -402,6 +408,15 @@ public class UsuarioService implements IUsuarioService {
 
 
         return (Integer)resObj == 1;
+    }
+
+    public Boolean updateRolPwd(Integer id, String pwd) {
+
+        String sql = "UPDATE rol SET password = ? WHERE idRol = ?";
+
+        int filasAfectadas = template.update(sql, pwd, id);
+
+        return filasAfectadas > 0;
     }
 
     /**

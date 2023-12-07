@@ -200,4 +200,13 @@ public interface ISolicitudService {
     Integer totalSolicitudesRealizadasSecretario(FiltrosSolicitudes filtros);
     List<Solicitud> paginarSolicitudesRealizadasSecretario(FiltrosSolicitudes filtros, Integer limit, Integer offset);
     
+    boolean guardarReporteFinal(byte[] reporteFinal,Integer idSolicitud);
+    
+    boolean guardarOficio(byte[] oficio,Integer idSolicitud);
+    
+    byte[] obtenerReporteFinal(Integer idSolicitud);
+    
+    byte[] obtenerOficioSellado(Integer idSolicitud);
+    
+    
 }

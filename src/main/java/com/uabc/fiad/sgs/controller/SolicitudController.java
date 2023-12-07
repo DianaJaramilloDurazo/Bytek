@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -225,6 +226,7 @@ public class SolicitudController {
 
 	@PostMapping(value = "/subirReporte", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "multipart/form-data"  }, produces = MediaType.TEXT_HTML_VALUE)
 	@ResponseBody
+	@HxTrigger("refreshSolicitudes")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public String subirReporte(@RequestParam Integer solicitud_id,@RequestParam Integer tipoArchivo ,@RequestParam MultipartFile reporte_archivo)
 	throws IOException, GeneralSecurityException {
@@ -247,41 +249,22 @@ public class SolicitudController {
 		if(reporte_archivo.getSize() >2200000){
 			return "<div id='alertaResultadoReporte' class='alert alert-danger' role='alert'><b>El archivo es mayor a 2MB </b></div>";
 		}  
-
-		System.out.println(reporte_archivo.getOriginalFilename());
-		String pathFileOS = "./" + reporte_archivo.getOriginalFilename();
-		System.out.println(pathFileOS);
-		 
-		File driveFile = new File(pathFileOS);
-		OutputStream os = new FileOutputStream(driveFile);
-		os.write(reporte_archivo.getBytes());
 		
-		reporte_archivo.transferTo(driveFile);
-		String idDrive = DriveGoogleService.uploadPDF(  driveFile) ;
+		// Comenzar aqui
+		reporte_archivo.getBytes();
 		
-		os.close();
-		driveFile.delete();
-		
-		
-		if(	idDrive == null)
-		{
-			
-			return "<div id='alertaResultadoReporte' class='alert alert-danger' role='alert'><b>El archivo no fue subido<br>El servidor falló </b></div>";
-		
-		}
-		
-
-
-		System.out.println(idDrive);
+		boolean res;
 		
 		if(tipoArchivo == 1){
+			res = solicitudService.guardarReporteFinal(reporte_archivo.getBytes(), solicitud_id);
 			//si es 1 entonces se un reporte
-			if(!solicitudService.guardarReferenciaReporteFinal(idDrive, solicitud_id)){
+			if(!res){
 				return "<div id='alertaResultadoReporte' class='alert alert-danger' role='alert'><b>El archivo no fue subido<br>El servidor falló </b></div>";
 			}
 		}else{
+			res = solicitudService.guardarOficio(reporte_archivo.getBytes(), solicitud_id);
 			//si es otro numero entornces es oficio de comision
-			if(!solicitudService.guardarReferenciaOficioSellado(idDrive, solicitud_id)){
+			if(!res){
 				return "<div id='alertaResultadoReporte' class='alert alert-danger' role='alert'><b>El archivo no fue subido<br>El servidor falló </b></div>";			
 			}
 		}
@@ -391,6 +374,23 @@ public class SolicitudController {
         response.getOutputStream().flush();
 
 		
+	}
+	
+	@GetMapping("/descargarReporteFinal/{id}")
+	public ResponseEntity<byte[]> descargarReporteFinal(@PathVariable int id) {
+	    byte[] bytes = solicitudService.obtenerReporteFinal(id);
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.APPLICATION_PDF);
+	    headers.setContentDisposition(ContentDisposition.builder("attachment").filename("Reporte Final.pdf").build());
+	    return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+	}
+	@GetMapping("/descargarOficioSellado/{id}")
+	public ResponseEntity<byte[]> descargarOficio(@PathVariable int id) {
+	    byte[] bytes = solicitudService.obtenerOficioSellado(id);
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.APPLICATION_PDF);
+	    headers.setContentDisposition(ContentDisposition.builder("attachment").filename("Oficio de Comisión Sellado.pdf").build());
+	    return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
 	}
 	
 	@GetMapping("/oficio/{id}")

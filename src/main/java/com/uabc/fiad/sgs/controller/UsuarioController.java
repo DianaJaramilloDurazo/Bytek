@@ -10,6 +10,7 @@ import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,9 @@ public class UsuarioController {
 
     @Autowired
     private IUsuarioService usuarioService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      *
@@ -88,6 +92,30 @@ public class UsuarioController {
         }
         if(usuario.getIdEstado() == null){
             usuario.setIdEstado(1);
+        }
+        if (usuario.getPassword() != null && !usuario.getPassword().isEmpty()) {
+            // Obtener la contraseña plana
+            String rawPwd = usuario.getPassword();
+
+            // Encriptar la contraseña
+            String encodedPwd = passwordEncoder.encode(rawPwd);
+
+            Integer rolId = usuarioService.findIdRolById(usuario.getIdUsuario());
+            if (rolId != 0) {
+
+                // Cambiar la contraseña por la encriptada
+                boolean res = usuarioService.updateRolPwd(rolId, encodedPwd);
+
+                if (!res) {
+                    return "<div class='alert alert-danger' role='alert'>Ha ocurrido un error al actualizar la contraseña</div>";
+                }
+            }
+
+            // Cambiar la contraseña por la encriptada
+            usuario.setPassword(encodedPwd);
+        } else {
+
+            usuario.setPassword(user.get().getPassword());
         }
         boolean editado = usuarioService.update(usuario);
 //        System.out.println(usuarioService.findIdRolById(usuario.getIdUsuario()));
