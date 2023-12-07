@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,7 +58,7 @@ public class PDFExporter {
         document.add(subdireccion);
 
         // Obtener la fecha actual en el formato deseado (día de la semana, día del mes de año)
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy", new Locale("es", "MX"));
         String fechaActual = dateFormat.format(new Date());
 
         Paragraph asunto = new Paragraph("ASUNTO: Oficio de comisión\nEnsenada, B.C. a " + fechaActual, boldSubtitleFont);
