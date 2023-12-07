@@ -211,7 +211,7 @@ public class SolicitudService implements ISolicitudService {
 
 		Map<String, Object> resMap = simpleJdbcCall.execute(in);
 
-		Integer idSolicitud = (Integer) resMap.get("idsolicitud");
+		Integer idSolicitud = (Integer) resMap.get("idSolicitud");
 		System.out.println(resMap);
 		return idSolicitud;
 	}
