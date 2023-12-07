@@ -49,7 +49,7 @@ public class SgsUserDetailsService implements UserDetailsService {
                 rolAsignado = rol.get().getRol().toUpperCase();
             	StringTokenizer nombreRol = new StringTokenizer(rol.get().getRol().toUpperCase());
                 rolAsignado = nombreRol.nextToken();
-                System.out.println(rolAsignado);
+                //System.out.println(rolAsignado);
             }
         }
 

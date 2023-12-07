@@ -200,13 +200,13 @@ public class SolicitudController {
 	public String RechazarSolicitud(@RequestParam Integer rechazarId,@RequestParam String motivo) {
 
 
-		System.out.println(rechazarId);
+		//System.out.println(rechazarId);
 		Usuario u = SessionUtils.getUsuario(usuarioService);
 		if (u == null) {
 			return "redirect:/login";
 		}
 		
-		System.out.print(motivo);
+		//System.out.print(motivo);
 		boolean rechazado = solicitudService.rechzarSolicitud(rechazarId);
 		if(rechazado) {
 			solicitudService.reiniciarFirmas(rechazarId);
@@ -230,9 +230,9 @@ public class SolicitudController {
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public String subirReporte(@RequestParam Integer solicitud_id,@RequestParam Integer tipoArchivo ,@RequestParam MultipartFile reporte_archivo)
 	throws IOException, GeneralSecurityException {
-		System.out.println(tipoArchivo);
-		System.out.println(solicitud_id);
-		System.out.println(reporte_archivo.getSize());
+		//System.out.println(tipoArchivo);
+		//System.out.println(solicitud_id);
+		//System.out.println(reporte_archivo.getSize());
 		
 		Usuario u = SessionUtils.getUsuario(usuarioService);
 		if (u == null) {
@@ -403,7 +403,7 @@ public class SolicitudController {
 		Optional<Solicitud> solicitud = solicitudService.findById(id);
 		Optional<Usuario> usuario = usuarioService.findById(solicitud.get().getIdUsuario());
 		response.setHeader(headerKey, sbHeaderValue);
-		System.out.println(solicitud.get());
+		//System.out.println(solicitud.get());
 		PDFExporter export = new PDFExporter(solicitud.get(),usuario.get());
 			export.export(response);
 		}

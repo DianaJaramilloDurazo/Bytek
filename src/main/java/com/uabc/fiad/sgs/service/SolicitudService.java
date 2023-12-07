@@ -212,7 +212,7 @@ public class SolicitudService implements ISolicitudService {
 		Map<String, Object> resMap = simpleJdbcCall.execute(in);
 
 		Integer idSolicitud = (Integer) resMap.get("idSolicitud");
-		System.out.println(resMap);
+		//System.out.println(resMap);
 		return idSolicitud;
 	}
 
@@ -325,10 +325,10 @@ public class SolicitudService implements ISolicitudService {
 		int filasAfectadas = template.update(sql, idSolicitud);
 
 		if (filasAfectadas > 0) {
-			System.out.println("La actualización se realizó con éxito.");
+			//System.out.println("La actualización se realizó con éxito.");
 			return true;
 		} else {
-			System.out.println("No se encontraron filas que cumplan con la condición.");
+			//System.out.println("No se encontraron filas que cumplan con la condición.");
 			return false;
 		}
 	}
@@ -453,11 +453,11 @@ public class SolicitudService implements ISolicitudService {
 			String sql2 = "select r.Correo_rol from rol r where idRol=?;";
 			correo = template.queryForObject(sql2, new Object[] { id }, String.class);
 			correos.add(correo);
-			System.out.println(correo);
+			//System.out.println(correo);
 		}
 
-		System.out.println("HOLAAAAA");
-		System.out.println(firmas);
+		//System.out.println("HOLAAAAA");
+		//System.out.println(firmas);
 		return correos;
 	}
 

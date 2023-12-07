@@ -78,7 +78,7 @@ public class AdminController {
 		if (u == null) {
 			return "redirect:/login";
 		}
-        System.out.println(rol);
+        //System.out.println(rol);
         String rawPwd =rol.getPassword();
 
         // Encriptar la contraseña

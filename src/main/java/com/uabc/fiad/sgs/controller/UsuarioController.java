@@ -118,8 +118,8 @@ public class UsuarioController {
             usuario.setPassword(user.get().getPassword());
         }
         boolean editado = usuarioService.update(usuario);
-//        System.out.println(usuarioService.findIdRolById(usuario.getIdUsuario()));
-//        System.out.println(usuario);
+//        //System.out.println(usuarioService.findIdRolById(usuario.getIdUsuario()));
+//        //System.out.println(usuario);
         // Verificar si hubo un cambio de rol en el usuario
         if(!(usuario.getIdRol() == null || usuario.getIdRol()==0)){
             // En caso de que haya un cambio se verifica si no es el mismo rol que tiene el usuario

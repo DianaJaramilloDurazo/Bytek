@@ -115,8 +115,8 @@ public class DocenteController {
 		}
 		// Se obtine su id
 		solicitud.setIdUsuario(u.getIdUsuario());
-		System.out.print(solicitud);
-		System.out.print(horaSalida);
+		//System.out.print(solicitud);
+		//System.out.print(horaSalida);
 		// Se guarda la fehca y hora
 		solicitud.setFechaSalida(fechaSalida.atTime(horaSalida));
 		solicitud.setFechaRegreso(fechaRegreso.atTime(horaRegreso));
@@ -215,8 +215,8 @@ public class DocenteController {
 			}
 			String nombreUsuario = u.getUsername()+" " + u.getApPaterno() + " " + u.getApMaterno();
 			List<Map<String, Object>> rolesFirmas = solicitudService.DatosRolesFirma(idSolicitud);
-			System.out.println(nombreUsuario);
-			System.out.println(rolesFirmas);
+			//System.out.println(nombreUsuario);
+			//System.out.println(rolesFirmas);
 			// Se comento el envio de correos, para no mandar correos a usuarios reales
 			//mailManager.solicitarFirmas(rolesFirmas, nombreUsuario, solicitud.getNombreEvento());
 
@@ -291,7 +291,7 @@ public class DocenteController {
 		model.addAttribute("recursos", solicitudService.listarRecursos(idSolicitud));
 		model.addAttribute("actividades", solicitudService.listarActividadesAsociadas(idSolicitud));
 		model.addAttribute("carreras", usuarioService.listarCarreras());
-		System.out.println(solicitudService.listarRecursos(idSolicitud));
+		//System.out.println(solicitudService.listarRecursos(idSolicitud));
 		return "fragments/solicitud/editar-solicitud :: editar-solicitud";
 	}
 
@@ -448,14 +448,14 @@ public class DocenteController {
 			solicitudService.deleteActividades(idSolicitud, borrarActividades);
 			
 			if(solicitud.getEstadoSolicitud().equalsIgnoreCase("En correción")) {
-				System.out.println("Estaba en correcion");
+				//System.out.println("Estaba en correcion");
 				//Borrar Firmas 
 				solicitudService.reiniciarFirmas(idSolicitud);
 				// Enviar correos 
 				String nombreUsuario = u.getUsername()+" " + u.getApPaterno() + " " + u.getApMaterno();
 				List<Map<String, Object>> rolesFirmas = solicitudService.DatosRolesFirma(idSolicitud);
-				System.out.println(nombreUsuario);
-				System.out.println(rolesFirmas);
+				//System.out.println(nombreUsuario);
+				//System.out.println(rolesFirmas);
 				// Se comento el envio de correos, para no mandar correos a usuarios reales
 				//mailManager.Correcion(rolesFirmas, nombreUsuario, solicitud.getNombreEvento());
 			}

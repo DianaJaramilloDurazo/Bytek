@@ -195,7 +195,7 @@ public class HomeController {
 		List<Solicitud> solicitudesRealizadas;
 		List<Usuario> usuarios;
 
-		//System.out.println();
+		////System.out.println();
 
 		if (SessionUtils.getUserDetails().getAuthorities().stream()
 				.anyMatch(a -> a.getAuthority().equals("ROLE_DOCENTE"))) {

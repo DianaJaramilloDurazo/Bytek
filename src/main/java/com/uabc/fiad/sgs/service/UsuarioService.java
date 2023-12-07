@@ -259,10 +259,10 @@ public class UsuarioService implements IUsuarioService {
         int filasAfectadas = template.update(sql, idUser, idRol);
 
         if (filasAfectadas > 0) {
-            System.out.println("La actualización se realizó con éxito.");
+            //System.out.println("La actualización se realizó con éxito.");
             return true;
         } else {
-            System.out.println("No se encontraron filas que cumplan con la condición.");
+            //System.out.println("No se encontraron filas que cumplan con la condición.");
             return false;
         }
     }
