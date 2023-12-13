@@ -30,7 +30,7 @@
             <!--               th:value="${value} ?: ''"-->
         </div>
 
-        <div th:if="${perfil == null || !perfil}" class="col" >
+        <div class="col" >
             <label for="contraseña">Contraseña</label>
             <input id="contraseña" th:name="password" class="form-control" aria-describedby="pwd-help">
             <div id="pwd-help" class="form-text">Dejar en blanco para no cambiar la contraseña.</div>
@@ -71,7 +71,7 @@
 
         <!-- Si la bandera del perfil es verdadera, no mostrar el campo de estado, si es falsa o nula mostrarlo -->
         <div th:if="${perfil == null || !perfil}" class="col" >
-            <label for="idCategoria">Estado</label>
+            <label for="idEstado">Estado</label>
             <select class="form-control" id="idEstado" name="idEstado" th:disabled="${usuario.idRol != 0}" required>
                 <option th:each="estado : ${estados}"
                         th:value="${estado.idEstado}"
