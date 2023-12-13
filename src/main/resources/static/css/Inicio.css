@@ -451,6 +451,9 @@ body{
 }
 #Enum-personas{
 	color: gray;
+}
+
+.hidden{
 	visibility: hidden;
 }
 /*Codigo css para las cards de navegacion segun el numero de cards que se muestren*/
