@@ -25,28 +25,34 @@
 			<h5>Detalles del evento</h5>
 		</div>
 	<div class="row row-cols-2">
-		<div class="col">
-			<span id="nombreEvento-alert" style="color: red; display: none;">Ingrese el nombre del evento</span>
-			<span id="largoEventoC-alert" style="color: red; display: none;">Nombre del evento, máximo 100 caracteres</span>
-			<span id="costo-alert" style="color: red; display: none;">Ingrese el costo del evento</span>
-			<span id="largocosto-alert" style="color: red; display: none;">Costo máximo 100,000</span>
-			<div class="form-group">
+		<div class="col-12">
+			<div class="form-group d-flex justify-content-between">
+				<span id="nombreEvento-alert" style="color: red; display: none;">Ingrese el nombre del evento</span>
+				<span id="largoEventoC-alert" style="color: red; display: none;">Nombre del evento, máximo 100 caracteres</span>
 				<label class="txtCrear">Nombre del evento:</label>
 				<input type="text" id="nombreEvento" name="nombreEvento" class="form-control" required>	
 			</div>
+			
+			<div class="form-group d-flex justify-content-between">
+				<span id="lugar-alert" style="color: red; display: none;">Ingrese el lugar del evento</span>
+				<span id="largolugar-alert" style="color: red; display: none;">Lugar invalido, máximo 100 caracteres</span>
+				<label class="txtCrear">Lugar: </label>
+				<input type="text" id="lugar" name="lugar" class="form-control" required>
+			</div>
+		</div>
+		<div class="col">
+
+			<span id="costo-alert" style="color: red; display: none;">Ingrese el costo del evento</span>
+			<span id="largocosto-alert" style="color: red; display: none;">Costo máximo 100,000</span>
+			
 			<div class="form-group">
 				<label class="txtCrear">Costo del evento: $</label>
 				<input type="number" step="0.001" min="0" id="costo" name="costo" class="form-control" required>
 			</div>
 		</div>
 		<div class="col">
-			<span id="lugar-alert" style="color: red; display: none;">Ingrese el lugar del evento</span>
-			<span id="largolugar-alert" style="color: red; display: none;">Lugar invalido, máximo 100 caracteres</span>
 			<span id="idCarrera-alert" style="color: red; display: none;">Seleccione una carrera</span>
-			<div class="form-group">
-				<label class="txtCrear">Lugar: </label>
-				<input type="text" id="lugar" name="lugar" class="form-control" required>
-			</div>
+			
 			<div class="form-group">
 				<label for="idCarrera" class="txtCrear">Carrera</label>
 				<select class="form-control " id="idCarrera" name="idCarrera" required>

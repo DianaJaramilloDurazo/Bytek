@@ -37,13 +37,16 @@
         </div>
 
         <div class="col">
+			<label for="confPassword">Confirme su contraseña</label>
+			<input class="form-control" type="password" id="confPassword" required>
+		</div>
+    </div>
+    <div class="row row-cols-2">
+		<div class="col">
             <label for="numEmpleado">Numero de empleado</label>
             <input class="form-control" type="number" id="numEmpleado" name="numEmpleado" required
                    min="10000" max="999999" step="1" pattern="^[0-9]*$" onkeydown="if([69,187,188,189,190].includes(event.keyCode))event.preventDefault()">
         </div>
-    </div>
-
-    <div class="row row-cols-2">
         <div class="col">
             <label for="idCategoria">Categoria</label>
             <select class="form-control" id="idCategoria" name="idCategoria" required>
@@ -53,6 +56,10 @@
                         th:text="${categoria.Cat_Descripcion}"></option>
             </select>
         </div>
+	</div>
+
+    <div class="row row-cols-2">
+        
 
         <div class="col">
             <label for="idCarrera">Carrera</label>

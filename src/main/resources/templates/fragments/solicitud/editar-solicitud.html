@@ -39,22 +39,26 @@
 	<span id="Efechas-alert" style="color: red; display: none;">Ingrese los horarios y fechas del evento</span>
 	
 	<div class="row row-cols-2">
-		<div class="col">
-			<div class="form-group">
+		<div class="col-12">
+			<div class="form-group justify-content-between">
 				<label class="txt_editar">Nombre del evento:</label>
 				<input th:value="${solicitud.nombreEvento}" type="text" id="EnombreEvento" name="nombreEvento" class="form-control">
 				
 			</div>
+			<div class="form-group justify-content-between">
+				<label class="txt_editar">Lugar: </label>
+				<input th:value="${solicitud.lugar}"  type="text" id="Elugar" name="lugar" class="form-control" required>
+			</div>
+		</div>
+		<div class="col">
+			
 			<div class="form-group">
 				<label class="txt_editar">Costo del evento: $</label>
 				<input th:value="${solicitud.costo}" min="0" step="0.01" type="number" id="Ecosto" name="costo" class="form-control" >
 			</div>
 		</div>
 		<div class="col">
-			<div class="form-group">
-				<label class="txt_editar">Lugar: </label>
-				<input th:value="${solicitud.lugar}"  type="text" id="Elugar" name="lugar" class="form-control" required>
-			</div>
+			
 			<div class="form-group">
 				<input type="hidden" name="idCarrera" th:value="${solicitud.idCarrera}">
 				<label for="idCarrera" class="txt_editar">Carrera</label>
@@ -97,7 +101,8 @@
 	             		type="checkbox" th:attr="checked=${recurso.registrado}?'checked':null" 
 	             		th:onclick="'validarEditarRecursos(\'' + ${recurso.idRecurso} + '\')'" checked>
 	             	<label class="form-check-label" th:text="${recurso.desc}"></label>
-	             	<input type="text" th:if="${recurso.desc == 'Transporte' or recurso.desc == 'Otro'}" th:name="${recurso.desc}" th:value="${recurso.detalles}" th:id="@{|I${recurso.desc}|}" th:attr="disabled=${!recurso.registrado}?'disabled':null" maxlength="120" disabled>
+	             	<input type="text" th:if="${recurso.desc == 'Otro'}" th:name="${recurso.desc}" th:value="${recurso.detalles}" th:id="@{|I${recurso.desc}|}" th:attr="disabled=${!recurso.registrado}?'disabled':null" maxlength="120" disabled>
+	             	<input type="number" th:if="${recurso.desc == 'Transporte'}" th:name="${recurso.desc}" th:value="${recurso.detalles}" th:id="@{|I${recurso.desc}|}" th:attr="disabled=${!recurso.registrado}?'disabled':null" maxlength="120" disabled>
 	             </div>
 		</div>
 		

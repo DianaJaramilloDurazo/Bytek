@@ -16,7 +16,7 @@
 }
 .CrearModal input[type="text"]{
 	max-height: 35px !important;
-	max-width: 300px;
+	max-width: 890px;
 }
 .CrearModal select{
 	max-height: 35px !important;
@@ -246,7 +246,7 @@
 }
 .modalEditar input[type="text"]{
 	max-height: 35px !important;
-	max-width: 300px;
+	max-width: 890px;
 }
 .modalEditar{
 	max-width: 1100px;
@@ -312,9 +312,12 @@
 }
 
 .checkbox input[type="text"]{
-	max-width: 100px !important;
+	width: 100% !important;
+	max-width: 420px;
 }
+
 .checkbox input[type="number"]{
+	
 	max-width: 100px !important;
 }
 .actividades, .recursos{
@@ -441,6 +444,7 @@ body{
 	font-weight: normal !important;
 	font-style: italic;
 }
+
 /*Codigo css para las cards de navegacion segun el numero de cards que se muestren*/
 
 /*grid-column: 1 / span 3;*/

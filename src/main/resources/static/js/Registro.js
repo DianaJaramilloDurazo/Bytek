@@ -15,4 +15,15 @@ function habilitar()
     }
 }
 
-
+function verificarContraseñas()
+{
+	var pwd1 = document.getElementById("password").value;
+	var pwd2 = document.getElementById("confPassword").value;
+	
+	if(pwd1 === pwd2)
+	{
+		
+	}else{
+		
+	}
+}

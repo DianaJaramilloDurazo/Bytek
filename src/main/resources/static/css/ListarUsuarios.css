@@ -124,4 +124,6 @@ a:hover{
 #modalConfirmar p{
 	font-size: 1.3rem;
 }
-
+.modalConf{
+	max-width: 600px;
+}
