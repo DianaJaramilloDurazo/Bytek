@@ -32,6 +32,7 @@ function activarInput(checkboxid, inputid) {
 	if (checkbox.checked) {
 		// Activar el input
 		input.disabled = false;
+		document.getElementById("num-personas").style.visibility = "visible";
 		if (checkboxid === 'Transporte_c' || checkboxid === 'Transporte') {
 			input.value = '1';
 
@@ -50,6 +51,7 @@ function activarInput(checkboxid, inputid) {
 		// Desactivar el input
 		input.disabled = true;
 		input.value = '';
+		document.getElementById("num-personas").style.visibility = "hidden";
 	}
 }
 
@@ -456,6 +458,7 @@ function validarEditarRecursos(idCheckbox) {
 		// Verificar si el checkbox está seleccionado
 		if (checkbox2.checked) {
 			input2.value = '1';
+			document.getElementById("Enum-personas").style.visibility = "visible";
 			// Activar el input
 			input2.disabled = false;
 			input2.addEventListener('change', function() {
@@ -472,6 +475,7 @@ function validarEditarRecursos(idCheckbox) {
 			// Desactivar el input
 			input2.disabled = true;
 			input2.value = '';
+			document.getElementById("Enum-personas").style.visibility = "hidden";
 		}
 	}
 	if (idCheckbox == '5') {

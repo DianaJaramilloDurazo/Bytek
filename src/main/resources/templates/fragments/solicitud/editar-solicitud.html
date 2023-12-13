@@ -103,6 +103,7 @@
 	             	<label class="form-check-label" th:text="${recurso.desc}"></label>
 	             	<input type="text" th:if="${recurso.desc == 'Otro'}" th:name="${recurso.desc}" th:value="${recurso.detalles}" th:id="@{|I${recurso.desc}|}" th:attr="disabled=${!recurso.registrado}?'disabled':null" maxlength="120" disabled>
 	             	<input type="number" th:if="${recurso.desc == 'Transporte'}" th:name="${recurso.desc}" th:value="${recurso.detalles}" th:id="@{|I${recurso.desc}|}" th:attr="disabled=${!recurso.registrado}?'disabled':null" maxlength="120" disabled>
+	             	<span th:if="${recurso.desc == 'Transporte'}" id="Enum-personas">Número de personas</span>
 	             </div>
 		</div>
 		

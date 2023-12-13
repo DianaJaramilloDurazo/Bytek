@@ -445,6 +445,14 @@ body{
 	font-style: italic;
 }
 
+#num-personas{
+	color: gray;
+	visibility: hidden;
+}
+#Enum-personas{
+	color: gray;
+	visibility: hidden;
+}
 /*Codigo css para las cards de navegacion segun el numero de cards que se muestren*/
 
 /*grid-column: 1 / span 3;*/
