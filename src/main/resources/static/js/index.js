@@ -91,3 +91,9 @@ function validarCampos(campo, idcampo){
 		input.value=campo;
 	}
 }
+
+function quitarModalinfo(){
+	const modal = bootstrap.Modal.getInstance(modalInfo);
+	modal.hide();
+	}
+	
