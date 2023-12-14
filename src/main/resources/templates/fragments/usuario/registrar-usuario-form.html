@@ -45,9 +45,9 @@
 
     <div class="row row-cols-2">
         <div class="col">
-            <label for="idCategoria">Categoria</label>
+            <label for="idCategoria">Categoría</label>
             <select class="form-control" id="idCategoria" name="idCategoria" required>
-                <option value="" selected>Selecciona una categoria</option>
+                <option value="" selected>Selecciona una categoría</option>
                 <option th:each="categoria : ${categorias}"
                         th:value="${categoria.idCategoria}"
                         th:text="${categoria.Cat_Descripcion}"></option>
