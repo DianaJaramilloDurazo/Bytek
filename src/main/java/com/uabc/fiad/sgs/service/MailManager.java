@@ -30,7 +30,7 @@ public class MailManager {
 			helper.setText(mensaje);
 
 			helper.setFrom(sender);
-			javaMailSender.send(message);
+			// javaMailSender.send(message);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -61,7 +61,7 @@ public class MailManager {
 						+ "\r\n" + "Atentamente,\r\n" + "\r\n" + "" + nombre + "\r\n" + "");
 
 				helper.setFrom(sender);
-				javaMailSender.send(message);
+				// javaMailSender.send(message);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -94,7 +94,7 @@ public class MailManager {
 						+ "\r\n" + "Atentamente,\r\n" + "\r\n" + "" + nombre + "\r\n" + "");
 
 				helper.setFrom(sender);
-				javaMailSender.send(message);
+				// javaMailSender.send(message);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -120,7 +120,7 @@ public class MailManager {
 				helper.setText("La solicitud de salida a '" + nombre + "' ha sido firmada por " + firma + ".");
 
 				helper.setFrom(sender);
-				javaMailSender.send(message);
+				// javaMailSender.send(message);
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
@@ -148,7 +148,7 @@ public class MailManager {
 					+ "\r\n" + "Razones del Rechazo:\r\n" + motivos + "");
 
 			helper.setFrom(sender);
-			javaMailSender.send(message);
+			// javaMailSender.send(message);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
